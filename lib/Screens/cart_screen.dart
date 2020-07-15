@@ -111,7 +111,7 @@ class _CartScreenState extends State<CartScreen> {
                         child: IconButton(
                           icon: Icon(
                             Icons.close,
-                            size: 16,
+                            size: 15,
                             color: Colors.white,
                           ),
                           onPressed: () {
