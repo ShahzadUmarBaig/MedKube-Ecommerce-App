@@ -269,8 +269,8 @@ class _ProductScreenState extends State<ProductScreen> {
                                   setState(() {
                                     cartListChecker.add(item);
 
-                                    if (cartListChecker.contains(
-                                        item)) {} else {
+                                    if (cartListChecker.contains(item)) {
+                                    } else {
                                       cartList.add(
                                         Cart(
                                             title: item.title,
