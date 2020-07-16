@@ -20,7 +20,6 @@ class ProductScreen extends StatefulWidget {
 
 class _ProductScreenState extends State<ProductScreen> {
   List<Product> _productList = List<Product>();
-  List<Product> _cartList = List<Product>();
 
   Cart cart = Cart();
 
@@ -46,7 +45,6 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     populateList();
   }
@@ -179,11 +177,6 @@ class _ProductScreenState extends State<ProductScreen> {
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
                   var item = _productList[index];
-                  var cartItem = Cart(
-                    price: item.price,
-                    title: item.title,
-                    quantity: 1,
-                  );
 
                   return GestureDetector(
                     onTap: () {
@@ -249,6 +242,8 @@ class _ProductScreenState extends State<ProductScreen> {
                               ),
                             ),
                           ),
+
+                          // TODO: Item Button
                           Align(
                             alignment: Alignment.bottomRight,
                             child: Padding(
@@ -272,13 +267,18 @@ class _ProductScreenState extends State<ProductScreen> {
                                 //    fillColor: Colors.blueAccent,
                                 onPressed: () {
                                   setState(() {
-                                    cartList.add(
-                                      Cart(
-                                          title: item.title,
-                                          price: item.price,
-                                          quantity: 1,
-                                          total: item.price),
-                                    );
+                                    cartListChecker.add(item);
+
+                                    if (cartListChecker.contains(
+                                        item)) {} else {
+                                      cartList.add(
+                                        Cart(
+                                            title: item.title,
+                                            price: item.price,
+                                            quantity: 1,
+                                            total: item.price),
+                                      );
+                                    }
                                   });
                                 },
                               ),

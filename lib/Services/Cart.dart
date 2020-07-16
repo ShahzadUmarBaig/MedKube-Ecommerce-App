@@ -1,4 +1,8 @@
+import 'package:medkube/Services/Product.dart';
+
 List<Cart> cartList = List<Cart>();
+
+List<Product> cartListChecker = List<Product>();
 
 class Cart {
   String title;
