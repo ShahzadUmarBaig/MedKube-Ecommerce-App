@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "881507044347",
+    "firebase_url": "https://medkube-dbf9c.firebaseio.com",
+    "project_id": "medkube-dbf9c",
+    "storage_bucket": "medkube-dbf9c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:881507044347:android:bd06da32c9b7debdd7595e",
+        "android_client_info": {
+          "package_name": "com.example.medkube"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "881507044347-vgl9ne89uqkfiigsrsr5iedbd12dkor6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMiBO8txFHA3z1iEeTMbAsD6ICHRAjXZk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "881507044347-vgl9ne89uqkfiigsrsr5iedbd12dkor6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
