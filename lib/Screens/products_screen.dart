@@ -177,7 +177,6 @@ class _ProductScreenState extends State<ProductScreen> {
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
                   var item = _productList[index];
-
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -242,7 +241,6 @@ class _ProductScreenState extends State<ProductScreen> {
                               ),
                             ),
                           ),
-
                           // TODO: Item Button
                           Align(
                             alignment: Alignment.bottomRight,
@@ -266,20 +264,23 @@ class _ProductScreenState extends State<ProductScreen> {
                                 ),
                                 //    fillColor: Colors.blueAccent,
                                 onPressed: () {
-                                  setState(() {
-                                    cartListChecker.add(item);
-
-                                    if (cartListChecker.contains(item)) {
-                                    } else {
-                                      cartList.add(
-                                        Cart(
+                                  setState(
+                                    () {
+                                      if (cartListChecker.contains(item) ==
+                                          true) {
+                                      } else {
+                                        cartListChecker.add(item);
+                                        cartList.add(
+                                          Cart(
                                             title: item.title,
                                             price: item.price,
                                             quantity: 1,
-                                            total: item.price),
-                                      );
-                                    }
-                                  });
+                                            total: item.price,
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  );
                                 },
                               ),
                             ),
