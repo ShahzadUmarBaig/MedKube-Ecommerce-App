@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:medkube/constants.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -13,6 +16,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String email;
   String password;
 
+  File _image;
+  final picker = ImagePicker();
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image = File(pickedFile.path);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,35 +39,45 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             color: Colors.black54,
             size: 30,
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ),
       body: SafeArea(
         child: Container(
+          height: double.infinity,
           padding: EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: ListView(
+            padding: const EdgeInsets.all(8),
             children: [
               Container(
-                padding: EdgeInsets.all(16),
-                child: Badge(
-                  position: BadgePosition.bottomRight(),
-                  badgeContent: IconButton(
-                    highlightColor: Colors.transparent,
-                    icon: Icon(
-                      Icons.camera_alt,
-                      color: Colors.white,
+                child: Center(
+                  child: Badge(
+                    position: BadgePosition.bottomRight(),
+                    badgeContent: GestureDetector(
+                      onTap: getImage,
+                      child: Icon(
+                        Icons.camera_alt,
+                        color: Colors.white,
+                        size: 30,
+                      ),
                     ),
-                    onPressed: () {},
-                  ),
-                  child: Hero(
-                    tag: "ProfPic",
-                    child: CircleAvatar(
-                      radius: 80,
-                      backgroundImage: AssetImage("images/user.png"),
+                    child: Hero(
+                      tag: "ProfPic",
+                      child: CircleAvatar(
+                        radius: 80,
+                        backgroundImage: _image == null
+                            ? AssetImage("images/user.png")
+                            : FileImage(_image),
+                      ),
                     ),
+                    padding: EdgeInsets.all(12),
                   ),
                 ),
+              ),
+              SizedBox(
+                height: 30,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
