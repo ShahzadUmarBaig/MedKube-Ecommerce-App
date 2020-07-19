@@ -16,30 +16,30 @@ class _CartScreenState extends State<CartScreen> {
   TextEditingController _textEditingController = TextEditingController();
   List<Product> _list = List<Product>();
 
-  double total = cartList.length == 0 ? 0 : 150;
+  double itemTotal = cartList.length == 0 ? 0 : 150;
   int delivery = cartList.length == 0 ? 0 : 150;
   bool isDisabled = true;
 
   Cart cart = Cart();
 
-  double getTotalAmount() {
+  String getTotal() {
+    itemTotal = 0.00;
     for (var item in cartList) {
-      total = total + item.total;
+      itemTotal = item.total + itemTotal;
     }
-    return total;
+    return itemTotal.toString();
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    getTotalAmount();
+    getTotal();
   }
 
   @override
   Widget build(BuildContext context) {
     cartList.length == 0 ? isDisabled = true : isDisabled = false;
-
+    getTotal();
     return Scaffold(
       backgroundColor: Colors.blue[600],
       body: CustomScrollView(
@@ -94,71 +94,96 @@ class _CartScreenState extends State<CartScreen> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
               ),
-              margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               width: double.infinity,
               height: MediaQuery.of(context).size.height - 400,
+
+              //TODO Cart Item Card Starts Here
               child: ListView.builder(
                 padding: EdgeInsets.all(0),
-                itemExtent: 40,
                 itemCount: cartList.length,
                 itemBuilder: (context, index) {
                   var item = cartList[index];
-                  return Stack(
-                    alignment: Alignment.center,
-                    fit: StackFit.loose,
-                    children: [
-                      Align(
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.close,
-                            size: 15,
-                            color: Colors.white,
+                  return Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    elevation: 4,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.remove_circle,
+                              color: Colors.red,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                cartList.remove(item);
+                                itemTotal = itemTotal - item.total;
+                                if (cartList.length == 0) {
+                                  delivery = 0;
+                                  itemTotal = 0;
+                                }
+                              });
+                            },
                           ),
-                          onPressed: () {
-                            setState(() {
-                              cartList.remove(item);
-                              total = total - item.price;
-                              if (cartList.length == 0) {
-                                delivery = 0;
-                                total = 0;
+                        ),
+                        Expanded(
+                          child: Text(
+                            item.title,
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          flex: 3,
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.add_circle,
+                              color: Colors.green,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                item.quantity++;
+                                item.total = item.quantity * item.price;
+                              });
+                            },
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            item.quantity.toString(),
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.remove_circle,
+                              color: Colors.green,
+                            ),
+                            onPressed: () {
+                              if (item.quantity != 1) {
+                                setState(() {
+                                  item.quantity--;
+                                  item.total = item.quantity * item.price;
+                                });
                               }
-                            });
-                          },
-                          disabledColor: Colors.white,
-                          splashColor: Colors.blue[600],
-                          highlightColor: Colors.blue[600],
+                            },
+                          ),
                         ),
-                        alignment: Alignment.centerLeft,
-                      ),
-                      Positioned(
-                        child: Text(
-                          item.title,
-                          style: TextStyle(fontSize: 15, color: Colors.white),
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            (item.price * item.quantity).toString(),
+                            style: TextStyle(fontSize: 18),
+                          ),
                         ),
-                        left: 45,
-                      ),
-                      Positioned(
-                        child: Text(
-                          item.price.toString(),
-                          style: TextStyle(fontSize: 15, color: Colors.white),
-                        ),
-                        right: 70,
-                      ),
-                      Positioned(
-                        child: Text(
-                          item.quantity.toString(),
-                          style: TextStyle(fontSize: 15, color: Colors.white),
-                        ),
-                        right: 50,
-                      ),
-                      Positioned(
-                        child: Text(
-                          item.total.toString(),
-                          style: TextStyle(fontSize: 15, color: Colors.white),
-                        ),
-                        right: 5,
-                      ),
-                    ],
+                      ],
+                    ),
                   );
                 },
               ),
@@ -183,7 +208,7 @@ class _CartScreenState extends State<CartScreen> {
                           style: TextStyle(color: Colors.white, fontSize: 15),
                         ),
                         Text(
-                          "Total",
+                          "Sub Total",
                           style: TextStyle(color: Colors.white, fontSize: 15),
                         ),
                       ],
@@ -196,7 +221,7 @@ class _CartScreenState extends State<CartScreen> {
                           style: TextStyle(color: Colors.white, fontSize: 15),
                         ),
                         Text(
-                          total.toString(),
+                          getTotal(),
                           style: TextStyle(color: Colors.white, fontSize: 25),
                         ),
                       ],
