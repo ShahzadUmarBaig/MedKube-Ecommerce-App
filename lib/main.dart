@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:medkube/Screens/detail_screen.dart';
 import 'package:medkube/Screens/products_screen.dart';
 import 'package:medkube/Screens/profile_screen.dart';
+import 'package:medkube/Screens/register_screen.dart';
 import 'package:medkube/Screens/welcome_screen.dart';
 
 void main() {
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         WelcomeScreen.id: (context) => WelcomeScreen(),
         ProductScreen.id: (context) => ProductScreen(),
         ProfileScreen.id: (context) => ProfileScreen(),
+        RegistrationScreen.id: (context) => RegistrationScreen(),
       },
     );
   }
