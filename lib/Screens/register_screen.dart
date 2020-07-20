@@ -13,8 +13,11 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  String name;
   String email;
   String password;
+  String confPassword;
+  String phoneNo;
 
   File _image;
   final picker = ImagePicker();
@@ -46,7 +49,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       ),
       body: SafeArea(
         child: Container(
-          height: double.infinity,
           padding: EdgeInsets.symmetric(horizontal: 24),
           child: ListView(
             padding: const EdgeInsets.all(8),
@@ -82,11 +84,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: TextField(
-                  keyboardType: TextInputType.emailAddress,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     //Do something with the user input.
-                    email = value;
+                    name = value;
                   },
                   decoration: kTextFieldDecoration.copyWith(
                       hintText: "Enter Your Name"),
@@ -112,7 +113,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     //Do something with the user input.
-                    email = value;
+                    password = value;
                   },
                   decoration: kTextFieldDecoration.copyWith(
                       hintText: "Enter Your Password"),
@@ -125,7 +126,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     //Do something with the user input.
-                    email = value;
+                    confPassword = value;
                   },
                   decoration: kTextFieldDecoration.copyWith(
                       hintText: "Enter Your Confirm Password"),
@@ -138,10 +139,27 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     //Do something with the user input.
-                    email = value;
+                    phoneNo = value;
                   },
                   decoration: kTextFieldDecoration.copyWith(
                       hintText: "Enter Your Phone Number"),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 16.0),
+                child: Material(
+                  color: Colors.blueAccent,
+                  borderRadius: BorderRadius.circular(30.0),
+                  elevation: 5.0,
+                  child: MaterialButton(
+                    onPressed: () {},
+                    minWidth: 250.0,
+                    height: 42.0,
+                    child: Text(
+                      "Register",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
                 ),
               ),
             ],
