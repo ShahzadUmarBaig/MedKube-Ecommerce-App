@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:medkube/Screens/Firebase/login_screen.dart';
 import 'package:medkube/Screens/detail_screen.dart';
-import 'package:medkube/Screens/products_screen.dart';
+import 'package:medkube/Screens/home_screen.dart';
+import 'package:medkube/Screens/medical_screen.dart';
 import 'package:medkube/Screens/profile_screen.dart';
-import 'package:medkube/Screens/register_screen.dart';
 import 'package:medkube/Screens/welcome_screen.dart';
+
+import 'file:///G:/Flutter_Projects/MedKube-Ecommerce-App/lib/Screens/Firebase/register_screen.dart';
+
+import 'Screens/cart_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,7 +25,9 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: WelcomeScreen.id,
       routes: {
-        //CartScreen.id: (context) => CartScreen(),
+        LoginScreen.id: (context) => LoginScreen(),
+        HomeScreen.id: (context) => HomeScreen(),
+        CartScreen.id: (context) => CartScreen(),
         DetailScreen.id: (context) => DetailScreen(),
         WelcomeScreen.id: (context) => WelcomeScreen(),
         ProductScreen.id: (context) => ProductScreen(),
