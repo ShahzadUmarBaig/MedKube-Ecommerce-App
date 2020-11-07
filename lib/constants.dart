@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 const kElevationConstant = 5.00;
+
+TextStyle kDefaultStyle =
+    GoogleFonts.montserrat(color: Colors.black54, fontSize: 18);
+TextStyle kLinkStyle = TextStyle(color: Colors.blue);
 
 const kSearchFieldDecoration = InputDecoration(
   contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
