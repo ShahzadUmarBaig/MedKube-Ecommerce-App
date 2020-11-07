@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:medkube/Screens/register_screen.dart';
+import 'package:medkube/Screens/Firebase/login_screen.dart';
+
+import 'file:///G:/Flutter_Projects/MedKube-Ecommerce-App/lib/Screens/Firebase/register_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   static const id = "ProfileScreen";
@@ -46,7 +48,9 @@ class ProfileScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30.0),
                   elevation: 5.0,
                   child: MaterialButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, LoginScreen.id);
+                    },
                     minWidth: 250.0,
                     height: 42.0,
                     child: Text(
