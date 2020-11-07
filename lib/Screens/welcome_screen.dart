@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:medkube/Screens/home_screen.dart';
 import 'package:medkube/Screens/products_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -14,7 +15,7 @@ class WelcomeScreen extends StatefulWidget {
 
 Route _createRoute() {
   return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => ProductScreen(),
+    pageBuilder: (context, animation, secondaryAnimation) => HomeScreen(),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       var begin = Offset(0.0, 1.0);
       var end = Offset.zero;

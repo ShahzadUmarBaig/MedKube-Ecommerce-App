@@ -9,7 +9,8 @@ import 'package:medkube/Screens/detail_screen.dart';
 import 'package:medkube/Screens/profile_screen.dart';
 import 'package:medkube/Services/Cart.dart';
 import 'package:medkube/Services/Product.dart';
-import 'package:medkube/widgets.dart';
+
+import '../Widgets/widgets.dart';
 
 class ProductScreen extends StatefulWidget {
   static const id = "/";
