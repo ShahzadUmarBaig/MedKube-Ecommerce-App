@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:medkube/Screens/Firebase/login_screen.dart';
+import 'package:medkube/Screens/medical_screen.dart';
 import 'package:medkube/Widgets/custom_card.dart';
 
 class HomeScreen extends StatelessWidget {
   static String id = "HomeScreen";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,28 +20,15 @@ class HomeScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  margin: EdgeInsets.only(bottom: 32),
-                  child: Image(
-                    image: AssetImage("images/logo.png"),
-                    height: 64,
-                    width: 64,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
                 CustomCard(
                   myImage: AssetImage("images/grocery.png"),
                   title: "General",
                   fontSize: 20,
                 ),
                 CustomCard(
-                  myImage: AssetImage("images/medicine.png"),
-                  title: "Medicines",
-                  fontSize: 20,
+                  myImage: AssetImage("images/camera.png"),
+                  title: "    Upload \nPrescription",
+                  fontSize: 16,
                 ),
               ],
             ),
@@ -49,11 +39,19 @@ class HomeScreen extends StatelessWidget {
                   title: "   Medical \nEquipment",
                   fontSize: 16,
                   myImage: AssetImage("images/Equipment.png"),
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ProductScreen(),
+                    ),
+                  ),
                 ),
                 CustomCard(
                   myImage: AssetImage("images/login.png"),
                   title: "Login",
                   fontSize: 20,
+                  onTap: () {
+                    Navigator.pushNamed(context, LoginScreen.id);
+                  },
                 ),
               ],
             )
