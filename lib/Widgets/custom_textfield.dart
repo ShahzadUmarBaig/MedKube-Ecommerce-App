@@ -4,13 +4,15 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController textEditingController;
   final String labelText;
   final bool obscureText;
+  final bool isPasswordValid;
 
-  const CustomTextField(
-      {Key key,
-      this.textEditingController,
-      this.labelText,
-      this.obscureText = false})
-      : super(key: key);
+  const CustomTextField({
+    Key key,
+    this.textEditingController,
+    this.labelText,
+    this.obscureText = false,
+    this.isPasswordValid = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +26,9 @@ class CustomTextField extends StatelessWidget {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
           ),
-          alignLabelWithHint: true,
           labelText: labelText,
+          alignLabelWithHint: true,
           //  hintText: "Username",
-          hintStyle: TextStyle(),
         ),
       ),
     );
