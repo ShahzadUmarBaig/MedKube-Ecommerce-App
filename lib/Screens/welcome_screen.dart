@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:medkube/Screens/home_screen.dart';
-import 'package:medkube/Screens/medical_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static String id = "WelcomeScreen";
