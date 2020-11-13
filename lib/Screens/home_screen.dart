@@ -17,6 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String userName;
   FirebaseAuth auth = FirebaseAuth.instance;
   User loggedUser;
+  final _key = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -40,12 +41,13 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  getMethod(BuildContext context) {
+  getMethod(BuildContext context) async {
     if (FirebaseAuth.instance.currentUser == null) {
       Navigator.pushReplacementNamed(context, LoginScreen.id);
     } else {
+      await FirebaseAuth.instance.signOut();
       setState(() {
-        FirebaseAuth.instance.signOut();
+        print("User Signed Out Successfully");
       });
     }
   }
@@ -62,7 +64,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     getLabel();
     return Scaffold(
-      drawer: Drawer(),
+      key: _key,
+      drawer: getDrawer(context),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -83,7 +86,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Colors.white,
                         size: 32,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        _key.currentState.openDrawer();
+                      },
                     ),
                   ),
                   Expanded(
@@ -150,6 +155,22 @@ class _HomeScreenState extends State<HomeScreen> {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget getDrawer(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        children: [
+          DrawerHeader(
+            child: Text('Drawer Header'),
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+          ),
+          ListTile(),
+        ],
       ),
     );
   }

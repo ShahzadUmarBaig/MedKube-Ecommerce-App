@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medkube/Screens/home_screen.dart';
 import 'package:medkube/Widgets/custom_button.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -17,6 +18,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   TextEditingController address;
   TextEditingController phoneNumber;
   final _formKey = GlobalKey<FormState>();
+
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -35,20 +38,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     return value;
   }
 
-  void _showToast(BuildContext context) {
-    final scaffold = Scaffold.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        content: const Text('Added to favorite'),
-        action: SnackBarAction(
-            label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: Container(
         height: double.infinity,
         child: Form(
@@ -201,12 +194,28 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   buttonColor: Colors.blueAccent,
                   onTap: () async {
                     if (_formKey.currentState.validate()) {
+                      FocusScope.of(context).unfocus();
                       try {
-                        UserCredential userCredential = await FirebaseAuth
-                            .instance
+                        //UserCredential userCredential =
+                        await FirebaseAuth.instance
                             .createUserWithEmailAndPassword(
                                 email: email.text, password: password.text);
-
+                        _scaffoldKey.currentState
+                            .showSnackBar(SnackBar(
+                                behavior: SnackBarBehavior.floating,
+                                content: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 4.0),
+                                  child: Text(
+                                    'Registered Successfully',
+                                    style:
+                                        GoogleFonts.montserrat(fontSize: 20.0),
+                                  ),
+                                ),
+                                duration: Duration(seconds: 3)))
+                            .closed
+                            .then((value) => Navigator.pushReplacementNamed(
+                                context, HomeScreen.id));
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'user-not-found') {
                           print('No user found for that email.');
