@@ -173,6 +173,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     }
                     return null;
                   },
+                  keyboardType: TextInputType.number,
                   controller: phoneNumber,
                   textAlign: TextAlign.center,
                   obscureText: false,

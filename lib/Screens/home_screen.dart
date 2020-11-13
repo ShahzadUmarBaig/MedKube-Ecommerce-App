@@ -17,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String userName;
   FirebaseAuth auth = FirebaseAuth.instance;
   User loggedUser;
-  final _key = GlobalKey<ScaffoldState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -46,9 +46,21 @@ class _HomeScreenState extends State<HomeScreen> {
       Navigator.pushReplacementNamed(context, LoginScreen.id);
     } else {
       await FirebaseAuth.instance.signOut();
-      setState(() {
-        print("User Signed Out Successfully");
-      });
+      _scaffoldKey.currentState
+          .showSnackBar(SnackBar(
+              behavior: SnackBarBehavior.floating,
+              content: Container(
+                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 4.0),
+                child: Text(
+                  'Logged Out Successfully',
+                  style: GoogleFonts.montserrat(fontSize: 20.0),
+                ),
+              ),
+              duration: Duration(seconds: 1)))
+          .closed
+          .then((value) => setState(() {
+                print("User has Successfully Logged Out");
+              }));
     }
   }
 
@@ -64,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     getLabel();
     return Scaffold(
-      key: _key,
+      key: _scaffoldKey,
       drawer: getDrawer(context),
       body: Container(
         width: double.infinity,
@@ -87,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         size: 32,
                       ),
                       onPressed: () {
-                        _key.currentState.openDrawer();
+                        _scaffoldKey.currentState.openDrawer();
                       },
                     ),
                   ),
@@ -114,9 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height / 12,
-            ),
+            SizedBox(height: MediaQuery.of(context).size.height / 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -152,7 +162,44 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () {},
                 ),
               ],
-            )
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height / 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image(
+                  width: 50,
+                  height: 50,
+                  image: AssetImage("images/logo.png"),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Column(
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 30,
+                            fontWeight: FontWeight.w500),
+                        children: [
+                          TextSpan(text: 'Med'),
+                          TextSpan(
+                            text: 'Kube',
+                            style: TextStyle(color: Colors.red[600]),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text(
+                      "WHERE HEALTH COMES FIRST",
+                      style: TextStyle(fontSize: 11.5, color: Colors.white),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ],
         ),
       ),
