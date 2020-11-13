@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:medkube/Screens/home_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -32,18 +34,20 @@ Route _createRoute() {
 
 class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    Timer(
-      Duration(seconds: 2),
-      () {
-        Navigator.of(context).push(
-          _createRoute(),
-        );
-      },
-    );
+    // Timer(
+    //   Duration(seconds: 2),
+    //   () {
+    //     Navigator.of(context).push(
+    //       _createRoute(),
+    //     );
+    //   },
+    // );
   }
 
   @override
@@ -52,8 +56,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget loadingBody() {
     return Scaffold(
       backgroundColor: Colors.blueAccent,
       body: Stack(
@@ -105,4 +108,54 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       ),
     );
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: _initialization,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Container(
+            height: MediaQuery.of(context).size.height,
+            color: Colors.red[900],
+            child: Center(
+              child: Card(
+                elevation: 8.0,
+                child: Container(
+                  height: MediaQuery.of(context).size.height / 9,
+                  width: MediaQuery.of(context).size.width / 1.3,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Restart The Application",
+                        style: GoogleFonts.montserrat(
+                            fontSize: 24.0, color: Colors.black54),
+                      ),
+                      SizedBox(height: 4.0),
+                      Text(
+                        "Application could not load Properly",
+                        style: GoogleFonts.montserrat(
+                            fontSize: 18.0, color: Colors.black54),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          return HomeScreen();
+        }
+
+        return loadingBody();
+      },
+    );
+  }
 }
+
+/*
+
+ */

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medkube/Widgets/custom_button.dart';
@@ -10,32 +11,21 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
   bool isPasswordValid;
-  TextEditingController userName;
+  TextEditingController email;
   TextEditingController password;
   TextEditingController confirmPassword;
   TextEditingController address;
+  TextEditingController phoneNumber;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    userName = TextEditingController();
+    email = TextEditingController();
     password = TextEditingController();
     confirmPassword = TextEditingController();
     address = TextEditingController();
-  }
-
-  void validator() {
-    if (password.text != null &&
-        confirmPassword.text != null &&
-        address.text != null &&
-        userName.text != null) {
-      if (password.text != confirmPassword.text) {
-        registerUser();
-      } else {
-        isPasswordValid = false;
-      }
-    }
+    phoneNumber = TextEditingController();
   }
 
   Future registerUser() async {}
@@ -66,7 +56,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           child: ListView(
             padding: EdgeInsets.only(
               top: MediaQuery.of(context).size.height / 12,
-
             ),
             children: [
               Align(
@@ -101,7 +90,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     }
                     return null;
                   },
-                  controller: userName,
+                  controller: email,
                   textAlign: TextAlign.center,
                   obscureText: false,
                   decoration: InputDecoration(
@@ -191,7 +180,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     }
                     return null;
                   },
-                  controller: address,
+                  controller: phoneNumber,
                   textAlign: TextAlign.center,
                   obscureText: false,
                   decoration: InputDecoration(
@@ -204,16 +193,44 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                 ),
               ),
-              CustomButton(
-                buttonText: "Register",
-                buttonTextColor: Colors.white,
-                buttonColor: Colors.blueAccent,
-                onTap: () {
-                  if (_formKey.currentState.validate()) {
-                    _showToast(context);
-                  }
-                },
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 24.0),
+                child: CustomButton(
+                  buttonText: "Register",
+                  buttonTextColor: Colors.white,
+                  buttonColor: Colors.blueAccent,
+                  onTap: () async {
+                    if (_formKey.currentState.validate()) {
+                      try {
+                        UserCredential userCredential = await FirebaseAuth
+                            .instance
+                            .createUserWithEmailAndPassword(
+                                email: email.text, password: password.text);
+
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'user-not-found') {
+                          print('No user found for that email.');
+                        } else if (e.code == 'wrong-password') {
+                          print('Wrong password provided for that user.');
+                        }
+                      }
+                    }
+                  },
+                ),
               ),
+              SizedBox(height: 8.0),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 24.0),
+                child: CustomButton(
+                  buttonText: "Go Back",
+                  buttonTextColor: Colors.white,
+                  buttonColor: Colors.red[800],
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+              SizedBox(height: 8.0),
             ],
           ),
         ),

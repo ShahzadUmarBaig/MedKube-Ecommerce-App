@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:medkube/Screens/Firebase/register_screen.dart';
 import 'package:medkube/Widgets/custom_button.dart';
 import 'package:medkube/Widgets/custom_textfield.dart';
@@ -51,11 +52,32 @@ class _LoginScreenState extends State<LoginScreen> {
                       labelText: "Password",
                       textEditingController: passwordController,
                       obscureText: true),
-                  CustomButton(
-                    buttonColor: Colors.lightBlueAccent,
-                    buttonText: "Login",
-                    buttonTextColor: Colors.white,
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 24),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: CustomButton(
+                            buttonColor: Colors.red[600],
+                            buttonText: "Go Back",
+                            buttonTextColor: Colors.white,
+                            onTap: () => Navigator.pop(context),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 8.0,
+                        ),
+                        Expanded(
+                          child: CustomButton(
+                            buttonColor: Colors.lightBlueAccent,
+                            buttonText: "Login",
+                            buttonTextColor: Colors.white,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
+                  SizedBox(height: 12.0),
                   RichText(
                     text: TextSpan(
                       style: kDefaultStyle,

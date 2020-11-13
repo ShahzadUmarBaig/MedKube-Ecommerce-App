@@ -9,7 +9,7 @@ import 'package:medkube/Screens/welcome_screen.dart';
 
 import 'Screens/cart_screen.dart';
 
-void main() {
+void main() async {
   runApp(MyApp());
 }
 
