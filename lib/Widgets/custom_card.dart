@@ -33,24 +33,30 @@ class CustomCard extends StatelessWidget {
                 flex: 7,
                 child: Container(
                   child: myImage != null
-                      ? Image(
-                          image: myImage,
-                          height: 64,
-                          width: 64,
+                      ? Center(
+                          child: Image(
+                            image: myImage,
+                            height: 64,
+                            width: 64,
+                          ),
                         )
-                      : Icon(
-                          cardIcon,
-                          size: 40,
+                      : Center(
+                          child: Icon(
+                            cardIcon,
+                            size: 40,
+                          ),
                         ),
                 ),
               ),
               Expanded(
-                flex: 2,
-                child: Container(
-                  child: Text(
-                    title,
-                    style: GoogleFonts.montserrat(
-                        color: Colors.black54, fontSize: fontSize),
+                flex: 3,
+                child: Center(
+                  child: Container(
+                    child: Text(
+                      title,
+                      style: GoogleFonts.montserrat(
+                          color: Colors.black54, fontSize: fontSize),
+                    ),
                   ),
                 ),
               )

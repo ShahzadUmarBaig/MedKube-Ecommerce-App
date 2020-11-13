@@ -18,20 +18,16 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 24),
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 16.0),
-        child: Material(
-          color: buttonColor,
-          borderRadius: BorderRadius.circular(8.0),
-          elevation: 5.0,
-          child: MaterialButton(
-            onPressed: onTap,
-            child: Text(
-              buttonText,
-              style:
-                  GoogleFonts.montserrat(color: buttonTextColor, fontSize: 18),
-            ),
+//      margin: EdgeInsets.symmetric(horizontal: 24),
+      child: Material(
+        color: buttonColor,
+        borderRadius: BorderRadius.circular(8.0),
+        elevation: 5.0,
+        child: MaterialButton(
+          onPressed: onTap,
+          child: Text(
+            buttonText,
+            style: GoogleFonts.montserrat(color: buttonTextColor, fontSize: 18),
           ),
         ),
       ),

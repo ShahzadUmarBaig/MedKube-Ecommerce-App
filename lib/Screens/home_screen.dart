@@ -1,34 +1,144 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:medkube/Screens/Firebase/login_screen.dart';
 import 'package:medkube/Screens/medical_screen.dart';
 import 'package:medkube/Widgets/custom_card.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static String id = "HomeScreen";
 
   @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool isLoggedIn;
+  String userName;
+  FirebaseAuth auth = FirebaseAuth.instance;
+  User loggedUser;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAuth.instance.authStateChanges().listen((User user) {
+      if (user == null) {
+        print('User is currently signed out!');
+      } else {
+        print('User is signed in!');
+      }
+    });
+
+    getLabel();
+  }
+
+  getLabel() {
+    if (FirebaseAuth.instance.currentUser != null) {
+      userName = "Regular Customer";
+    } else {
+      userName = "New Customer";
+    }
+  }
+
+  getMethod(BuildContext context) async {
+    if (FirebaseAuth.instance.currentUser == null) {
+      Navigator.pushReplacementNamed(context, LoginScreen.id);
+    } else {
+      await FirebaseAuth.instance.signOut();
+      _scaffoldKey.currentState
+          .showSnackBar(SnackBar(
+              behavior: SnackBarBehavior.floating,
+              content: Container(
+                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 4.0),
+                child: Text(
+                  'Logged Out Successfully',
+                  style: GoogleFonts.montserrat(fontSize: 20.0),
+                ),
+              ),
+              duration: Duration(seconds: 1)))
+          .closed
+          .then((value) => setState(() {
+                print("User has Successfully Logged Out");
+              }));
+    }
+  }
+
+  IconData getIcon(BuildContext context) {
+    if (FirebaseAuth.instance.currentUser == null) {
+      return Icons.login;
+    } else {
+      return Icons.logout;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    getLabel();
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: getDrawer(context),
       body: Container(
         width: double.infinity,
         height: double.infinity,
         color: Colors.blue[600],
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Container(
+              height: 100,
+              padding: EdgeInsets.symmetric(horizontal: 12.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.list_sharp,
+                        color: Colors.white,
+                        size: 32,
+                      ),
+                      onPressed: () {
+                        _scaffoldKey.currentState.openDrawer();
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    flex: 5,
+                    child: Center(
+                      child: Text("$userName",
+                          style: GoogleFonts.montserrat(
+                              color: Colors.white,
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.w400)),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: IconButton(
+                      icon: Icon(
+                        getIcon(context),
+                        color: Colors.white,
+                      ),
+                      onPressed: () => getMethod(context),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height / 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomCard(
-                  myImage: AssetImage("images/grocery.png"),
+                  myImage: AssetImage("images/grocery2.png"),
                   title: "General",
-                  fontSize: 20,
+                  fontSize: 22,
                 ),
                 CustomCard(
-                  myImage: AssetImage("images/camera.png"),
+                  myImage: AssetImage("images/camera2.png"),
                   title: "    Upload \nPrescription",
-                  fontSize: 16,
+                  fontSize: 20,
                 ),
               ],
             ),
@@ -37,8 +147,8 @@ class HomeScreen extends StatelessWidget {
               children: [
                 CustomCard(
                   title: "   Medical \nEquipment",
-                  fontSize: 16,
-                  myImage: AssetImage("images/Equipment.png"),
+                  fontSize: 20,
+                  myImage: AssetImage("images/syring.png"),
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => ProductScreen(),
@@ -46,17 +156,68 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 CustomCard(
-                  myImage: AssetImage("images/login.png"),
-                  title: "Login",
+                  myImage: AssetImage("images/doctor.png"),
+                  title: "Find Doctor",
                   fontSize: 20,
-                  onTap: () {
-                    Navigator.pushNamed(context, LoginScreen.id);
-                  },
+                  onTap: () {},
                 ),
               ],
-            )
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height / 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image(
+                  width: 50,
+                  height: 50,
+                  image: AssetImage("images/logo.png"),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Column(
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 30,
+                            fontWeight: FontWeight.w500),
+                        children: [
+                          TextSpan(text: 'Med'),
+                          TextSpan(
+                            text: 'Kube',
+                            style: TextStyle(color: Colors.red[600]),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text(
+                      "WHERE HEALTH COMES FIRST",
+                      style: TextStyle(fontSize: 11.5, color: Colors.white),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget getDrawer(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        children: [
+          DrawerHeader(
+            child: Text('Drawer Header'),
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+          ),
+          ListTile(),
+        ],
       ),
     );
   }

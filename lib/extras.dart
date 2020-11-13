@@ -1,40 +1,47 @@
+import 'package:flutter/material.dart';
+
+class MyBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
+  }
+}
+
 /*
 
-SliverList(
-delegate: SliverChildListDelegate([
-SectionHeading(
-heading: "Popular Items",
-),
-]),
-),
-SliverToBoxAdapter(
-child: Container(
-height: 120,
-child: ListView.builder(
-scrollDirection: Axis.horizontal,
-itemCount: 18,
-itemBuilder: (context, index) {
-return GestureDetector(
-onTap: () {},
-child: Card(
-elevation: kElevationConstant,
-margin: EdgeInsets.all(10),
-child: Container(
-decoration: BoxDecoration(
-image: DecorationImage(
-scale: 10,
-image: NetworkImage(
-"https://products.dawaai.pk/2014/04/345/zoom/rocacc345_101529997052.jpg"),
-),
-borderRadius: BorderRadius.all(
-Radius.circular(15),
-),
-),
-width: 100,
-),
-),
-);
-}),
-),
-),
+  File _image;
+  final picker = ImagePicker();
+  getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    setState(() {
+      _image = File(pickedFile.path);
+    });
+  }
+
+
+ Align(
+                alignment: Alignment.center,
+                child: Badge(
+                  position: BadgePosition.bottomRight(),
+                  badgeContent: GestureDetector(
+                    onTap: getImage,
+                    child: Icon(
+                      Icons.camera_alt,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                  ),
+                  child: Hero(
+                    tag: "ProfPic",
+                    child: CircleAvatar(
+                      radius: 80,
+                      backgroundImage: _image == null
+                          ? AssetImage("images/user.png")
+                          : FileImage(_image),
+                    ),
+                  ),
+                  padding: EdgeInsets.all(12),
+                ),
+              ),
  */
