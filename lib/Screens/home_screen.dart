@@ -21,22 +21,49 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    userName = "Anonymous Customer";
     FirebaseAuth.instance.authStateChanges().listen((User user) {
       if (user == null) {
-        isLoggedIn = false;
         print('User is currently signed out!');
       } else {
         print('User is signed in!');
-        return {userName = "Regular Customer", loggedUser = user};
       }
     });
+
+    getLabel();
+  }
+
+  getLabel() {
+    if (FirebaseAuth.instance.currentUser != null) {
+      userName = "Regular Customer";
+    } else {
+      userName = "New Customer";
+    }
+  }
+
+  getMethod(BuildContext context) {
+    if (FirebaseAuth.instance.currentUser == null) {
+      Navigator.pushReplacementNamed(context, LoginScreen.id);
+    } else {
+      setState(() {
+        FirebaseAuth.instance.signOut();
+      });
+    }
+  }
+
+  IconData getIcon(BuildContext context) {
+    if (FirebaseAuth.instance.currentUser == null) {
+      return Icons.login;
+    } else {
+      return Icons.logout;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Container(
+    getLabel();
+    return Scaffold(
+      drawer: Drawer(),
+      body: Container(
         width: double.infinity,
         height: double.infinity,
         color: Colors.blue[600],
@@ -50,7 +77,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Expanded(
                     flex: 1,
-                    child: SizedBox(),
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.list_sharp,
+                        color: Colors.white,
+                        size: 32,
+                      ),
+                      onPressed: () {},
+                    ),
                   ),
                   Expanded(
                     flex: 5,
@@ -66,12 +100,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     flex: 1,
                     child: IconButton(
                       icon: Icon(
-                        Icons.login,
+                        getIcon(context),
                         color: Colors.white,
                       ),
-                      onPressed: () {
-                        Navigator.pushReplacementNamed(context, LoginScreen.id);
-                      },
+                      onPressed: () => getMethod(context),
                     ),
                   ),
                 ],
