@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -147,7 +148,16 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
-          return HomeScreen();
+          return StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (BuildContext context, streamSnapshot) {
+              if (streamSnapshot.hasData) {
+                return HomeScreen();
+              } else {
+                return HomeScreen();
+              }
+            },
+          );
         }
 
         return loadingBody();

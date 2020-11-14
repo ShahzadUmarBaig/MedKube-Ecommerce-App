@@ -7,23 +7,22 @@ import 'package:medkube/Services/Cart.dart';
 import 'package:medkube/Widgets/custom_listTiles.dart';
 
 class CustomDrawer extends StatelessWidget {
-  const CustomDrawer({Key key, this.userData}) : super(key: key);
+  const CustomDrawer({Key key, this.userName, this.userEmail})
+      : super(key: key);
 
-  final Map<String, dynamic> userData;
+  final String userName;
+  final String userEmail;
 
   @override
   Widget build(BuildContext context) {
-    print(userData);
     return Drawer(
       semanticLabel: "Drawer",
       elevation: 16.0,
       child: ListView(
         children: [
           UserAccountsDrawerHeader(
-            accountName:
-                Text("Regular Customer", style: TextStyle(fontSize: 20.0)),
-            accountEmail:
-                Text(userData["Email"], style: TextStyle(fontSize: 16.0)),
+            accountName: Text(userName, style: TextStyle(fontSize: 20.0)),
+            accountEmail: Text(userEmail, style: TextStyle(fontSize: 16.0)),
             currentAccountPicture: CircleAvatar(
               radius: 36.0,
               backgroundColor: Colors.white,
@@ -36,13 +35,10 @@ class CustomDrawer extends StatelessWidget {
             title: "Profile",
             icon: Icons.person_rounded,
             onTap: () {
-              print(userData);
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProfileScreen(
-                    completeData: userData,
-                  ),
+                  builder: (context) => ProfileScreen(),
                 ),
               );
             },

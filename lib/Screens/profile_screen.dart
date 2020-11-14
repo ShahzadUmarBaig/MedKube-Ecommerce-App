@@ -1,27 +1,66 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medkube/Screens/Firebase/login_screen.dart';
 import 'package:medkube/Widgets/custom_button.dart';
 import 'package:medkube/Widgets/profile_textfield.dart';
 import 'package:medkube/constants.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   static const id = "ProfileScreen";
-  final userData = FirebaseAuth.instance.currentUser;
+
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  final user = FirebaseAuth.instance.currentUser;
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
-  final Map<String, dynamic> completeData;
+  CollectionReference allUsers = FirebaseFirestore.instance.collection('users');
+  Map<String, dynamic> userData;
+  bool isLoaded;
 
-  ProfileScreen({Key key, this.completeData}) : super(key: key);
+  @override
+  void initState() {
+    super.initState();
+    isLoaded = false;
+    getData();
+  }
+
+  getData() async {
+    await allUsers.doc(user.uid).get().then((value) => userData = value.data());
+    setState(() {
+      isLoaded = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: userData != null ? profileBody(context) : loginBody(context),
+      body: user != null
+          ? isLoaded
+              ? profileBody(context)
+              : getWaitingKit(context)
+          : loginBody(context),
+    );
+  }
+
+  getWaitingKit(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      color: Colors.blueAccent,
+      child: SpinKitWave(
+        type: SpinKitWaveType.start,
+        color: Colors.white,
+        size: 40.0,
+      ),
     );
   }
 
@@ -85,10 +124,10 @@ class ProfileScreen extends StatelessWidget {
   }
 
   profileBody(BuildContext context) {
-    _userNameController.text = completeData["Username"];
-    _emailController.text = completeData["Email"];
-    _addressController.text = completeData["Address"];
-    _phoneController.text = completeData["Phone"];
+    _userNameController.text = userData["Username"];
+    _emailController.text = userData["Email"];
+    _addressController.text = userData["Address"];
+    _phoneController.text = userData["Phone"];
 
     return SafeArea(
       child: Container(
