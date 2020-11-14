@@ -204,7 +204,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         await FirebaseAuth.instance
                             .createUserWithEmailAndPassword(
                                 email: email.text, password: password.text);
-                        await users.add({
+                        String userUID = FirebaseAuth.instance.currentUser.uid;
+                        await users.doc(userUID).set({
                           'UID': FirebaseAuth.instance.currentUser.uid,
                           'Address': address.text,
                           'Email': email.text,

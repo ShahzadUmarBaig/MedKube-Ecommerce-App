@@ -10,22 +10,16 @@ import 'package:medkube/constants.dart';
 class ProfileScreen extends StatelessWidget {
   static const id = "ProfileScreen";
   final userData = FirebaseAuth.instance.currentUser;
-  final TextEditingController _userName = TextEditingController();
-  final TextEditingController _email = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final Map<String, dynamic> completeData;
 
-  getUserName(BuildContext context) {
-    if (userData.displayName == null) {
-      return "Regular Customer";
-    } else {
-      return userData.displayName;
-    }
-  }
+  ProfileScreen({Key key, this.completeData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    print(userData);
-    _userName.text = getUserName(context);
-    _email.text = userData.email;
     return Scaffold(
       body: userData != null ? profileBody(context) : loginBody(context),
     );
@@ -40,7 +34,7 @@ class ProfileScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height / 6,
+              height: MediaQuery.of(context).size.height / 8,
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -76,7 +70,7 @@ class ProfileScreen extends StatelessWidget {
             Container(
               margin: EdgeInsets.symmetric(horizontal: 24.0),
               child: CustomButton(
-                buttonColor: Colors.lightBlueAccent,
+                buttonColor: Colors.red[800],
                 buttonText: "Go Back",
                 buttonTextColor: Colors.white,
                 onTap: () {
@@ -91,13 +85,18 @@ class ProfileScreen extends StatelessWidget {
   }
 
   profileBody(BuildContext context) {
+    _userNameController.text = completeData["Username"];
+    _emailController.text = completeData["Email"];
+    _addressController.text = completeData["Address"];
+    _phoneController.text = completeData["Phone"];
+
     return SafeArea(
       child: Container(
         width: double.infinity,
         height: double.infinity,
         child: ListView(
           padding: EdgeInsets.symmetric(
-              vertical: MediaQuery.of(context).size.height / 8),
+              vertical: MediaQuery.of(context).size.height / 12),
           children: [
             CircleAvatar(
               radius: 72,
@@ -116,20 +115,37 @@ class ProfileScreen extends StatelessWidget {
               )),
             ),
             ProfileTextField(
-              controller: _userName,
+              controller: _userNameController,
               hint: "Display Name",
             ),
             ProfileTextField(
-              controller: _email,
+              controller: _emailController,
               hint: "User Email",
             ),
-            Text(userData.email.toString()),
-            Text(userData.emailVerified.toString()),
-            Text(userData.displayName.toString()),
-            Text(userData.uid.toString()),
-            Text(userData.phoneNumber.toString()),
-            Text(userData.tenantId.toString()),
-            Text(userData.refreshToken),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 24.0, vertical: 4.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _addressController,
+                      style: TextStyle(
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.normal,
+                      ),
+                      minLines: 3,
+                      maxLines: 5,
+                      decoration: kProfileTextFieldDecoration.copyWith(
+                          hintText: "Address", labelText: "Address"),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            ProfileTextField(
+              controller: _phoneController,
+              hint: "Phone Number",
+            ),
           ],
         ),
       ),

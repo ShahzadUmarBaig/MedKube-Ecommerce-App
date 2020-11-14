@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,6 +20,9 @@ class _HomeScreenState extends State<HomeScreen> {
   FirebaseAuth auth = FirebaseAuth.instance;
   User loggedUser;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  CollectionReference allUsers = FirebaseFirestore.instance.collection('users');
+  User currentUser;
+  var userData;
 
   @override
   void initState() {
@@ -30,8 +34,19 @@ class _HomeScreenState extends State<HomeScreen> {
         print('User is signed in!');
       }
     });
+    currentUser = FirebaseAuth.instance.currentUser;
+    allUsers
+        .doc(currentUser.uid)
+        .get()
+        .then((value) => userData = value.data());
+  }
 
-    getLabel();
+  void getData() {
+    allUsers.get().then((value) {
+      value.docs.forEach((element) {
+        print(element.data());
+      });
+    });
   }
 
   getLabel() {
@@ -76,10 +91,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     getLabel();
-    User currentUser = FirebaseAuth.instance.currentUser;
     return Scaffold(
       key: _scaffoldKey,
-      drawer: CustomDrawer(userData: currentUser),
+      drawer: CustomDrawer(userData: userData),
       body: Container(
         width: double.infinity,
         height: double.infinity,

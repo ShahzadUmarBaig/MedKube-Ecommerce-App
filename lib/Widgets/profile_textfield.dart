@@ -17,9 +17,6 @@ class ProfileTextField extends StatelessWidget {
           Expanded(
             child: TextField(
               controller: controller,
-
-              //textAlign: alignment,
-              //keyboardType: isPhone ? TextInputType.phone : TextInputType.text,
               style: TextStyle(
                 fontStyle: FontStyle.normal,
                 fontWeight: FontWeight.normal,

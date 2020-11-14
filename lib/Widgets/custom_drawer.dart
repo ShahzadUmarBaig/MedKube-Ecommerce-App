@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,28 +8,21 @@ import 'package:medkube/Widgets/custom_listTiles.dart';
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({Key key, this.userData}) : super(key: key);
 
-  final User userData;
+  final Map<String, dynamic> userData;
 
   @override
   Widget build(BuildContext context) {
+    print(userData);
     return Drawer(
       semanticLabel: "Drawer",
       elevation: 16.0,
       child: ListView(
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text(
-                userData == null
-                    ? "New Customer"
-                    : userData.displayName == null
-                        ? "Regular Customer"
-                        : userData.displayName,
-                style: TextStyle(fontSize: 20.0)),
-            accountEmail: Text(
-                userData == null
-                    ? "Please Login through home screen"
-                    : userData.email,
-                style: TextStyle(fontSize: 16.0)),
+            accountName:
+                Text("Regular Customer", style: TextStyle(fontSize: 20.0)),
+            accountEmail:
+                Text(userData["Email"], style: TextStyle(fontSize: 16.0)),
             currentAccountPicture: CircleAvatar(
               radius: 36.0,
               backgroundColor: Colors.white,
@@ -42,7 +34,17 @@ class CustomDrawer extends StatelessWidget {
           CustomListTiles(
             title: "Profile",
             icon: Icons.person_rounded,
-            onTap: () => Navigator.pushNamed(context, ProfileScreen.id),
+            onTap: () {
+              print(userData);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProfileScreen(
+                    completeData: userData,
+                  ),
+                ),
+              );
+            },
           ),
           Divider(
             indent: 16.0,
