@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -194,13 +195,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   buttonTextColor: Colors.white,
                   buttonColor: Colors.blueAccent,
                   onTap: () async {
+                    CollectionReference users =
+                        FirebaseFirestore.instance.collection('users');
+
                     if (_formKey.currentState.validate()) {
                       FocusScope.of(context).unfocus();
                       try {
-                        //UserCredential userCredential =
                         await FirebaseAuth.instance
                             .createUserWithEmailAndPassword(
                                 email: email.text, password: password.text);
+                        await users.add({
+                          'UID': FirebaseAuth.instance.currentUser.uid,
+                          'Address': address.text,
+                          'Email': email.text,
+                          'Phone': phoneNumber.text,
+                          'Username': "Regular Customer"
+                        });
                         _scaffoldKey.currentState
                             .showSnackBar(SnackBar(
                                 behavior: SnackBarBehavior.floating,

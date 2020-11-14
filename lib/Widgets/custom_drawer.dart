@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medkube/Screens/profile_screen.dart';
 import 'package:medkube/Services/Cart.dart';
 import 'package:medkube/Widgets/custom_listTiles.dart';
 
@@ -41,6 +42,7 @@ class CustomDrawer extends StatelessWidget {
           CustomListTiles(
             title: "Profile",
             icon: Icons.person_rounded,
+            onTap: () => Navigator.pushNamed(context, ProfileScreen.id),
           ),
           Divider(
             indent: 16.0,
@@ -69,6 +71,7 @@ class CustomDrawer extends StatelessWidget {
           CustomListTiles(
             title: "Orders",
             icon: Icons.bookmark_border,
+            onTap: () {},
           ),
           Divider(
             indent: 16.0,
@@ -77,6 +80,7 @@ class CustomDrawer extends StatelessWidget {
           CustomListTiles(
             title: "Contact Us",
             icon: Icons.call_outlined,
+            onTap: () {},
           ),
           Divider(
             indent: 16.0,

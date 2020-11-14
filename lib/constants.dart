@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 const kElevationConstant = 5.00;
 
+final kBlueColor = 0xff42a5ff;
+
 InputDecoration kInputValidDecoration = InputDecoration(
   border: OutlineInputBorder(
     borderRadius: BorderRadius.circular(8),
@@ -56,4 +58,21 @@ const kTextFieldDecoration = InputDecoration(
     borderSide: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
     borderRadius: BorderRadius.all(Radius.circular(32.0)),
   ),
+);
+
+InputDecoration kProfileTextFieldDecoration = InputDecoration(
+  hintStyle: TextStyle(color: Colors.grey[500]),
+  border: OutlineInputBorder(
+    borderRadius: const BorderRadius.all(
+      const Radius.circular(5.0),
+    ),
+  ),
+  focusedBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.all(
+      Radius.circular(5.0),
+    ),
+    borderSide: BorderSide(color: Color(kBlueColor)),
+  ),
+  contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+  fillColor: Colors.white70,
 );
