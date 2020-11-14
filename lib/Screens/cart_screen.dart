@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:medkube/Services/Cart.dart';
 import 'package:medkube/Services/Product.dart';
 import 'package:medkube/Widgets/custom_button.dart';
@@ -50,6 +51,11 @@ class _CartScreenState extends State<CartScreen> {
             iconTheme: IconThemeData(
               color: Colors.white,
             ),
+            title: Text(
+              "Cart Summary",
+              style: TextStyle(color: Colors.white, fontSize: 30),
+            ),
+            centerTitle: true,
             actions: [
               Padding(
                 padding: EdgeInsets.all(14),
@@ -77,27 +83,12 @@ class _CartScreenState extends State<CartScreen> {
               },
             ),
           ),
-
           SliverToBoxAdapter(
             child: Container(
-              //margin: EdgeInsets.symmetric(horizontal: 30),
-              child: Center(
-                child: Text(
-                  "Cart Summary",
-                  style: TextStyle(color: Colors.white, fontSize: 30),
-                ),
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
+              margin: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
               width: double.infinity,
-              height: MediaQuery.of(context).size.height - 400,
-
+              height: MediaQuery.of(context).size.height / 2.1,
               //TODO Cart Item Card Starts Here
               child: ListView.builder(
                 padding: EdgeInsets.all(0),
@@ -115,7 +106,7 @@ class _CartScreenState extends State<CartScreen> {
                           flex: 1,
                           child: Container(
                             decoration: BoxDecoration(
-                              color: Colors.red[300],
+                              color: Colors.red[500],
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(8.0),
                                 bottomLeft: Radius.circular(8.0),
@@ -150,12 +141,16 @@ class _CartScreenState extends State<CartScreen> {
                         //   ),
                         // ),
                         Expanded(
-                          flex: 3,
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 4.0),
+                          flex: 4,
+                          child: Container(
+                            color: Colors.yellow,
+                            padding: EdgeInsets.only(left: 8.0),
                             child: Text(
-                              item.title,
-                              style: TextStyle(fontSize: 18),
+                              //item.title
+                              "Burnol Gel 100mg",
+                              style: GoogleFonts.montserrat(
+                                fontSize: 18,
+                              ),
                             ),
                           ),
                         ),
@@ -216,7 +211,7 @@ class _CartScreenState extends State<CartScreen> {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   color: Colors.blue[700]),
-              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 12.0),
               width: double.infinity,
               height: 130,
               child: Row(
@@ -254,7 +249,7 @@ class _CartScreenState extends State<CartScreen> {
           SliverToBoxAdapter(
             child: CustomButton(
               marginVertical: 10,
-              marginHorizontal: 30,
+              marginHorizontal: 12.0,
               buttonColor: isDisabled ? Colors.grey : Color(0xFFECDF54),
               buttonText: "Check Out",
               onTap: isDisabled ? null : () {},
