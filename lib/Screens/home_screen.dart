@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:medkube/Screens/Firebase/login_screen.dart';
 import 'package:medkube/Screens/medical_screen.dart';
 import 'package:medkube/Widgets/custom_card.dart';
+import 'package:medkube/Widgets/custom_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   static String id = "HomeScreen";
@@ -75,9 +76,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     getLabel();
+    User currentUser = FirebaseAuth.instance.currentUser;
     return Scaffold(
       key: _scaffoldKey,
-      drawer: getDrawer(context),
+      drawer: CustomDrawer(userData: currentUser),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -156,8 +158,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 CustomCard(
-                  myImage: AssetImage("images/doctor.png"),
-                  title: "Find Doctor",
+                  myImage: AssetImage("images/hospital.png"),
+                  title: "Hospitals",
                   fontSize: 20,
                   onTap: () {},
                 ),
@@ -202,22 +204,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget getDrawer(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        children: [
-          DrawerHeader(
-            child: Text('Drawer Header'),
-            decoration: BoxDecoration(
-              color: Colors.blue,
-            ),
-          ),
-          ListTile(),
-        ],
       ),
     );
   }
