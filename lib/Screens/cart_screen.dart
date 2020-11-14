@@ -1,8 +1,9 @@
 import 'package:badges/badges.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:medkube/Screens/medical_screen.dart';
 import 'package:medkube/Services/Cart.dart';
 import 'package:medkube/Services/Product.dart';
+import 'package:medkube/Widgets/custom_button.dart';
 
 class CartScreen extends StatefulWidget {
   static String id = "CartScreen";
@@ -73,7 +74,6 @@ class _CartScreenState extends State<CartScreen> {
               icon: Icon(Icons.arrow_back),
               onPressed: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, ProductScreen.id);
               },
             ),
           ),
@@ -113,29 +113,51 @@ class _CartScreenState extends State<CartScreen> {
                       children: [
                         Expanded(
                           flex: 1,
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.remove_circle,
-                              color: Colors.red,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.red[300],
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(8.0),
+                                bottomLeft: Radius.circular(8.0),
+                              ),
                             ),
-                            onPressed: () {
-                              setState(() {
-                                cartList.remove(item);
-                                itemTotal = itemTotal - item.total;
-                                if (cartList.length == 0) {
-                                  delivery = 0;
-                                  itemTotal = 0;
-                                }
-                              });
-                            },
+                            child: MaterialButton(
+                              padding: EdgeInsets.zero,
+                              child: Center(
+                                  child: Icon(
+                                Icons.delete,
+                                color: Colors.white,
+                              )),
+                              onPressed: () {},
+                            ),
                           ),
                         ),
+                        //   IconButton(
+                        //     icon: Icon(
+                        //       Icons.remove_circle,
+                        //       color: Colors.red,
+                        //     ),
+                        //     onPressed: () {
+                        //       setState(() {
+                        //         cartList.remove(item);
+                        //         itemTotal = itemTotal - item.total;
+                        //         if (cartList.length == 0) {
+                        //           delivery = 0;
+                        //           itemTotal = 0;
+                        //         }
+                        //       });
+                        //     },
+                        //   ),
+                        // ),
                         Expanded(
-                          child: Text(
-                            item.title,
-                            style: TextStyle(fontSize: 18),
-                          ),
                           flex: 3,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 4.0),
+                            child: Text(
+                              item.title,
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ),
                         ),
                         Expanded(
                           flex: 1,
@@ -176,7 +198,7 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                         ),
                         Expanded(
-                          flex: 2,
+                          flex: 1,
                           child: Text(
                             (item.price * item.quantity).toString(),
                             style: TextStyle(fontSize: 18),
@@ -230,28 +252,13 @@ class _CartScreenState extends State<CartScreen> {
             ),
           ),
           SliverToBoxAdapter(
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-              child: RawMaterialButton(
-                child: Text(
-                  "Check Out",
-                  style: TextStyle(
-                      color: isDisabled ? Colors.black26 : Colors.black,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold),
-                ),
-                elevation: 3.0,
-                constraints: BoxConstraints.tightFor(
-                  height: 60,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(8),
-                  ),
-                ),
-                fillColor: isDisabled ? Colors.grey : Color(0xFFECDF54),
-                onPressed: isDisabled ? null : () {},
-              ),
+            child: CustomButton(
+              marginVertical: 10,
+              marginHorizontal: 30,
+              buttonColor: isDisabled ? Colors.grey : Color(0xFFECDF54),
+              buttonText: "Check Out",
+              onTap: isDisabled ? null : () {},
+              buttonTextColor: isDisabled ? Colors.black26 : Colors.black,
             ),
           ), // The Bottom Part with Button
         ],

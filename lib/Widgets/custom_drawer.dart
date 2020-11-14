@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medkube/Screens/cart_screen.dart';
 import 'package:medkube/Screens/profile_screen.dart';
 import 'package:medkube/Services/Cart.dart';
 import 'package:medkube/Widgets/custom_listTiles.dart';
@@ -51,6 +52,7 @@ class CustomDrawer extends StatelessWidget {
             endIndent: 16.0,
           ),
           ListTile(
+            onTap: () => Navigator.pushNamed(context, CartScreen.id),
             leading: Icon(Icons.shopping_cart, size: 34.0),
             title: Text("Cart", style: GoogleFonts.montserrat(fontSize: 20.0)),
             trailing: Container(

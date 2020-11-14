@@ -106,7 +106,6 @@ class _ProductScreenState extends State<ProductScreen> {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.pop(context);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
