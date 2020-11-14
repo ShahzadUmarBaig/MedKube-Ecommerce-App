@@ -135,6 +135,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       minLines: 3,
                       maxLines: 5,
+                      keyboardType: TextInputType.multiline,
                       decoration: kProfileTextFieldDecoration.copyWith(
                           hintText: "Address", labelText: "Address"),
                     ),
@@ -146,6 +147,13 @@ class ProfileScreen extends StatelessWidget {
               controller: _phoneController,
               hint: "Phone Number",
             ),
+            CustomButton(
+                marginHorizontal: 24.0,
+                marginVertical: 4.0,
+                onTap: () => Navigator.pop(context),
+                buttonColor: Colors.red[800],
+                buttonText: "Go Back",
+                buttonTextColor: Colors.white),
           ],
         ),
       ),

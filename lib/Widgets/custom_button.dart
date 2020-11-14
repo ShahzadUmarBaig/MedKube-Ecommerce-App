@@ -6,19 +6,24 @@ class CustomButton extends StatelessWidget {
   final Color buttonColor;
   final Color buttonTextColor;
   final Function onTap;
+  final double marginHorizontal;
+  final double marginVertical;
 
   const CustomButton(
       {Key key,
       this.buttonText,
       this.buttonColor,
       this.buttonTextColor,
-      this.onTap})
+      this.onTap,
+      this.marginHorizontal = 0,
+      this.marginVertical = 0})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-//      margin: EdgeInsets.symmetric(horizontal: 24),
+      margin: EdgeInsets.symmetric(
+          horizontal: marginHorizontal, vertical: marginVertical),
       child: Material(
         color: buttonColor,
         borderRadius: BorderRadius.circular(8.0),
