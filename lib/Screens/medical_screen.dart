@@ -266,19 +266,24 @@ class _ProductScreenState extends State<ProductScreen> {
                                 onPressed: () {
                                   setState(
                                     () {
-                                      if (cartListChecker.contains(item) ==
-                                          true) {
-                                      } else {
-                                        cartListChecker.add(item);
-                                        cartList.add(
-                                          Cart(
-                                            title: item.title,
-                                            price: item.price,
-                                            quantity: 1,
-                                            total: item.price,
-                                          ),
-                                        );
-                                      }
+                                      cartListItems[item.title] = {
+                                        "quantity": 1,
+                                        "price": item.price,
+                                        "total": item.price * 1,
+                                      };
+                                      // if (cartListChecker.contains(item) ==
+                                      //     true) {
+                                      // } else {
+                                      //   cartListChecker.add(item);
+                                      //   cartList.add(
+                                      //     Cart(
+                                      //       title: item.title,
+                                      //       price: item.price,
+                                      //       quantity: 1,
+                                      //       total: item.price,
+                                      //     ),
+                                      //   );
+                                      // }
                                     },
                                   );
                                 },

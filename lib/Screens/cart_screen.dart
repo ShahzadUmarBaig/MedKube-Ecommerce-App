@@ -13,15 +13,10 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  int quantity = 1;
-  // TextEditingController _textEditingController = TextEditingController();
-  // List<Product> _list = List<Product>();
-
-  double itemTotal = cartList.length == 0 ? 0 : 150;
-  int delivery = cartList.length == 0 ? 0 : 150;
   bool isDisabled = true;
   int selectedItem = 0;
   Cart cart = Cart();
+  List cartItemNames;
 
   @override
   void initState() {
@@ -31,7 +26,9 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     cartList.length == 0 ? isDisabled = true : isDisabled = false;
-
+    // print(Cart().cartListItems.entries);
+    cartItemNames = cartListItems.keys.toList();
+    print(cartListItems);
     return Scaffold(
       backgroundColor: Colors.blue[600],
       body: CustomScrollView(
@@ -81,9 +78,8 @@ class _CartScreenState extends State<CartScreen> {
               height: MediaQuery.of(context).size.height / 1.75,
               child: ListView.builder(
                 padding: EdgeInsets.all(0),
-                itemCount: cartList.length,
+                itemCount: cartItemNames.length,
                 itemBuilder: (context, index) {
-                  var item = cartList[index];
                   return Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -105,7 +101,11 @@ class _CartScreenState extends State<CartScreen> {
                                     bottomLeft: Radius.circular(8.0)),
                               ),
                               child: RawMaterialButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  setState(() {
+                                    cartListItems.remove(cartItemNames[index]);
+                                  });
+                                },
                                 child: Icon(
                                   Icons.delete,
                                   color: Colors.white,
@@ -126,13 +126,13 @@ class _CartScreenState extends State<CartScreen> {
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   Text(
-                                    item.title,
+                                    cartItemNames[index],
                                     style:
                                         GoogleFonts.montserrat(fontSize: 18.0),
                                   ),
                                   SizedBox(height: 4.0),
                                   Text(
-                                    "Price Rs.${item.price}",
+                                    "Price Rs.${cartListItems[cartItemNames[index]]["price"]}",
                                     style: GoogleFonts.montserrat(
                                         color: Colors.black54, fontSize: 16.0),
                                   ),
@@ -160,7 +160,9 @@ class _CartScreenState extends State<CartScreen> {
                                 dropdownColor: Colors.grey[200],
                                 elevation: 2,
                                 underline: Container(),
-                                value: item.quantity - 1,
+                                value: cartListItems[cartItemNames[index]]
+                                        ["quantity"] -
+                                    1,
                                 items: List.generate(
                                   6,
                                   (index) => DropdownMenuItem(
@@ -170,7 +172,15 @@ class _CartScreenState extends State<CartScreen> {
                                 ),
                                 onChanged: (value) {
                                   setState(() {
-                                    item.quantity = value + 1;
+                                    cartListItems[cartItemNames[index]]
+                                        ["quantity"] = value + 1;
+
+                                    cartListItems[cartItemNames[index]]
+                                            ["total"] =
+                                        cartListItems[cartItemNames[index]]
+                                                ["quantity"] *
+                                            cartListItems[cartItemNames[index]]
+                                                ["price"];
                                   });
                                 },
                               ),
@@ -192,7 +202,8 @@ class _CartScreenState extends State<CartScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    (item.price * item.quantity).toString(),
+                                    cartListItems[cartItemNames[index]]["total"]
+                                        .toString(),
                                     style:
                                         GoogleFonts.montserrat(fontSize: 18.0),
                                   ),
@@ -237,7 +248,7 @@ class _CartScreenState extends State<CartScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Text(
-                          delivery.toString(),
+                          "100",
                           style: TextStyle(color: Colors.white, fontSize: 15),
                         ),
                         Text(
