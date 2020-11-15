@@ -5,6 +5,9 @@ const kElevationConstant = 5.00;
 
 final kBlueColor = 0xff42a5ff;
 
+TextStyle kAlertBoxText =
+    GoogleFonts.montserrat(fontSize: 24.0, color: Colors.black54);
+
 InputDecoration kInputValidDecoration = InputDecoration(
   border: OutlineInputBorder(
     borderRadius: BorderRadius.circular(8),

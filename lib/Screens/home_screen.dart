@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medkube/Screens/Firebase/login_screen.dart';
@@ -89,8 +90,9 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       key: _scaffoldKey,
       drawer: CustomDrawer(
-          userName: userData != null ? userData["Username"] : "New Customer",
-          userEmail: userData != null ? userData["Email"] : "Please Login"),
+        userName: userData != null ? userData["Username"] : "New Customer",
+        userEmail: userData != null ? userData["Email"] : "Please Login",
+      ),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -164,7 +166,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   myImage: AssetImage("images/syring.png"),
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => ProductScreen(),
+                      builder: (context) => ProductScreen(
+                        customerName: userData != null
+                            ? userData["Username"]
+                            : "New Customer",
+                      ),
                     ),
                   ),
                 ),

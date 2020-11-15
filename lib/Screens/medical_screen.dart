@@ -4,16 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:medkube/Screens/cart_screen.dart';
 import 'package:medkube/Screens/detail_screen.dart';
 import 'package:medkube/Screens/profile_screen.dart';
 import 'package:medkube/Services/Cart.dart';
 import 'package:medkube/Services/Product.dart';
+import 'package:medkube/extras.dart';
 
 import '../Widgets/widgets.dart';
 
 class ProductScreen extends StatefulWidget {
   static const id = "/";
+  final customerName;
+
+  const ProductScreen({Key key, this.customerName}) : super(key: key);
 
   @override
   _ProductScreenState createState() => _ProductScreenState();
@@ -21,7 +26,7 @@ class ProductScreen extends StatefulWidget {
 
 class _ProductScreenState extends State<ProductScreen> {
   List<Product> _productList = List<Product>();
-
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   Cart cart = Cart();
 
   Product product = Product();
@@ -53,252 +58,279 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              backgroundColor: Colors.grey[50],
-              leading: Container(
-                padding: EdgeInsets.all(8),
-                child: Hero(
-                  tag: "ProfPic",
-                  child: CircleAvatar(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.white,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, ProfileScreen.id);
-                      },
-                    ),
-                    backgroundImage: AssetImage("images/user.png"),
-                  ),
-                ),
-              ),
-              title: RichText(
-                text: TextSpan(
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 25,
-                  ),
-                  children: [
-                    TextSpan(text: 'Hi, '),
-                    TextSpan(
-                      text: '$user!',
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ),
-              actions: [
-                IconButton(
-                  icon: Badge(
-                    animationType: BadgeAnimationType.fade,
-                    badgeContent: Text(
-                      cartList.length.toString(),
-                      style: TextStyle(color: Colors.blueAccent),
-                    ),
-                    padding: EdgeInsets.all(6),
-                    badgeColor: Colors.white,
-                    child: Icon(
-                      Icons.shopping_cart,
-                      color: Colors.blueAccent,
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CartScreen(),
+        child: ScrollConfiguration(
+          behavior: MyBehavior(),
+          child: CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                backgroundColor: Colors.grey[50],
+                leading: Container(
+                  padding: EdgeInsets.all(8),
+                  child: Hero(
+                    tag: "ProfPic",
+                    child: CircleAvatar(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.white,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, ProfileScreen.id);
+                        },
                       ),
-                    );
-                  },
-                ),
-              ],
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 16),
-                child: GestureDetector(
-                  onTap: () {
-                    showSearch(
-                      context: context,
-                      delegate: ProductSearch(),
-                    );
-                  },
-                  child: Container(
-                    margin: EdgeInsets.all(16),
-                    height: 45,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 16.0),
-                          child: Icon(Icons.search, color: Colors.grey),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 16),
-                          child: Text(
-                            "Search For Medicine",
-                            style: TextStyle(fontSize: 16, color: Colors.grey),
-                          ),
-                        ),
-                      ],
+                      backgroundImage: AssetImage("images/user.png"),
                     ),
                   ),
                 ),
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SectionHeading(heading: "Popular"),
-                    IconButton(
-                      iconSize: 30,
-                      icon: Icon(Icons.filter_list),
-                      onPressed: () {},
+                title: RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 22,
                     ),
-                  ],
+                    children: [
+                      TextSpan(text: 'Hi, '),
+                      TextSpan(
+                        text: '${widget.customerName}!',
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ),
-            SliverGrid(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.8,
-              ),
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  var item = _productList[index];
-                  return GestureDetector(
-                    onTap: () {
+                actions: [
+                  IconButton(
+                    icon: Badge(
+                      animationType: BadgeAnimationType.fade,
+                      badgeContent: Text(
+                        cartListItems.keys.toList().length.toString(),
+                        style: TextStyle(color: Colors.blueAccent),
+                      ),
+                      padding: EdgeInsets.all(6),
+                      badgeColor: Colors.white,
+                      child: Icon(
+                        Icons.shopping_cart,
+                        color: Colors.blueAccent,
+                      ),
+                    ),
+                    onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) {
-                            return DetailScreen(
-                              item: item,
-                            );
-                          },
+                          builder: (context) => CartScreen(),
                         ),
                       );
                     },
-                    child: Card(
-                      margin: EdgeInsets.all(8),
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
+                  ),
+                ],
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: GestureDetector(
+                    onTap: () {
+                      showSearch(
+                        context: context,
+                        delegate: ProductSearch(),
+                      );
+                    },
+                    child: Container(
+                      margin: EdgeInsets.all(16),
+                      height: 45,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      clipBehavior: Clip.antiAlias,
-                      child: Stack(
-                        fit: StackFit.loose,
-                        children: <Widget>[
-                          Align(
-                            child: Container(
-                              child: AspectRatio(
-                                aspectRatio: 18 / 12,
-                                child: Image.asset(
-                                  item.image,
-                                  scale: 2,
-                                ),
-                              ),
-                              margin: EdgeInsets.only(top: 16),
-                            ),
-                            alignment: Alignment.topCenter,
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 16.0),
+                            child: Icon(Icons.search, color: Colors.grey),
                           ),
-                          Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                bottom: 15,
-                                left: 15,
-                              ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    item.title,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  Text(
-                                    "RS " + item.price.toString(),
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w400),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          // TODO: Item Button
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                right: 15,
-                                bottom: 12,
-                              ),
-                              child: RawMaterialButton(
-                                child: Icon(
-                                  Icons.add,
-                                  size: 15,
-                                ),
-                                elevation: 3.0,
-                                constraints: BoxConstraints.tightFor(
-                                  width: 55,
-                                  height: 38,
-                                ),
-                                shape: CircleBorder(
-                                  side: BorderSide(style: BorderStyle.solid),
-                                ),
-                                //    fillColor: Colors.blueAccent,
-                                onPressed: () {
-                                  setState(
-                                    () {
-                                      cartListItems[item.title] = {
-                                        "quantity": 1,
-                                        "price": item.price,
-                                        "total": item.price * 1,
-                                      };
-                                      // if (cartListChecker.contains(item) ==
-                                      //     true) {
-                                      // } else {
-                                      //   cartListChecker.add(item);
-                                      //   cartList.add(
-                                      //     Cart(
-                                      //       title: item.title,
-                                      //       price: item.price,
-                                      //       quantity: 1,
-                                      //       total: item.price,
-                                      //     ),
-                                      //   );
-                                      // }
-                                    },
-                                  );
-                                },
-                              ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 16),
+                            child: Text(
+                              "Search For Medicine",
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.grey),
                             ),
                           ),
                         ],
                       ),
                     ),
-                  );
-                },
-                childCount: _productList.length,
+                  ),
+                ),
               ),
-            )
-          ],
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SectionHeading(heading: "Popular"),
+                      IconButton(
+                        iconSize: 30,
+                        icon: Icon(Icons.filter_list),
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SliverGrid(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.8,
+                ),
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    var item = _productList[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return DetailScreen(
+                                item: item,
+                              );
+                            },
+                          ),
+                        );
+                      },
+                      child: Card(
+                        margin: EdgeInsets.all(8),
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        clipBehavior: Clip.antiAlias,
+                        child: Stack(
+                          fit: StackFit.loose,
+                          children: <Widget>[
+                            Align(
+                              child: Container(
+                                child: AspectRatio(
+                                  aspectRatio: 18 / 12,
+                                  child: Image.asset(
+                                    item.image,
+                                    scale: 2,
+                                  ),
+                                ),
+                                margin: EdgeInsets.only(top: 16),
+                              ),
+                              alignment: Alignment.topCenter,
+                            ),
+                            Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  bottom: 15,
+                                  left: 15,
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      item.title,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                    SizedBox(height: 5.0),
+                                    Text(
+                                      "RS " + item.price.toString(),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            // TODO: Item Button
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  right: 15,
+                                  bottom: 12,
+                                ),
+                                child: RawMaterialButton(
+                                  child: Icon(
+                                    Icons.add,
+                                    size: 15,
+                                  ),
+                                  elevation: 3.0,
+                                  constraints: BoxConstraints.tightFor(
+                                    width: 55,
+                                    height: 38,
+                                  ),
+                                  shape: CircleBorder(
+                                    side: BorderSide(style: BorderStyle.solid),
+                                  ),
+                                  //    fillColor: Colors.blueAccent,
+                                  onPressed: () {
+                                    if (cartListItems.containsKey(item.title)) {
+                                      _scaffoldKey.currentState.showSnackBar(
+                                        SnackBar(
+                                          behavior: SnackBarBehavior.floating,
+                                          content: Container(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 10.0,
+                                                horizontal: 4.0),
+                                            child: Text(
+                                              'Item Already Added',
+                                              style: GoogleFonts.montserrat(
+                                                  fontSize: 20.0),
+                                            ),
+                                          ),
+                                          duration: Duration(seconds: 1),
+                                        ),
+                                      );
+                                    } else {
+                                      _scaffoldKey.currentState.showSnackBar(
+                                        SnackBar(
+                                          behavior: SnackBarBehavior.floating,
+                                          content: Container(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 10.0,
+                                                horizontal: 4.0),
+                                            child: Text(
+                                              'Item Added To Cart',
+                                              style: GoogleFonts.montserrat(
+                                                  fontSize: 20.0),
+                                            ),
+                                          ),
+                                          duration: Duration(seconds: 1),
+                                        ),
+                                      );
+                                      setState(
+                                        () {
+                                          cartListItems[item.title] = {
+                                            "quantity": 1,
+                                            "price": item.price,
+                                            "total": item.price * 1,
+                                          };
+                                        },
+                                      );
+                                    }
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  childCount: _productList.length,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
