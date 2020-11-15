@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medkube/Services/Cart.dart';
-import 'package:medkube/Services/Product.dart';
 import 'package:medkube/Widgets/custom_button.dart';
 
 class CartScreen extends StatefulWidget {
@@ -15,8 +14,8 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   int quantity = 1;
-  TextEditingController _textEditingController = TextEditingController();
-  List<Product> _list = List<Product>();
+  // TextEditingController _textEditingController = TextEditingController();
+  // List<Product> _list = List<Product>();
 
   double itemTotal = cartList.length == 0 ? 0 : 150;
   int delivery = cartList.length == 0 ? 0 : 150;
