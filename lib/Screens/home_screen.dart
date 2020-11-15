@@ -22,10 +22,12 @@ class _HomeScreenState extends State<HomeScreen> {
   CollectionReference allUsers = FirebaseFirestore.instance.collection('users');
   User currentUser;
   var userData;
+  bool isLoaded;
 
   @override
   void initState() {
     super.initState();
+    isLoaded = false;
     currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser != null) {
       getData();
@@ -39,6 +41,9 @@ class _HomeScreenState extends State<HomeScreen> {
         .get()
         .then((value) => userData = value.data());
     print("This is getData Method" + userData.toString());
+    setState(() {
+      isLoaded = true;
+    });
   }
 
   getLabel() {
