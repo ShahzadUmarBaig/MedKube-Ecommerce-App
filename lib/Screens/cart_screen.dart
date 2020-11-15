@@ -16,20 +16,34 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   bool isDisabled = true;
   int selectedItem = 0;
-  Cart cart = Cart();
   List cartItemNames;
+  double deliveryCharges = 100.0;
+  double discount;
+  double total;
 
   @override
   void initState() {
     super.initState();
+    getTotal(deliveryCharges);
+  }
+
+  double getTotal(double delivery) {
+    total = 0.0;
+    cartListItems.forEach((key, value) {
+      total = total + value["total"];
+    });
+    discount = total * 0.05;
+    total = total * 0.95;
+    total = total + deliveryCharges;
+    return total;
   }
 
   @override
   Widget build(BuildContext context) {
-    cartList.length == 0 ? isDisabled = true : isDisabled = false;
-    // print(Cart().cartListItems.entries);
     cartItemNames = cartListItems.keys.toList();
-    print(cartListItems);
+    cartListItems.keys.toList().length == 0
+        ? isDisabled = true
+        : isDisabled = false;
     return Scaffold(
       backgroundColor: Colors.blue[600],
       body: ScrollConfiguration(
@@ -79,7 +93,7 @@ class _CartScreenState extends State<CartScreen> {
                     BoxDecoration(borderRadius: BorderRadius.circular(8)),
                 margin: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height / 1.75,
+                height: MediaQuery.of(context).size.height / 1.85,
                 child: ListView.builder(
                   padding: EdgeInsets.all(0),
                   itemCount: cartItemNames.length,
@@ -109,6 +123,7 @@ class _CartScreenState extends State<CartScreen> {
                                     setState(() {
                                       cartListItems
                                           .remove(cartItemNames[index]);
+                                      getTotal(deliveryCharges);
                                     });
                                   },
                                   child: Icon(
@@ -188,6 +203,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 ["quantity"] *
                                             cartListItems[cartItemNames[index]]
                                                 ["price"];
+                                        getTotal(deliveryCharges);
                                       },
                                     );
                                   },
@@ -236,7 +252,7 @@ class _CartScreenState extends State<CartScreen> {
                     color: Colors.blue[700]),
                 margin: EdgeInsets.symmetric(vertical: 10, horizontal: 12.0),
                 width: double.infinity,
-                height: 80,
+                height: 100,
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -248,7 +264,11 @@ class _CartScreenState extends State<CartScreen> {
                             style: TextStyle(color: Colors.white, fontSize: 15),
                           ),
                           Text(
-                            "Sub Total",
+                            "Discount",
+                            style: TextStyle(color: Colors.white, fontSize: 15),
+                          ),
+                          Text(
+                            "Total",
                             style: TextStyle(color: Colors.white, fontSize: 15),
                           ),
                         ],
@@ -257,11 +277,16 @@ class _CartScreenState extends State<CartScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           Text(
-                            "100",
+                            "PKR." + deliveryCharges.toString() + ".0",
                             style: TextStyle(color: Colors.white, fontSize: 15),
                           ),
                           Text(
-                            "100 RS",
+                            "PKR." + discount.toString(),
+                            //"PKR.0.0",
+                            style: TextStyle(color: Colors.white, fontSize: 15),
+                          ),
+                          Text(
+                            "PKR." + total.toString(),
                             style: TextStyle(color: Colors.white, fontSize: 25),
                           ),
                         ],
