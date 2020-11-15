@@ -90,11 +90,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             onTap: () async {
                               if (_formKey.currentState.validate()) {
                                 try {
-                                      await FirebaseAuth
-                                          .instance
-                                          .signInWithEmailAndPassword(
-                                              email: email.text,
-                                              password: password.text);
+                                  await FirebaseAuth.instance
+                                      .signInWithEmailAndPassword(
+                                          email: email.text,
+                                          password: password.text);
                                   Navigator.pushReplacementNamed(
                                       context, HomeScreen.id);
                                 } on FirebaseAuthException catch (e) {
