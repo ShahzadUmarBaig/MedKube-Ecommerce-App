@@ -4,7 +4,6 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController textEditingController;
   final String labelText;
   final bool obscureText;
-  final bool isPasswordValid;
   final Function validator;
 
   const CustomTextField({
@@ -12,7 +11,6 @@ class CustomTextField extends StatelessWidget {
     this.textEditingController,
     this.labelText,
     this.obscureText = false,
-    this.isPasswordValid = false,
     this.validator,
   }) : super(key: key);
 
