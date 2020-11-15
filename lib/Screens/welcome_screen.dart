@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,23 +15,23 @@ class WelcomeScreen extends StatefulWidget {
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
 
-Route _createRoute() {
-  return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => HomeScreen(),
-    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      var begin = Offset(0.0, 1.0);
-      var end = Offset.zero;
-      var curve = Curves.easeIn;
-
-      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-      return SlideTransition(
-        position: animation.drive(tween),
-        child: child,
-      );
-    },
-  );
-}
+// Route _createRoute() {
+//   return PageRouteBuilder(
+//     pageBuilder: (context, animation, secondaryAnimation) => HomeScreen(),
+//     transitionsBuilder: (context, animation, secondaryAnimation, child) {
+//       var begin = Offset(0.0, 1.0);
+//       var end = Offset.zero;
+//       var curve = Curves.easeIn;
+//
+//       var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+//
+//       return SlideTransition(
+//         position: animation.drive(tween),
+//         child: child,
+//       );
+//     },
+//   );
+// }
 
 class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
@@ -147,7 +148,16 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
-          return HomeScreen();
+          return StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (BuildContext context, streamSnapshot) {
+              if (streamSnapshot.hasData) {
+                return HomeScreen();
+              } else {
+                return HomeScreen();
+              }
+            },
+          );
         }
 
         return loadingBody();

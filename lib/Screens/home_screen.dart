@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medkube/Screens/Firebase/login_screen.dart';
@@ -17,35 +18,31 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool isLoggedIn;
   String userName;
-  FirebaseAuth auth = FirebaseAuth.instance;
-  User loggedUser;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   CollectionReference allUsers = FirebaseFirestore.instance.collection('users');
   User currentUser;
   var userData;
+  bool isLoaded;
 
   @override
   void initState() {
     super.initState();
-    FirebaseAuth.instance.authStateChanges().listen((User user) {
-      if (user == null) {
-        print('User is currently signed out!');
-      } else {
-        print('User is signed in!');
-      }
-    });
+    isLoaded = false;
     currentUser = FirebaseAuth.instance.currentUser;
-    allUsers
+    if (currentUser != null) {
+      getData();
+    }
+  }
+
+  void getData() async {
+    print("Testing Login System");
+    await allUsers
         .doc(currentUser.uid)
         .get()
         .then((value) => userData = value.data());
-  }
-
-  void getData() {
-    allUsers.get().then((value) {
-      value.docs.forEach((element) {
-        print(element.data());
-      });
+    print("This is getData Method" + userData.toString());
+    setState(() {
+      isLoaded = true;
     });
   }
 
@@ -74,9 +71,13 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               duration: Duration(seconds: 1)))
           .closed
-          .then((value) => setState(() {
+          .then(
+            (value) => setState(
+              () {
                 print("User has Successfully Logged Out");
-              }));
+              },
+            ),
+          );
     }
   }
 
@@ -93,7 +94,10 @@ class _HomeScreenState extends State<HomeScreen> {
     getLabel();
     return Scaffold(
       key: _scaffoldKey,
-      drawer: CustomDrawer(userData: userData),
+      drawer: CustomDrawer(
+        userName: userData != null ? userData["Username"] : "New Customer",
+        userEmail: userData != null ? userData["Email"] : "Please Login",
+      ),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -167,7 +171,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   myImage: AssetImage("images/syring.png"),
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => ProductScreen(),
+                      builder: (context) => ProductScreen(
+                        customerName: userData != null
+                            ? userData["Username"]
+                            : "New Customer",
+                      ),
                     ),
                   ),
                 ),
