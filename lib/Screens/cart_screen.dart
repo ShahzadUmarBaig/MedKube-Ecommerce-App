@@ -21,27 +21,18 @@ class _CartScreenState extends State<CartScreen> {
   double itemTotal = cartList.length == 0 ? 0 : 150;
   int delivery = cartList.length == 0 ? 0 : 150;
   bool isDisabled = true;
-
+  int selectedItem = 0;
   Cart cart = Cart();
-
-  String getTotal() {
-    itemTotal = 0.00;
-    for (var item in cartList) {
-      itemTotal = item.total + itemTotal;
-    }
-    return itemTotal.toString();
-  }
 
   @override
   void initState() {
     super.initState();
-    getTotal();
   }
 
   @override
   Widget build(BuildContext context) {
     cartList.length == 0 ? isDisabled = true : isDisabled = false;
-    getTotal();
+
     return Scaffold(
       backgroundColor: Colors.blue[600],
       body: CustomScrollView(
@@ -88,8 +79,7 @@ class _CartScreenState extends State<CartScreen> {
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
               margin: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
               width: double.infinity,
-              height: MediaQuery.of(context).size.height / 2.1,
-              //TODO Cart Item Card Starts Here
+              height: MediaQuery.of(context).size.height / 1.75,
               child: ListView.builder(
                 padding: EdgeInsets.all(0),
                 itemCount: cartList.length,
@@ -100,106 +90,120 @@ class _CartScreenState extends State<CartScreen> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     elevation: 4,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.red[500],
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(8.0),
-                                bottomLeft: Radius.circular(8.0),
+                    child: Container(
+                      height: 60,
+                      child: Stack(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Container(
+                              width: 50,
+                              height: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(8.0),
+                                    bottomLeft: Radius.circular(8.0)),
                               ),
-                            ),
-                            child: MaterialButton(
-                              padding: EdgeInsets.zero,
-                              child: Center(
-                                  child: Icon(
-                                Icons.delete,
-                                color: Colors.white,
-                              )),
-                              onPressed: () {},
-                            ),
-                          ),
-                        ),
-                        //   IconButton(
-                        //     icon: Icon(
-                        //       Icons.remove_circle,
-                        //       color: Colors.red,
-                        //     ),
-                        //     onPressed: () {
-                        //       setState(() {
-                        //         cartList.remove(item);
-                        //         itemTotal = itemTotal - item.total;
-                        //         if (cartList.length == 0) {
-                        //           delivery = 0;
-                        //           itemTotal = 0;
-                        //         }
-                        //       });
-                        //     },
-                        //   ),
-                        // ),
-                        Expanded(
-                          flex: 4,
-                          child: Container(
-                            color: Colors.yellow,
-                            padding: EdgeInsets.only(left: 8.0),
-                            child: Text(
-                              //item.title
-                              "Burnol Gel 100mg",
-                              style: GoogleFonts.montserrat(
-                                fontSize: 18,
+                              child: RawMaterialButton(
+                                onPressed: () {},
+                                child: Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.add_circle,
-                              color: Colors.green,
+                          Positioned(
+                            left: 50,
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                  left: 8.0, top: 3.0, right: 3.0),
+                              width: 170,
+                              height: 60,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(
+                                    item.title,
+                                    style:
+                                        GoogleFonts.montserrat(fontSize: 18.0),
+                                  ),
+                                  SizedBox(height: 4.0),
+                                  Text(
+                                    "Price Rs.${item.price}",
+                                    style: GoogleFonts.montserrat(
+                                        color: Colors.black54, fontSize: 16.0),
+                                  ),
+                                ],
+                              ),
                             ),
-                            onPressed: () {
-                              setState(() {
-                                item.quantity++;
-                                item.total = item.quantity * item.price;
-                              });
-                            },
                           ),
-                        ),
-                        Container(
-                          child: Text(
-                            item.quantity.toString(),
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.remove_circle,
-                              color: Colors.green,
+                          Positioned(
+                            right: 70,
+                            top: 15,
+                            child: Container(
+                              padding: EdgeInsets.only(left: 8.0, right: 4.0),
+                              width: 50,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  style: BorderStyle.solid,
+                                  color: Colors.grey,
+                                ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8.0)),
+                              ),
+                              child: DropdownButton(
+                                isExpanded: true,
+                                dropdownColor: Colors.grey[200],
+                                elevation: 2,
+                                underline: Container(),
+                                value: item.quantity - 1,
+                                items: List.generate(
+                                  6,
+                                  (index) => DropdownMenuItem(
+                                    child: Text((index + 1).toString()),
+                                    value: index,
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    item.quantity = value + 1;
+                                  });
+                                },
+                              ),
                             ),
-                            onPressed: () {
-                              if (item.quantity != 1) {
-                                setState(() {
-                                  item.quantity--;
-                                  item.total = item.quantity * item.price;
-                                });
-                              }
-                            },
                           ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            (item.price * item.quantity).toString(),
-                            style: TextStyle(fontSize: 18),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Container(
+                              height: 50,
+                              width: 65,
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  left: BorderSide(
+                                      style: BorderStyle.solid,
+                                      color: Colors.grey[200]),
+                                ),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    (item.price * item.quantity).toString(),
+                                    style:
+                                        GoogleFonts.montserrat(fontSize: 18.0),
+                                  ),
+                                  Text("PKR"),
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   );
                 },
@@ -213,7 +217,7 @@ class _CartScreenState extends State<CartScreen> {
                   color: Colors.blue[700]),
               margin: EdgeInsets.symmetric(vertical: 10, horizontal: 12.0),
               width: double.infinity,
-              height: 130,
+              height: 80,
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -238,7 +242,7 @@ class _CartScreenState extends State<CartScreen> {
                           style: TextStyle(color: Colors.white, fontSize: 15),
                         ),
                         Text(
-                          getTotal(),
+                          "100 RS",
                           style: TextStyle(color: Colors.white, fontSize: 25),
                         ),
                       ],
