@@ -81,7 +81,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       child: Row(
                         children: [
                           Text(
-                            item.title,
+                            item.productName,
                             style: TextStyle(
                                 fontSize: 30, fontWeight: FontWeight.w500),
                           ),
@@ -304,7 +304,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           cartList.add(
                             Cart(
                                 quantity: quantity,
-                                title: item.title,
+                                title: item.productName,
                                 price: item.price,
                                 total: (quantity * item.price)),
                           );

@@ -97,7 +97,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         style: kLinkStyle,
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            Navigator.pushNamed(context, LoginScreen.id);
+                            Navigator.pushReplacementNamed(
+                                context, LoginScreen.id);
                           }),
                     TextSpan(
                       text: 'to view your profile.',

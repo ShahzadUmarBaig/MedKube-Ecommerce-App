@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medkube/Screens/cart_screen.dart';
+import 'package:medkube/Screens/order_screen.dart';
 import 'package:medkube/Screens/profile_screen.dart';
 import 'package:medkube/Services/Cart.dart';
 import 'package:medkube/Widgets/custom_listTiles.dart';
@@ -76,7 +78,15 @@ class CustomDrawer extends StatelessWidget {
           CustomListTiles(
             title: "Orders",
             icon: Icons.bookmark_border,
-            onTap: () {},
+            onTap: () {
+              if (FirebaseAuth.instance.currentUser != null) {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => OrderScreen()));
+              } else {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ProfileScreen()));
+              }
+            },
           ),
           Divider(
             indent: 16.0,

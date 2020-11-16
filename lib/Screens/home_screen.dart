@@ -156,6 +156,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   myImage: AssetImage("images/grocery2.png"),
                   title: "General",
                   fontSize: 22,
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => ProductScreen(
+                          customerName: userData != null
+                              ? userData["Username"]
+                              : "New Customer",
+                          categoryCondition: "general",
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 CustomCard(
                   myImage: AssetImage("images/camera2.png"),
@@ -180,6 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         customerName: userData != null
                             ? userData["Username"]
                             : "New Customer",
+                        categoryCondition: null,
                       ),
                     ),
                   ),

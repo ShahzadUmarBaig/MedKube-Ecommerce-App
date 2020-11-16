@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -17,8 +18,10 @@ import '../Widgets/widgets.dart';
 class ProductScreen extends StatefulWidget {
   static const id = "/";
   final customerName;
+  final categoryCondition;
 
-  const ProductScreen({Key key, this.customerName}) : super(key: key);
+  const ProductScreen({Key key, this.customerName, this.categoryCondition})
+      : super(key: key);
 
   @override
   _ProductScreenState createState() => _ProductScreenState();
@@ -27,31 +30,52 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   List<Product> _productList = List<Product>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  Cart cart = Cart();
+  CollectionReference products =
+      FirebaseFirestore.instance.collection("products");
+  bool isLoaded;
 
-  Product product = Product();
   int cartCount = 0;
   String user = "Customer";
 
-  void populateList() {
-    var list = <Product>[
-      Product(title: "Burnol", price: 32.50, image: "images/covid.jpeg"),
-      Product(
-          title: "Sandol", price: 22.50, image: "images/AccuChekInstantS.jpg"),
-      Product(
-          title: "Panadol", price: 60.0, image: "images/AccuChekPerforma.jpg"),
-      Product(title: "Brufen", price: 35.0, image: "images/AccuChekActive.jpg"),
-      Product(title: "Ketonaz", price: 20.0, image: "images/Libre.jpg"),
-    ];
-
-    setState(() {
-      _productList = list;
+  void populateList() async {
+    await products.get().then((value) {
+      value.docs.forEach((element) {
+        if (widget.categoryCondition == null) {
+          _productList.add(Product(
+            category: element["category"],
+            company: element["company"],
+            description: element["description"],
+            formula: element["formula"],
+            imagePath: element["imagePath"],
+            inStock: element["inStock"],
+            otc: element["otc"],
+            price: element["price"],
+            productName: element["productName"],
+            type: element["type"],
+          ));
+        } else if (element["category"] == widget.categoryCondition) {
+          _productList.add(Product(
+            category: element["category"],
+            company: element["company"],
+            description: element["description"],
+            formula: element["formula"],
+            imagePath: element["imagePath"],
+            inStock: element["inStock"],
+            otc: element["otc"],
+            price: element["price"],
+            productName: element["productName"],
+            type: element["type"],
+          ));
+        }
+      });
     });
+    setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
+    isLoaded = false;
     populateList();
   }
 
@@ -213,8 +237,8 @@ class _ProductScreenState extends State<ProductScreen> {
                               child: Container(
                                 child: AspectRatio(
                                   aspectRatio: 18 / 12,
-                                  child: Image.asset(
-                                    item.image,
+                                  child: Image.network(
+                                    item.imagePath,
                                     scale: 2,
                                   ),
                                 ),
@@ -234,7 +258,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      item.title,
+                                      item.productName,
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15,
@@ -250,7 +274,6 @@ class _ProductScreenState extends State<ProductScreen> {
                                 ),
                               ),
                             ),
-                            // TODO: Item Button
                             Align(
                               alignment: Alignment.bottomRight,
                               child: Padding(
@@ -273,7 +296,8 @@ class _ProductScreenState extends State<ProductScreen> {
                                   ),
                                   //    fillColor: Colors.blueAccent,
                                   onPressed: () {
-                                    if (cartListItems.containsKey(item.title)) {
+                                    if (cartListItems
+                                        .containsKey(item.productName)) {
                                       _scaffoldKey.currentState.showSnackBar(
                                         SnackBar(
                                           behavior: SnackBarBehavior.floating,
@@ -309,7 +333,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                       );
                                       setState(
                                         () {
-                                          cartListItems[item.title] = {
+                                          cartListItems[item.productName] = {
                                             "quantity": 1,
                                             "price": item.price,
                                             "total": item.price * 1,
