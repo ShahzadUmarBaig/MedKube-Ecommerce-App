@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: WelcomeScreen.id,
       routes: {
+        HomeScreen.id: (context) => HomeScreen(),
         PrescriptionScreen.id: (context) => PrescriptionScreen(),
         LoginScreen.id: (context) => LoginScreen(),
         HomeScreen.id: (context) => HomeScreen(),

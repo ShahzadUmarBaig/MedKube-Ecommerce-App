@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medkube/Screens/Firebase/login_screen.dart';
+import 'package:medkube/Screens/hospital_screen.dart';
 import 'package:medkube/Screens/medical_screen.dart';
 import 'package:medkube/Screens/prescription_screen.dart';
 import 'package:medkube/Widgets/custom_card.dart';
@@ -187,7 +188,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   myImage: AssetImage("images/hospital.png"),
                   title: "Hospitals",
                   fontSize: 20,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => HospitalScreen()));
+                  },
                 ),
               ],
             ),
