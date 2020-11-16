@@ -21,7 +21,15 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light().copyWith(
         appBarTheme: AppBarTheme(color: Colors.white),
-        primaryIconTheme: IconThemeData(color: Colors.white),
+        primaryIconTheme: IconThemeData(
+          color: Colors.white,
+        ),
+        pageTransitionsTheme: PageTransitionsTheme(
+          builders: {
+            TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+          },
+        ),
       ),
       initialRoute: WelcomeScreen.id,
       routes: {
