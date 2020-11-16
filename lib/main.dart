@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:medkube/Screens/Firebase/login_screen.dart';
 import 'package:medkube/Screens/Firebase/register_screen.dart';
 import 'package:medkube/Screens/detail_screen.dart';
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorObservers: [DismissKeyboardNavigationObserver()],
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light().copyWith(
         appBarTheme: AppBarTheme(color: Colors.white),
@@ -45,5 +47,13 @@ class MyApp extends StatelessWidget {
         RegistrationScreen.id: (context) => RegistrationScreen(),
       },
     );
+  }
+}
+
+class DismissKeyboardNavigationObserver extends NavigatorObserver {
+  @override
+  void didStartUserGesture(Route route, Route previousRoute) {
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+    super.didStartUserGesture(route, previousRoute);
   }
 }

@@ -101,7 +101,6 @@ class _HomeScreenState extends State<HomeScreen> {
         userEmail: userData != null ? userData["Email"] : "Please Login",
       ),
       body: Container(
-        width: double.infinity,
         height: double.infinity,
         color: Colors.blue[600],
         child: Column(
