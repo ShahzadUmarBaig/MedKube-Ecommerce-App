@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -125,7 +126,24 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
               ),
               CustomButton(
                 onTap: () {
-                  if (_formKey.currentState.validate()) {}
+                  if (_formKey.currentState.validate()) {
+                    Reference ref = FirebaseStorage.instance
+                        .ref()
+                        .child('orders/')
+                        .child(
+                            '${DateTime.now().day}-${DateTime.now().month}:${_phoneNumber.text}:${_duration.text}');
+                    ref.putFile(_image);
+
+                    setState(() {
+                      _duration.clear();
+                      _image = null;
+                      _address.clear();
+                      _phoneNumber.clear();
+                    });
+                    //
+                    // String baseName = basename(_image.path);
+                    // print(baseName);
+                  }
                 },
                 buttonColor: Colors.blueAccent,
                 buttonText: "Place Order",
