@@ -18,6 +18,8 @@ Map<String, dynamic> userInfo = {
   // },
 };
 
+Map<String, dynamic> promoAvailable = {};
+
 // class Cart {
 //   final String title;
 //   final double price;

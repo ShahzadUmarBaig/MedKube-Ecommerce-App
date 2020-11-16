@@ -291,8 +291,11 @@ class _CartScreenState extends State<CartScreen> {
                 onTap: isDisabled
                     ? null
                     : () {
-                        Navigator.pushReplacementNamed(
-                            context, CheckOutScreen.id);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    CheckOutScreen(subTotal: total)));
                       },
                 buttonTextColor: isDisabled ? Colors.black26 : Colors.black,
               ),

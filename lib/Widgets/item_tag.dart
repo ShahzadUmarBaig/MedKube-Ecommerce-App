@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ItemTag extends StatelessWidget {
-  final String allergy;
+  final String promoTitle;
   final Function onPressed;
 
-  const ItemTag({Key key, this.allergy, this.onPressed}) : super(key: key);
+  const ItemTag({Key key, this.promoTitle, this.onPressed}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,7 +24,7 @@ class ItemTag extends StatelessWidget {
                 left: 12,
               ),
               child: Text(
-                allergy,
+                promoTitle,
                 style: GoogleFonts.montserrat(
                   color: Colors.black54,
                   fontSize: 16,
