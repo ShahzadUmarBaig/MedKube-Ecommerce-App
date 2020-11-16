@@ -4,6 +4,7 @@ import 'package:medkube/Screens/Firebase/register_screen.dart';
 import 'package:medkube/Screens/detail_screen.dart';
 import 'package:medkube/Screens/home_screen.dart';
 import 'package:medkube/Screens/medical_screen.dart';
+import 'package:medkube/Screens/prescription_screen.dart';
 import 'package:medkube/Screens/profile_screen.dart';
 import 'package:medkube/Screens/welcome_screen.dart';
 
@@ -20,10 +21,19 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light().copyWith(
         appBarTheme: AppBarTheme(color: Colors.white),
-        primaryIconTheme: IconThemeData(color: Colors.white),
+        primaryIconTheme: IconThemeData(
+          color: Colors.white,
+        ),
+        pageTransitionsTheme: PageTransitionsTheme(
+          builders: {
+            TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+          },
+        ),
       ),
       initialRoute: WelcomeScreen.id,
       routes: {
+        PrescriptionScreen.id: (context) => PrescriptionScreen(),
         LoginScreen.id: (context) => LoginScreen(),
         HomeScreen.id: (context) => HomeScreen(),
         CartScreen.id: (context) => CartScreen(),

@@ -34,103 +34,113 @@ class _LoginScreenState extends State<LoginScreen> {
     return Material(
       child: Container(
         height: double.infinity,
-        child: SingleChildScrollView(
-          child: ScrollConfiguration(
-            behavior: MyBehavior(),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  SizedBox(height: MediaQuery.of(context).size.height / 7),
-                  Image(
+        child: ScrollConfiguration(
+          behavior: MyBehavior(),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height / 8,
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              children: [
+                Container(
+                  height: 200,
+                  child: Image(
                     image: AssetImage('images/icons8_login_200px_1.png'),
                   ),
-                  CustomTextField(
-                    labelText: "Username",
-                    textEditingController: email,
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return "Please Enter Email";
-                      }
-                      return null;
-                    },
-                  ),
-                  CustomTextField(
-                    labelText: "Password",
-                    textEditingController: password,
-                    obscureText: true,
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return "Please Enter Password";
-                      }
-                      return null;
-                    },
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 24),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: CustomButton(
-                            buttonColor: Colors.red[600],
-                            buttonText: "Go Back",
-                            buttonTextColor: Colors.white,
-                            onTap: () => Navigator.pushReplacementNamed(
-                                context, HomeScreen.id),
-                          ),
+                ),
+                CustomTextField(
+                  labelText: "Username",
+                  textEditingController: email,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return "Please Enter Email";
+                    }
+                    return null;
+                  },
+                ),
+                CustomTextField(
+                  labelText: "Password",
+                  textEditingController: password,
+                  obscureText: true,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return "Please Enter Password";
+                    }
+                    return null;
+                  },
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 24),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: CustomButton(
+                          buttonColor: Colors.red[600],
+                          buttonText: "Go Back",
+                          buttonTextColor: Colors.white,
+                          onTap: () => Navigator.pushReplacementNamed(
+                              context, HomeScreen.id),
                         ),
-                        SizedBox(
-                          width: 8.0,
-                        ),
-                        Expanded(
-                          child: CustomButton(
-                            buttonColor: Colors.lightBlueAccent,
-                            buttonText: "Login",
-                            buttonTextColor: Colors.white,
-                            onTap: () async {
-                              if (_formKey.currentState.validate()) {
-                                try {
-                                  await FirebaseAuth.instance
-                                      .signInWithEmailAndPassword(
-                                          email: email.text,
-                                          password: password.text);
-                                  Navigator.pushReplacementNamed(
-                                      context, HomeScreen.id);
-                                } on FirebaseAuthException catch (e) {
-                                  if (e.code == 'user-not-found') {
-                                    print('No user found for that email.');
-                                  } else if (e.code == 'wrong-password') {
-                                    print(
-                                        'Wrong password provided for that user.');
-                                  }
+                      ),
+                      SizedBox(
+                        width: 8.0,
+                      ),
+                      Expanded(
+                        child: CustomButton(
+                          buttonColor: Colors.lightBlueAccent,
+                          buttonText: "Login",
+                          buttonTextColor: Colors.white,
+                          onTap: () async {
+                            if (_formKey.currentState.validate()) {
+                              try {
+                                await FirebaseAuth.instance
+                                    .signInWithEmailAndPassword(
+                                        email: email.text,
+                                        password: password.text);
+                                Navigator.pushReplacementNamed(
+                                    context, HomeScreen.id);
+                              } on FirebaseAuthException catch (e) {
+                                if (e.code == 'user-not-found') {
+                                  print('No user found for that email.');
+                                } else if (e.code == 'wrong-password') {
+                                  print(
+                                      'Wrong password provided for that user.');
                                 }
                               }
-                            },
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 12.0),
-                  RichText(
-                    text: TextSpan(
-                      style: kDefaultStyle,
-                      children: [
-                        TextSpan(text: 'Not a regular customer? '),
-                        TextSpan(
-                          text: 'Become one!',
-                          style: kLinkStyle,
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              Navigator.pushNamed(
-                                  context, RegistrationScreen.id);
-                            },
+                            }
+                          },
                         ),
-                      ],
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(height: 12.0),
+                Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.symmetric(horizontal: 24.0),
+                  child: Center(
+                    child: RichText(
+                      text: TextSpan(
+                        style: kDefaultStyle,
+                        children: [
+                          TextSpan(text: 'Not a regular customer? '),
+                          TextSpan(
+                            text: 'Become one!',
+                            style: kLinkStyle,
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.pushNamed(
+                                    context, RegistrationScreen.id);
+                              },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

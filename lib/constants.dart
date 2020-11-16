@@ -67,12 +67,12 @@ InputDecoration kProfileTextFieldDecoration = InputDecoration(
   hintStyle: TextStyle(color: Colors.grey[500]),
   border: OutlineInputBorder(
     borderRadius: const BorderRadius.all(
-      const Radius.circular(5.0),
+      const Radius.circular(8.0),
     ),
   ),
   focusedBorder: OutlineInputBorder(
     borderRadius: BorderRadius.all(
-      Radius.circular(5.0),
+      Radius.circular(8.0),
     ),
     borderSide: BorderSide(color: Color(kBlueColor)),
   ),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medkube/Screens/Firebase/login_screen.dart';
 import 'package:medkube/Screens/medical_screen.dart';
+import 'package:medkube/Screens/prescription_screen.dart';
 import 'package:medkube/Widgets/custom_card.dart';
 import 'package:medkube/Widgets/custom_drawer.dart';
 
@@ -159,6 +160,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   myImage: AssetImage("images/camera2.png"),
                   title: "    Upload \nPrescription",
                   fontSize: 20,
+                  onTap: () {
+                    Navigator.pushNamed(context, PrescriptionScreen.id);
+                  },
                 ),
               ],
             ),
