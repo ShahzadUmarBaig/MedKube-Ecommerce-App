@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:medkube/Services/Cart.dart';
 import 'package:medkube/Services/Product.dart';
 
@@ -15,6 +16,7 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   _DetailScreenState(this.item);
 
   Product item;
@@ -25,6 +27,7 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.blue[100],
       body: SafeArea(
         child: Column(
@@ -301,13 +304,49 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                         fillColor: Colors.blueAccent,
                         onPressed: () {
-                          cartList.add(
-                            Cart(
-                                quantity: quantity,
-                                title: item.productName,
-                                price: item.price,
-                                total: (quantity * item.price)),
-                          );
+                          if (cartListItems.containsKey(item.productName)) {
+                            _scaffoldKey.currentState.showSnackBar(
+                              SnackBar(
+                                behavior: SnackBarBehavior.floating,
+                                content: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 4.0),
+                                  child: Text(
+                                    'Item Already Added',
+                                    style:
+                                        GoogleFonts.montserrat(fontSize: 20.0),
+                                  ),
+                                ),
+                                duration: Duration(seconds: 1),
+                              ),
+                            );
+                          } else {
+                            _scaffoldKey.currentState.showSnackBar(
+                              SnackBar(
+                                behavior: SnackBarBehavior.floating,
+                                content: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 4.0),
+                                  child: Text(
+                                    'Item Added To Cart',
+                                    style:
+                                        GoogleFonts.montserrat(fontSize: 20.0),
+                                  ),
+                                ),
+                                duration: Duration(seconds: 1),
+                              ),
+                            );
+                            setState(
+                              () {
+                                cartListItems[item.productName] = {
+                                  "quantity": 1,
+                                  "price": item.price,
+                                  "total": item.price * 1,
+                                };
+                              },
+                            );
+                          }
+                          ;
                         },
                       ),
                     ),

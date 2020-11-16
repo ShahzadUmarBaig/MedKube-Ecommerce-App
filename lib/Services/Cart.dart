@@ -1,6 +1,4 @@
-import 'package:medkube/Services/Product.dart';
-
-List<Cart> cartList = List<Cart>();
+//List<Cart> cartList = List<Cart>();
 
 Map<String, dynamic> cartListItems = {
   // "Burnol": {
@@ -10,13 +8,24 @@ Map<String, dynamic> cartListItems = {
   // },
 };
 
-List<Product> cartListChecker = List<Product>();
+Map<String, dynamic> userInfo = {
+  // "VNasMCxrx8eDTxEkH0hAxPWkSl73": {
+  //   "Address": "A 214",
+  //   "Email": "mirza@gmail.com",
+  //   "Phone": "03162821544",
+  // "UID": "VNasMCxrx8eDTxEkH0hAxPWkSl73",
+  // "Username": "Regular Customer",
+  // },
+};
 
-class Cart {
-  String title;
-  double price;
-  int quantity;
-  double total;
-
-  Cart({this.title, this.total, this.price, this.quantity});
-}
+// class Cart {
+//   final String title;
+//   final double price;
+//   final int quantity;
+//   final double total;
+//   final bool otc;
+//   final String type;
+//   final String company;
+//
+//   Cart({this.otc, this.type, this.company, this.title, this.total, this.price, this.quantity});
+// }

@@ -68,7 +68,7 @@ class _CartScreenState extends State<CartScreen> {
                     padding: EdgeInsets.all(6),
                     alignment: Alignment.center,
                     badgeContent: Text(
-                      cartList.length.toString(),
+                      cartListItems.keys.toList().length.toString(),
                       style: TextStyle(
                         color: Colors.blueAccent,
                       ),
@@ -288,9 +288,12 @@ class _CartScreenState extends State<CartScreen> {
                 marginHorizontal: 12.0,
                 buttonColor: isDisabled ? Colors.grey : Color(0xFFECDF54),
                 buttonText: "Check Out",
-                onTap: isDisabled ? null : () {
-                  Navigator.pushReplacementNamed(context, CheckOutScreen.id);
-                },
+                onTap: isDisabled
+                    ? null
+                    : () {
+                        Navigator.pushReplacementNamed(
+                            context, CheckOutScreen.id);
+                      },
                 buttonTextColor: isDisabled ? Colors.black26 : Colors.black,
               ),
             ),
