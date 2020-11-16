@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:medkube/Screens/Firebase/login_screen.dart';
 import 'package:medkube/Screens/Firebase/register_screen.dart';
+import 'package:medkube/Screens/checkout_screen.dart';
 import 'package:medkube/Screens/detail_screen.dart';
 import 'package:medkube/Screens/home_screen.dart';
 import 'package:medkube/Screens/medical_screen.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: WelcomeScreen.id,
       routes: {
+        CheckOutScreen.id: (context) => CheckOutScreen(),
         HomeScreen.id: (context) => HomeScreen(),
         PrescriptionScreen.id: (context) => PrescriptionScreen(),
         LoginScreen.id: (context) => LoginScreen(),

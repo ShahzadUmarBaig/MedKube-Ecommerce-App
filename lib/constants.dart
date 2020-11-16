@@ -5,6 +5,9 @@ const kElevationConstant = 5.00;
 
 final kBlueColor = 0xff42a5ff;
 
+final TextStyle kCheckOutTextStyle =
+    GoogleFonts.montserrat(fontSize: 20.0, color: Colors.black54);
+
 TextStyle kAlertBoxText =
     GoogleFonts.montserrat(fontSize: 24.0, color: Colors.black54);
 
@@ -73,6 +76,37 @@ InputDecoration kProfileTextFieldDecoration = InputDecoration(
   focusedBorder: OutlineInputBorder(
     borderRadius: BorderRadius.all(
       Radius.circular(8.0),
+    ),
+    borderSide: BorderSide(color: Color(kBlueColor)),
+  ),
+  contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+  fillColor: Colors.white70,
+);
+
+InputDecoration kCheckOutTextFieldDecoration = InputDecoration(
+  hintStyle: TextStyle(color: Colors.blue[500]),
+  labelStyle: TextStyle(color: Colors.blue[500]),
+  border: OutlineInputBorder(
+    borderSide: BorderSide(color: Colors.blue),
+    borderRadius: const BorderRadius.all(
+      const Radius.circular(5.0),
+    ),
+  ),
+  enabledBorder: OutlineInputBorder(
+    borderSide: BorderSide(color: Colors.blue),
+    borderRadius: const BorderRadius.all(
+      const Radius.circular(5.0),
+    ),
+  ),
+  disabledBorder: OutlineInputBorder(
+    borderSide: BorderSide(color: Colors.blue),
+    borderRadius: const BorderRadius.all(
+      const Radius.circular(5.0),
+    ),
+  ),
+  focusedBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.all(
+      Radius.circular(5.0),
     ),
     borderSide: BorderSide(color: Color(kBlueColor)),
   ),

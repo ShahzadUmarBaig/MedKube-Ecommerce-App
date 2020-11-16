@@ -2,9 +2,12 @@ import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medkube/Screens/checkout_screen.dart';
 import 'package:medkube/Services/Cart.dart';
 import 'package:medkube/Widgets/custom_button.dart';
 import 'package:medkube/extras.dart';
+
+import '../constants.dart';
 
 class CartScreen extends StatefulWidget {
   static String id = "CartScreen";
@@ -90,7 +93,7 @@ class _CartScreenState extends State<CartScreen> {
                     BoxDecoration(borderRadius: BorderRadius.circular(8)),
                 margin: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height / 1.65,
+                height: MediaQuery.of(context).size.height / 1.75,
                 child: ListView.builder(
                   padding: EdgeInsets.all(0),
                   itemCount: cartItemNames.length,
@@ -265,15 +268,33 @@ class _CartScreenState extends State<CartScreen> {
               ),
             ),
             SliverToBoxAdapter(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.delivery_dining,
+                      color: Colors.black.withOpacity(0.4)),
+                  SizedBox(width: 8.0),
+                  Text(
+                    "delivery will be calculated on next screen",
+                    style: kAlertBoxText.copyWith(
+                        color: Colors.black.withOpacity(0.4), fontSize: 16.0),
+                  )
+                ],
+              ),
+            ),
+            SliverToBoxAdapter(
               child: CustomButton(
                 marginVertical: 10,
                 marginHorizontal: 12.0,
                 buttonColor: isDisabled ? Colors.grey : Color(0xFFECDF54),
                 buttonText: "Check Out",
-                onTap: isDisabled ? null : () {},
+                onTap: isDisabled ? null : () {
+                  Navigator.pushReplacementNamed(context, CheckOutScreen.id);
+                },
                 buttonTextColor: isDisabled ? Colors.black26 : Colors.black,
               ),
-            ), // The Bottom Part with Button
+            ),
+            // The Bottom Part with Button
           ],
         ),
       ),
