@@ -51,7 +51,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   double getTotal() {
     total = 0.0;
     cartItemKeys.forEach((element) {
-      total = total + cartListItems[element]["price"];
+      total = total + cartListItems[element]["total"];
     });
     total > 1000 ? delivery = 0.0 : delivery = 100.0;
     return total;
