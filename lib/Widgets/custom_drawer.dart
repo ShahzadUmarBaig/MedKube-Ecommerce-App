@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -79,15 +78,7 @@ class CustomDrawer extends StatelessWidget {
           CustomListTiles(
             title: "Orders",
             icon: Icons.bookmark_border,
-            onTap: () {
-              if (FirebaseAuth.instance.currentUser != null) {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => OrderScreen()));
-              } else {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ProfileScreen()));
-              }
-            },
+            onTap: () => Navigator.pushNamed(context, OrderScreen.id),
           ),
           Divider(
             indent: 16.0,
