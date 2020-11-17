@@ -22,6 +22,7 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(userInfo);
     return Drawer(
       semanticLabel: "Drawer",
       elevation: 16.0,

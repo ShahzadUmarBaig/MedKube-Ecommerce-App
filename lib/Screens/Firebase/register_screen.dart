@@ -210,7 +210,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           'Address': address.text,
                           'Email': email.text,
                           'Phone': phoneNumber.text,
-                          'Username': "Regular Customer"
+                          'firstName': "Regular",
+                          'lastName': "Customer",
+                          'Apartment': "",
+                          'Country': "Pakistan",
+                          'City': "Karachi",
                         });
                         _scaffoldKey.currentState
                             .showSnackBar(SnackBar(

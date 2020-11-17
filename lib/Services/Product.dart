@@ -9,9 +9,13 @@ class Product {
   final String company;
   final String type;
   final String imagePath;
+  final int packSize;
+  final String packType;
 
   Product(
-      {this.productName,
+      {this.packType,
+      this.packSize,
+      this.productName,
       this.otc,
       this.category,
       this.formula,

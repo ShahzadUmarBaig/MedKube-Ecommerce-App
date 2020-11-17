@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medkube/Screens/Firebase/login_screen.dart';
+import 'package:medkube/Services/Cart.dart';
 import 'package:medkube/Widgets/custom_button.dart';
 import 'package:medkube/Widgets/profile_textfield.dart';
 import 'package:medkube/constants.dart';
@@ -18,26 +19,24 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final user = FirebaseAuth.instance.currentUser;
-  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _apartmentController = TextEditingController();
+  final TextEditingController _countryController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   CollectionReference allUsers = FirebaseFirestore.instance.collection('users');
-  Map<String, dynamic> userData;
   bool isLoaded;
 
   @override
   void initState() {
     super.initState();
     isLoaded = false;
-    getData();
-  }
-
-  getData() async {
-    await allUsers.doc(user.uid).get().then((value) => userData = value.data());
-    setState(() {
+    if (userInfo.isNotEmpty) {
       isLoaded = true;
-    });
+    }
   }
 
   @override
@@ -125,10 +124,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   profileBody(BuildContext context) {
-    _userNameController.text = userData["Username"];
-    _emailController.text = userData["Email"];
-    _addressController.text = userData["Address"];
-    _phoneController.text = userData["Phone"];
+    _firstNameController.text = userInfo["firstName"];
+    _lastNameController.text = userInfo["lastName"];
+    _apartmentController.text = userInfo["Apartment"];
+    _phoneController.text = userInfo["Phone"];
+    _countryController.text = userInfo["Country"];
+    _cityController.text = userInfo["City"];
+    _addressController.text = userInfo["Address"];
+    _emailController.text = userInfo["Email"];
 
     return SafeArea(
       child: Container(
@@ -154,38 +157,71 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     fontSize: 28.0, color: Colors.black54),
               )),
             ),
-            ProfileTextField(
-              controller: _userNameController,
-              hint: "Display Name",
-            ),
-            ProfileTextField(
-              controller: _emailController,
-              hint: "User Email",
-            ),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 24.0, vertical: 4.0),
+              margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 24.0),
               child: Row(
                 children: [
                   Expanded(
-                    child: TextField(
-                      controller: _addressController,
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return "Enter First Name";
+                        }
+                        return null;
+                      },
+                      controller: _firstNameController,
                       style: TextStyle(
                         fontStyle: FontStyle.normal,
                         fontWeight: FontWeight.normal,
                       ),
-                      minLines: 3,
-                      maxLines: 5,
-                      keyboardType: TextInputType.multiline,
-                      decoration: kProfileTextFieldDecoration.copyWith(
-                          hintText: "Address", labelText: "Address"),
+                      decoration: kCheckOutTextFieldDecoration.copyWith(
+                          hintText: "First Name", labelText: "First Name"),
                     ),
-                  )
+                  ),
+                  SizedBox(width: 8.0),
+                  Expanded(
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return "Enter Last Name";
+                        }
+                        return null;
+                      },
+                      controller: _lastNameController,
+                      style: TextStyle(
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.normal,
+                      ),
+                      decoration: kCheckOutTextFieldDecoration.copyWith(
+                          hintText: "Last Name", labelText: "Last Name"),
+                    ),
+                  ),
                 ],
               ),
             ),
             ProfileTextField(
+              controller: _emailController,
+              hint: "Email",
+            ),
+            ProfileTextField(
+              controller: _apartmentController,
+              hint: "Apartment No (Optional)",
+            ),
+            ProfileTextField(
               controller: _phoneController,
               hint: "Phone Number",
+            ),
+            ProfileTextField(
+              controller: _countryController,
+              hint: "Country",
+            ),
+            ProfileTextField(
+              controller: _cityController,
+              hint: "City",
+            ),
+            ProfileTextField(
+              controller: _addressController,
+              hint: "Address",
             ),
             CustomButton(
               marginHorizontal: 24.0,

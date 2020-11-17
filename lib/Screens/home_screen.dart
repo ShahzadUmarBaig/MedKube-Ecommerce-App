@@ -7,6 +7,7 @@ import 'package:medkube/Screens/Firebase/login_screen.dart';
 import 'package:medkube/Screens/hospital_screen.dart';
 import 'package:medkube/Screens/medical_screen.dart';
 import 'package:medkube/Screens/prescription_screen.dart';
+import 'package:medkube/Services/Cart.dart';
 import 'package:medkube/Widgets/custom_card.dart';
 import 'package:medkube/Widgets/custom_drawer.dart';
 
@@ -23,7 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   CollectionReference allUsers = FirebaseFirestore.instance.collection('users');
   User currentUser;
-  var userData;
   bool isLoaded;
 
   @override
@@ -38,11 +38,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void getData() async {
     print("Testing Login System");
-    await allUsers
-        .doc(currentUser.uid)
-        .get()
-        .then((value) => userData = value.data());
-    print("This is getData Method" + userData.toString());
+    await allUsers.doc(currentUser.uid).get().then((value) {
+      userInfo.addAll(value.data());
+    });
     setState(() {
       isLoaded = true;
     });
@@ -50,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   getLabel() {
     if (FirebaseAuth.instance.currentUser != null) {
-      userName = "Regular Customer";
+      userName = userInfo["firstName"] + " " + userInfo["lastName"];
     } else {
       userName = "New Customer";
     }
@@ -61,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Navigator.pushReplacementNamed(context, LoginScreen.id);
     } else {
       await FirebaseAuth.instance.signOut();
+      userInfo.clear();
       _scaffoldKey.currentState
           .showSnackBar(SnackBar(
               behavior: SnackBarBehavior.floating,
@@ -97,8 +96,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       key: _scaffoldKey,
       drawer: CustomDrawer(
-        userName: userData != null ? userData["Username"] : "New Customer",
-        userEmail: userData != null ? userData["Email"] : "Please Login",
+        userName: userInfo.isEmpty
+            ? "New Customer"
+            : userInfo["firstName"] + " " + userInfo["lastName"],
+        userEmail: userInfo.isEmpty ? "Please Login" : userInfo["Email"],
       ),
       body: Container(
         height: double.infinity,
@@ -159,9 +160,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => ProductScreen(
-                          customerName: userData != null
-                              ? userData["Username"]
-                              : "New Customer",
                           categoryCondition: "general",
                         ),
                       ),
@@ -188,9 +186,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => ProductScreen(
-                        customerName: userData != null
-                            ? userData["Username"]
-                            : "New Customer",
                         categoryCondition: null,
                       ),
                     ),
@@ -201,10 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   title: "Hospitals",
                   fontSize: 20,
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HospitalScreen()));
+                    Navigator.pushNamed(context, HospitalScreen.id);
                   },
                 ),
               ],

@@ -17,11 +17,9 @@ import '../Widgets/widgets.dart';
 
 class ProductScreen extends StatefulWidget {
   static const id = "/";
-  final customerName;
   final categoryCondition;
 
-  const ProductScreen({Key key, this.customerName, this.categoryCondition})
-      : super(key: key);
+  const ProductScreen({Key key, this.categoryCondition}) : super(key: key);
 
   @override
   _ProductScreenState createState() => _ProductScreenState();
@@ -35,13 +33,15 @@ class _ProductScreenState extends State<ProductScreen> {
   bool isLoaded;
 
   int cartCount = 0;
-  String user = "Customer";
+  String userName;
 
   void populateList() async {
     await products.get().then((value) {
       value.docs.forEach((element) {
         if (widget.categoryCondition == null) {
           _productList.add(Product(
+            packType: element["packType"],
+            packSize: element["packSize"],
             category: element["category"],
             company: element["company"],
             description: element["description"],
@@ -55,6 +55,8 @@ class _ProductScreenState extends State<ProductScreen> {
           ));
         } else if (element["category"] == widget.categoryCondition) {
           _productList.add(Product(
+            packType: element["packType"],
+            packSize: element["packSize"],
             category: element["category"],
             company: element["company"],
             description: element["description"],
@@ -70,6 +72,16 @@ class _ProductScreenState extends State<ProductScreen> {
       });
     });
     setState(() {});
+  }
+
+  String getLabel() {
+    if (userInfo.isNotEmpty) {
+      userName = userInfo["firstName"] + " " + userInfo["lastName"];
+      return userName;
+    } else {
+      userName = "New Customer";
+      return userName;
+    }
   }
 
   @override
@@ -115,7 +127,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     children: [
                       TextSpan(text: 'Hi, '),
                       TextSpan(
-                        text: '${widget.customerName}!',
+                        text: getLabel(),
                         style: TextStyle(
                             color: Colors.black, fontWeight: FontWeight.bold),
                       ),
@@ -311,7 +323,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                                   fontSize: 20.0),
                                             ),
                                           ),
-                                          duration: Duration(seconds: 1),
+                                          duration: Duration(milliseconds: 500),
                                         ),
                                       );
                                     } else {
