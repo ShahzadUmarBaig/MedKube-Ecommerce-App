@@ -9,41 +9,52 @@ import 'package:medkube/extras.dart';
 
 class CheckOutScreen extends StatefulWidget {
   static String id = "screen_id";
-  final subTotal;
 
-  const CheckOutScreen({Key key, this.subTotal}) : super(key: key);
   @override
   _CheckOutScreenState createState() => _CheckOutScreenState();
 }
 
 class _CheckOutScreenState extends State<CheckOutScreen> {
   TextEditingController discountController = TextEditingController();
-  double discount;
+  double discountPercentage;
+  double discountValue;
   double total;
   double delivery;
+  List<String> cartItemKeys;
+  List<String> promoApplied = [];
 
   @override
   void initState() {
     super.initState();
-    discount = 1.0;
+    discountPercentage = 0.0;
+    delivery = 100.0;
+    discountValue = 0.0;
+    cartItemKeys = cartListItems.keys.toList();
+    getTotal();
+    getDiscount();
   }
 
-  String getDiscount() {
-    if (discount == 1) {
-      return "0.0";
+  double getDiscount() {
+    if (promoApplied.isEmpty) {
+      discountPercentage = 0.0;
+      discountValue = total * discountPercentage;
     } else {
-      return (discount * widget.subTotal).toString();
+      promoApplied.forEach((element) {
+        discountPercentage = promoAvailable[element]["discount"];
+      });
+
+      discountValue = total * discountPercentage;
     }
+    return discountValue;
   }
 
-  String getTotal() {
-    if (widget.subTotal > 1000) {
-      delivery = 0;
-      return {widget.subTotal * discount}.toString();
-    } else {
-      delivery = 100;
-      return (widget.subTotal * (1 - discount) + delivery).toString();
-    }
+  double getTotal() {
+    total = 0.0;
+    cartItemKeys.forEach((element) {
+      total = total + cartListItems[element]["price"];
+    });
+    total > 1000 ? delivery = 0.0 : delivery = 100.0;
+    return total;
   }
 
   @override
@@ -71,29 +82,27 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   ),
                   CheckOutText(
                       label: "Delivery",
-                      value: widget.subTotal > 1000 ? "0.0" : "100.0",
+                      value: total > 1000 ? "0.0" : "100.0",
                       textStyle: kCheckOutTextStyle),
                   CheckOutText(
                       label: "Discount",
-                      value: getDiscount(),
+                      value: getDiscount().toString(),
                       textStyle: kCheckOutTextStyle),
                   CheckOutText(
                       label: "Total",
-                      value: getTotal(),
+                      value: (getTotal() + delivery - discountValue).toString(),
                       textStyle: kCheckOutTextStyle.copyWith(fontSize: 24.0)),
                   DiscountRow(
                       onTap: () {
-                        promoAvailable.addAll({
-                          "Independence": {
-                            "promoTitle": "5% OFF",
-                            "discount": 0.05,
-                            "isActive": true,
-                          },
-                        });
-
-                        var allPromo = promoAvailable.keys.toList();
-                        setState(() {
-                          discount = promoAvailable[allPromo[0]]["discount"];
+                        promoAvailable.forEach((key, value) {
+                          if (discountController.text == key &&
+                              !promoApplied.contains(key)) {
+                            setState(() {
+                              promoApplied.add(key);
+                              discountController.clear();
+                              FocusScope.of(context).unfocus();
+                            });
+                          }
                         });
                       },
                       discountController: discountController),
@@ -102,23 +111,20 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                     child: GridView.builder(
                       //scrollDirection: Axis.vertical,
                       shrinkWrap: true,
-                      itemCount: promoAvailable.keys.toList().length,
+                      itemCount: promoApplied.length,
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                           maxCrossAxisExtent:
-                              promoAvailable.keys.toList().length > 0
-                                  ? 105
-                                  : 10,
+                              promoApplied.length > 0 ? 105 : 10,
                           mainAxisSpacing: 10.0,
                           crossAxisSpacing: 10.0,
                           childAspectRatio: 2.5),
                       itemBuilder: (BuildContext context, int index) {
-                        var promos = promoAvailable.keys.toList();
                         return ItemTag(
-                          promoTitle: promoAvailable[promos[index]]
+                          promoTitle: promoAvailable[promoApplied[index]]
                               ["promoTitle"],
                           onPressed: () {
                             setState(() {
-                              promoAvailable.clear();
+                              promoApplied.clear();
                             });
                           },
                         );
