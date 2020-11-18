@@ -25,48 +25,54 @@ class _OrderScreenState extends State<OrderScreen> {
 
   Widget anonymousUserOrders() {
     return Container(
-      margin: EdgeInsets.only(top: 32.0),
-      child: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 16.0),
-            child: Text(
-              "Track Your Order",
-              style: kAlertBoxText,
-            ),
-          ),
-          ProfileTextField(
-              controller: _orderNumberController, hint: "Track Order"),
-          CustomButton(
-            buttonColor: Colors.blue,
-            marginVertical: 4.0,
-            marginHorizontal: 24.0,
-            buttonTextColor: Colors.white,
-            buttonText: "Track Your Order",
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 8.0),
-            child: Text(
-              "Orders",
-              style: kAlertBoxText,
-            ),
-          ),
-          Divider(endIndent: 16.0, indent: 16.0),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.55,
-            margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
-            child: ScrollConfiguration(
-              behavior: MyBehavior(),
-              child: ListView.builder(
-                padding: EdgeInsets.symmetric(vertical: 4.0),
-                itemBuilder: (context, index) {
-                  return OrderItemTile();
-                },
-                itemCount: 6,
+      child: ScrollConfiguration(
+        behavior: MyBehavior(),
+        child: ListView(
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 16.0),
+              child: Center(
+                child: Text(
+                  "Track Your Order",
+                  style: kAlertBoxText,
+                ),
               ),
             ),
-          ),
-        ],
+            ProfileTextField(
+                controller: _orderNumberController, hint: "Track Order"),
+            CustomButton(
+              buttonColor: Colors.blue,
+              marginVertical: 4.0,
+              marginHorizontal: 24.0,
+              buttonTextColor: Colors.white,
+              buttonText: "Track Your Order",
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 8.0),
+              child: Center(
+                child: Text(
+                  "Orders",
+                  style: kAlertBoxText,
+                ),
+              ),
+            ),
+            Divider(endIndent: 16.0, indent: 16.0),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.55,
+              margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+              child: ScrollConfiguration(
+                behavior: MyBehavior(),
+                child: ListView.builder(
+                  padding: EdgeInsets.symmetric(vertical: 4.0),
+                  itemBuilder: (context, index) {
+                    return OrderItemTile();
+                  },
+                  itemCount: 6,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

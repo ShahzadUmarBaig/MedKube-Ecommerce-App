@@ -5,6 +5,7 @@ import 'package:medkube/Screens/Firebase/register_screen.dart';
 import 'package:medkube/Screens/checkout_screen.dart';
 import 'package:medkube/Screens/detail_screen.dart';
 import 'package:medkube/Screens/home_screen.dart';
+import 'package:medkube/Screens/hospital_screen.dart';
 import 'package:medkube/Screens/medical_screen.dart';
 import 'package:medkube/Screens/order_screen.dart';
 import 'package:medkube/Screens/prescription_screen.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: WelcomeScreen.id,
       routes: {
+        HospitalScreen.id: (context) => HospitalScreen(),
         OrderScreen.id: (context) => OrderScreen(),
         CheckOutScreen.id: (context) => CheckOutScreen(),
         HomeScreen.id: (context) => HomeScreen(),

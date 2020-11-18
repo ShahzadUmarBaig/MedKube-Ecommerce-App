@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:medkube/Services/Order_Code.dart';
 import 'package:medkube/Widgets/custom_button.dart';
 
 import '../constants.dart';
@@ -21,6 +23,8 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
   TextEditingController _address;
   TextEditingController _phoneNumber;
   TextEditingController _duration;
+  CollectionReference prescriptionOrders =
+      FirebaseFirestore.instance.collection('PrescriptionOrders');
 
   getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -132,21 +136,28 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                   ),
                 ),
                 CustomButton(
-                  onTap: () {
-                    if (_formKey.currentState.validate()) {
+                  onTap: () async {
+                    if (_formKey.currentState.validate() && _image != null) {
+                      String orderNumber =
+                          OrderNumberGenerator().getRandomString(10);
+
                       Reference ref = FirebaseStorage.instance
                           .ref()
-                          .child('orders/')
-                          .child(
-                              '${DateTime.now().day}-${DateTime.now().month}:${_phoneNumber.text}:${_duration.text}');
-                      ref.putFile(_image);
+                          .child('PrescriptionOrders/')
+                          .child(orderNumber);
+                      await ref.putFile(_image);
 
-                      setState(() {
-                        _duration.clear();
-                        _image = null;
-                        _address.clear();
-                        _phoneNumber.clear();
-                      });
+                      String imagePath = await ref.getDownloadURL();
+                      print(imagePath);
+
+                      prescriptionOrders.add({});
+
+                      // setState(() {
+                      //   _duration.clear();
+                      //   _image = null;
+                      //   _address.clear();
+                      //   _phoneNumber.clear();
+                      // });
                       //
                       // String baseName = basename(_image.path);
                       // print(baseName);
@@ -171,7 +182,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                         ),
                         SizedBox(width: 8.0),
                         Text(
-                          "You will be contacted soon!",
+                          "Delivery Charges Will Be Applied",
                           style: kAlertBoxText.copyWith(
                               color: Colors.grey[300], fontSize: 20.0),
                         )
