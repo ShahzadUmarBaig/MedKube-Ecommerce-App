@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:medkube/Services/Cart.dart';
 import 'package:medkube/Services/Order_Code.dart';
 import 'package:medkube/Widgets/custom_button.dart';
 
@@ -24,7 +25,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
   TextEditingController _phoneNumber;
   TextEditingController _duration;
   CollectionReference prescriptionOrders =
-      FirebaseFirestore.instance.collection('PrescriptionOrders');
+      FirebaseFirestore.instance.collection('prescriptionOrders');
 
   getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -141,24 +142,54 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                       String orderNumber =
                           OrderNumberGenerator().getRandomString(10);
 
-                      Reference ref = FirebaseStorage.instance
-                          .ref()
-                          .child('PrescriptionOrders/')
-                          .child(orderNumber);
-                      await ref.putFile(_image);
+                      try {
+                        if (userInfo.isEmpty) {
+                          Reference ref = FirebaseStorage.instance
+                              .ref()
+                              .child('PrescriptionOrders/')
+                              .child('AnonymousOrders/')
+                              .child(orderNumber);
+                          await ref.putFile(_image);
 
-                      String imagePath = await ref.getDownloadURL();
-                      print(imagePath);
+                          String imagePath = await ref.getDownloadURL();
+                          //  print(imagePath);
 
-                      prescriptionOrders.add({});
+                          await prescriptionOrders.doc(orderNumber).set({
+                            'Note': _duration.text,
+                            'Phone': _phoneNumber.text,
+                            'Address': _address.text,
+                            'Status': "In Progress",
+                            'PicPath': imagePath,
+                          }).then((value) => null);
+                        } else {
+                          Reference ref = FirebaseStorage.instance
+                              .ref()
+                              .child('PrescriptionOrders/')
+                              .child('${userInfo['UID']}/')
+                              .child(orderNumber);
+                          await ref.putFile(_image);
 
-                      // setState(() {
-                      //   _duration.clear();
-                      //   _image = null;
-                      //   _address.clear();
-                      //   _phoneNumber.clear();
-                      // });
-                      //
+                          String imagePath = await ref.getDownloadURL();
+                          //  print(imagePath);
+
+                          await prescriptionOrders.doc(userInfo['UID']).set({
+                            'Note': _duration.text,
+                            'Phone': _phoneNumber.text,
+                            'Address': _address.text,
+                            'Status': "In Progress",
+                            'PicPath': imagePath,
+                          }).then((value) => null);
+                        }
+                      } catch (e) {
+                        print(e);
+                      }
+                      setState(() {
+                        _duration.clear();
+                        _image = null;
+                        _address.clear();
+                        _phoneNumber.clear();
+                      });
+
                       // String baseName = basename(_image.path);
                       // print(baseName);
                     }

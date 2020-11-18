@@ -201,6 +201,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     if (_formKey.currentState.validate()) {
                       FocusScope.of(context).unfocus();
                       try {
+                        await FirebaseAuth.instance.signOut();
+
                         await FirebaseAuth.instance
                             .createUserWithEmailAndPassword(
                                 email: email.text, password: password.text);
