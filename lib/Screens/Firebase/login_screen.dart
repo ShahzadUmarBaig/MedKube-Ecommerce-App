@@ -95,6 +95,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           onTap: () async {
                             if (_formKey.currentState.validate()) {
                               try {
+                                await FirebaseAuth.instance.signOut();
+
                                 await FirebaseAuth.instance
                                     .signInWithEmailAndPassword(
                                         email: email.text,

@@ -33,10 +33,16 @@ class _HomeScreenState extends State<HomeScreen> {
     currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser != null) {
       getData();
+    } else {
+      signInMethod();
     }
   }
 
-  void getData() async {
+  void signInMethod() async {
+    await FirebaseAuth.instance.signInAnonymously();
+  }
+
+  Future<void> getData() async {
     print("Testing Login System");
     await allUsers.doc(currentUser.uid).get().then((value) {
       userInfo.addAll(value.data());
@@ -47,15 +53,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   getLabel() {
-    if (FirebaseAuth.instance.currentUser != null) {
-      userName = userInfo["firstName"] + " " + userInfo["lastName"];
+    print(userInfo);
+    if (userInfo.isNotEmpty) {
+      userName = "${userInfo["firstName"]} ${userInfo["lastName"]}";
     } else {
       userName = "New Customer";
     }
   }
 
   getMethod(BuildContext context) async {
-    if (FirebaseAuth.instance.currentUser == null) {
+    if (userInfo.isEmpty) {
       Navigator.pushReplacementNamed(context, LoginScreen.id);
     } else {
       await FirebaseAuth.instance.signOut();
@@ -83,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   IconData getIcon(BuildContext context) {
-    if (FirebaseAuth.instance.currentUser == null) {
+    if (userInfo.isEmpty) {
       return Icons.login;
     } else {
       return Icons.logout;

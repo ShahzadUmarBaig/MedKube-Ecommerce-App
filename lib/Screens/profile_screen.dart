@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -18,7 +17,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final user = FirebaseAuth.instance.currentUser;
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _apartmentController = TextEditingController();
@@ -28,25 +26,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   CollectionReference allUsers = FirebaseFirestore.instance.collection('users');
-  bool isLoaded;
 
   @override
   void initState() {
     super.initState();
-    isLoaded = false;
-    if (userInfo.isNotEmpty) {
-      isLoaded = true;
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: user != null
-          ? isLoaded
-              ? profileBody(context)
-              : getWaitingKit(context)
-          : loginBody(context),
+      body: userInfo.isNotEmpty ? profileBody(context) : loginBody(context),
     );
   }
 
