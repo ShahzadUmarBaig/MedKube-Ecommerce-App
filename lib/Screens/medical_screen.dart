@@ -223,6 +223,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
                     var element = productList[_productKeys[index]];
+
                     return GestureDetector(
                       onTap: () {
                         //      openDetailScreen(context, itemDetail);

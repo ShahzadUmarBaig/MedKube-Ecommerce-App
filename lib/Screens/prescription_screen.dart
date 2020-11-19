@@ -5,7 +5,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:medkube/Services/Cart.dart';
 import 'package:medkube/Services/Order_Code.dart';
 import 'package:medkube/Services/user_info.dart';
 import 'package:medkube/Widgets/custom_button.dart';
@@ -161,6 +160,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                             'Address': _address.text,
                             'Status': "In Progress",
                             'PicPath': imagePath,
+                            "OrderNo": orderNumber,
                           }).then((value) => null);
                         } else {
                           Reference ref = FirebaseStorage.instance
@@ -179,6 +179,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                             'Address': _address.text,
                             'Status': "In Progress",
                             'PicPath': imagePath,
+                            "OrderNo": orderNumber,
                           }).then((value) => null);
                         }
                       } catch (e) {

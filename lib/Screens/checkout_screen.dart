@@ -258,13 +258,37 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                           try {
                             if (userInfo.isEmpty) {
                               await cartOrders.doc(orderNumber).set({
-                                // 'Note': _duration.text,
-                                // 'Phone': _phoneNumber.text,
-                                // 'Address': _address.text,
-                                // 'Status': "In Progress",
-                                // 'PicPath': imagePath,
-                              }).then((value) => null);
-                            } else {}
+                                "OrderNo": orderNumber,
+                                "Address": _addressController.text,
+                                "Apartment": _apartmentController.text,
+                                "City": _cityController.text,
+                                "Country": _countryController.text,
+                                "Phone": _phoneController.text,
+                                "firstName": _firstNameController.text,
+                                "lastName": _lastNameController.text,
+                                "items": cartListItems,
+                                "total": total,
+                                "discount": discountValue,
+                                "promoApplied": promoApplied,
+                                "delivery": delivery,
+                              });
+                            } else {
+                              await cartOrders.doc(orderNumber).set({
+                                "UID": userInfo['UID'],
+                                "Address": _addressController.text,
+                                "Apartment": _apartmentController.text,
+                                "City": _cityController.text,
+                                "Country": _countryController.text,
+                                "Phone": _phoneController.text,
+                                "firstName": _firstNameController.text,
+                                "lastName": _lastNameController.text,
+                                "items": cartListItems,
+                                "total": total,
+                                "discount": discountValue,
+                                "promoApplied": promoApplied,
+                                "delivery": delivery,
+                              });
+                            }
                           } catch (e) {
                             print(e);
                           }
