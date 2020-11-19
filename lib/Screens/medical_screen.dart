@@ -11,6 +11,7 @@ import 'package:medkube/Screens/detail_screen.dart';
 import 'package:medkube/Screens/profile_screen.dart';
 import 'package:medkube/Services/Cart.dart';
 import 'package:medkube/Services/Product.dart';
+import 'package:medkube/Widgets/shop_card.dart';
 import 'package:medkube/extras.dart';
 
 import '../Widgets/widgets.dart';
@@ -31,6 +32,7 @@ class _ProductScreenState extends State<ProductScreen> {
   CollectionReference products =
       FirebaseFirestore.instance.collection("products");
   bool isLoaded;
+  List<String> _productKeys = List<String>();
 
   int cartCount = 0;
   String userName;
@@ -40,7 +42,7 @@ class _ProductScreenState extends State<ProductScreen> {
       value.docs.forEach((element) {
         if (widget.categoryCondition == null) {
           productList[element.id] = {element.data()};
-
+          _productKeys.add(element.id);
           _productList.add(Product(
             packType: element["packType"],
             packSize: element["packSize"],
@@ -91,6 +93,29 @@ class _ProductScreenState extends State<ProductScreen> {
     super.initState();
     isLoaded = false;
     populateList();
+  }
+
+  void openDetailScreen(context, item) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return DetailScreen(
+            item: item,
+          );
+        },
+      ),
+    );
+  }
+
+  Widget snackBarContent(String text) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 4.0),
+      child: Text(
+        text,
+        style: GoogleFonts.montserrat(fontSize: 20.0),
+      ),
+    );
   }
 
   @override
@@ -226,142 +251,41 @@ class _ProductScreenState extends State<ProductScreen> {
                     var item = _productList[index];
                     return GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return DetailScreen(
-                                item: item,
-                              );
-                            },
-                          ),
-                        );
+                        openDetailScreen(context, item);
                       },
-                      child: Card(
-                        margin: EdgeInsets.all(8),
-                        elevation: 2,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        clipBehavior: Clip.antiAlias,
-                        child: Stack(
-                          fit: StackFit.loose,
-                          children: <Widget>[
-                            Align(
-                              child: Container(
-                                child: AspectRatio(
-                                  aspectRatio: 18 / 12,
-                                  child: Image.network(
-                                    item.imagePath,
-                                    scale: 2,
-                                  ),
-                                ),
-                                margin: EdgeInsets.only(top: 16),
+                      child: ShopCard(
+                        imagePath: item.imagePath,
+                        price: item.price.toString(),
+                        productName: item.productName,
+                        onPressed: () {
+                          print(productList);
+                          if (cartListItems.containsKey(item.productName)) {
+                            _scaffoldKey.currentState.showSnackBar(
+                              SnackBar(
+                                behavior: SnackBarBehavior.floating,
+                                content: snackBarContent('Item Already Added'),
+                                duration: Duration(milliseconds: 500),
                               ),
-                              alignment: Alignment.topCenter,
-                            ),
-                            Align(
-                              alignment: Alignment.bottomLeft,
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  bottom: 15,
-                                  left: 15,
-                                ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      item.productName,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                    SizedBox(height: 5.0),
-                                    Text(
-                                      "RS " + item.price.toString(),
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  ],
-                                ),
+                            );
+                          } else {
+                            _scaffoldKey.currentState.showSnackBar(
+                              SnackBar(
+                                behavior: SnackBarBehavior.floating,
+                                content: snackBarContent("Item Added To Cart"),
+                                duration: Duration(seconds: 1),
                               ),
-                            ),
-                            Align(
-                              alignment: Alignment.bottomRight,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  right: 15,
-                                  bottom: 12,
-                                ),
-                                child: RawMaterialButton(
-                                  child: Icon(
-                                    Icons.add,
-                                    size: 15,
-                                  ),
-                                  elevation: 3.0,
-                                  constraints: BoxConstraints.tightFor(
-                                    width: 55,
-                                    height: 38,
-                                  ),
-                                  shape: CircleBorder(
-                                    side: BorderSide(style: BorderStyle.solid),
-                                  ),
-                                  //    fillColor: Colors.blueAccent,
-                                  onPressed: () {
-                                    print(productList);
-                                    if (cartListItems
-                                        .containsKey(item.productName)) {
-                                      _scaffoldKey.currentState.showSnackBar(
-                                        SnackBar(
-                                          behavior: SnackBarBehavior.floating,
-                                          content: Container(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 10.0,
-                                                horizontal: 4.0),
-                                            child: Text(
-                                              'Item Already Added',
-                                              style: GoogleFonts.montserrat(
-                                                  fontSize: 20.0),
-                                            ),
-                                          ),
-                                          duration: Duration(milliseconds: 500),
-                                        ),
-                                      );
-                                    } else {
-                                      _scaffoldKey.currentState.showSnackBar(
-                                        SnackBar(
-                                          behavior: SnackBarBehavior.floating,
-                                          content: Container(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 10.0,
-                                                horizontal: 4.0),
-                                            child: Text(
-                                              'Item Added To Cart',
-                                              style: GoogleFonts.montserrat(
-                                                  fontSize: 20.0),
-                                            ),
-                                          ),
-                                          duration: Duration(seconds: 1),
-                                        ),
-                                      );
-                                      setState(
-                                        () {
-                                          cartListItems[item.productName] = {
-                                            "quantity": 1,
-                                            "price": item.price,
-                                            "total": item.price * 1,
-                                          };
-                                        },
-                                      );
-                                    }
-                                  },
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                            );
+                            setState(
+                              () {
+                                cartListItems[item.productName] = {
+                                  "quantity": 1,
+                                  "price": item.price,
+                                  "total": item.price * 1,
+                                };
+                              },
+                            );
+                          }
+                        },
                       ),
                     );
                   },
