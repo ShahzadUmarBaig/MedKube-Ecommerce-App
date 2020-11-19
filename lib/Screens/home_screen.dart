@@ -48,13 +48,11 @@ class _HomeScreenState extends State<HomeScreen> {
       userInfo.addAll(value.data());
     });
     setState(() {
-      print(allUsers);
       isLoaded = true;
     });
   }
 
   getLabel() {
-    print(userInfo);
     if (userInfo.isNotEmpty) {
       userName = "${userInfo["firstName"]} ${userInfo["lastName"]}";
     } else {

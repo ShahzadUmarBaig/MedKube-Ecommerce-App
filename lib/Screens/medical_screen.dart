@@ -41,7 +41,7 @@ class _ProductScreenState extends State<ProductScreen> {
     await products.get().then((value) {
       value.docs.forEach((element) {
         if (widget.categoryCondition == null) {
-          productList[element.id] = {element.data()};
+          productList[element.id] = element.data();
           _productKeys.add(element.id);
           _productList.add(Product(
             packType: element["packType"],
@@ -248,20 +248,23 @@ class _ProductScreenState extends State<ProductScreen> {
                 ),
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                    var item = _productList[index];
+                    var itemDetail = _productList[index];
+                    var element = productList[_productKeys[index]];
                     return GestureDetector(
                       onTap: () {
-                        openDetailScreen(context, item);
+                        openDetailScreen(context, itemDetail);
                       },
                       child: ShopCard(
-                        imagePath: item.imagePath,
-                        price: item.price.toString(),
-                        productName: item.productName,
+                        imagePath: element["imagePath"],
+                        price: element["price"].toString(),
+                        productName: element["productName"],
                         onPressed: () {
                           print(productList);
-                          if (cartListItems.containsKey(item.productName)) {
+                          if (cartListItems
+                              .containsKey(element["productName"])) {
                             _scaffoldKey.currentState.showSnackBar(
                               SnackBar(
+                                backgroundColor: Colors.blue,
                                 behavior: SnackBarBehavior.floating,
                                 content: snackBarContent('Item Already Added'),
                                 duration: Duration(milliseconds: 500),
@@ -270,6 +273,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           } else {
                             _scaffoldKey.currentState.showSnackBar(
                               SnackBar(
+                                backgroundColor: Colors.blue,
                                 behavior: SnackBarBehavior.floating,
                                 content: snackBarContent("Item Added To Cart"),
                                 duration: Duration(seconds: 1),
@@ -277,10 +281,10 @@ class _ProductScreenState extends State<ProductScreen> {
                             );
                             setState(
                               () {
-                                cartListItems[item.productName] = {
+                                cartListItems[element["productName"]] = {
                                   "quantity": 1,
-                                  "price": item.price,
-                                  "total": item.price * 1,
+                                  "price": element["price"],
+                                  "total": element["price"] * 1,
                                 };
                               },
                             );
