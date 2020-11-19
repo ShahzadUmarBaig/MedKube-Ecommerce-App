@@ -43,6 +43,7 @@ class CustomDrawer extends StatelessWidget {
             title: "Profile",
             icon: Icons.person_rounded,
             onTap: () {
+              Navigator.pop(context);
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -56,7 +57,10 @@ class CustomDrawer extends StatelessWidget {
             endIndent: 16.0,
           ),
           ListTile(
-            onTap: () => Navigator.pushNamed(context, CartScreen.id),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, CartScreen.id);
+            },
             leading: Icon(Icons.shopping_cart, size: 34.0),
             title: Text("Cart", style: GoogleFonts.montserrat(fontSize: 20.0)),
             trailing: Container(
@@ -79,7 +83,10 @@ class CustomDrawer extends StatelessWidget {
           CustomListTiles(
             title: "Orders",
             icon: Icons.bookmark_border,
-            onTap: () => Navigator.pushNamed(context, OrderScreen.id),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, OrderScreen.id);
+            },
           ),
           Divider(
             indent: 16.0,

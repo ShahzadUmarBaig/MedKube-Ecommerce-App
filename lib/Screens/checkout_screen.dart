@@ -419,8 +419,13 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                       );
                                     },
                                   ).then(
-                                    (value) => Navigator.pushReplacementNamed(
-                                        context, HomeScreen.id),
+                                    (value) {
+                                      cartListItems.clear();
+                                      cartItemKeys.clear();
+
+                                      Navigator.pushReplacementNamed(
+                                          context, HomeScreen.id);
+                                    },
                                   );
                                 },
                               );
