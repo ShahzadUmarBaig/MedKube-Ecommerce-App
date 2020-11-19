@@ -25,7 +25,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
   TextEditingController _phoneNumber;
   TextEditingController _duration;
   CollectionReference prescriptionOrders =
-      FirebaseFirestore.instance.collection('prescriptionOrders');
+      FirebaseFirestore.instance.collection('PrescriptionOrders');
 
   getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -141,7 +141,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                     if (_formKey.currentState.validate() && _image != null) {
                       String orderNumber =
                           OrderNumberGenerator().getRandomString(10);
-
+                      FocusScope.of(context).unfocus();
                       try {
                         if (userInfo.isEmpty) {
                           Reference ref = FirebaseStorage.instance
@@ -173,13 +173,13 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                           String imagePath = await ref.getDownloadURL();
                           //  print(imagePath);
 
-                          await prescriptionOrders.doc(userInfo['UID']).set({
+                          await prescriptionOrders.doc(orderNumber).set({
                             'Note': _duration.text,
                             'Phone': _phoneNumber.text,
                             'Address': _address.text,
                             'Status': "In Progress",
                             'PicPath': imagePath,
-                            "OrderNo": orderNumber,
+                            "OrderBy": userInfo['UID'],
                           }).then((value) => null);
                         }
                       } catch (e) {
