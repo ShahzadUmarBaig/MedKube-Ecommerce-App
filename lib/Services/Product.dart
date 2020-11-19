@@ -26,3 +26,5 @@ class Product {
       this.imagePath,
       this.price});
 }
+
+Map<String, dynamic> productList = {};

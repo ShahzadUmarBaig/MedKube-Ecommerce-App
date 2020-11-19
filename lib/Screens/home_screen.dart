@@ -48,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
       userInfo.addAll(value.data());
     });
     setState(() {
+      print(allUsers);
       isLoaded = true;
     });
   }

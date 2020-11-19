@@ -39,6 +39,8 @@ class _ProductScreenState extends State<ProductScreen> {
     await products.get().then((value) {
       value.docs.forEach((element) {
         if (widget.categoryCondition == null) {
+          productList[element.id] = {element.data()};
+
           _productList.add(Product(
             packType: element["packType"],
             packSize: element["packSize"],
@@ -308,6 +310,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                   ),
                                   //    fillColor: Colors.blueAccent,
                                   onPressed: () {
+                                    print(productList);
                                     if (cartListItems
                                         .containsKey(item.productName)) {
                                       _scaffoldKey.currentState.showSnackBar(
