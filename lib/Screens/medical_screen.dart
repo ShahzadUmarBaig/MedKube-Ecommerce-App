@@ -11,6 +11,7 @@ import 'package:medkube/Screens/detail_screen.dart';
 import 'package:medkube/Screens/profile_screen.dart';
 import 'package:medkube/Services/Cart.dart';
 import 'package:medkube/Services/Product.dart';
+import 'package:medkube/Services/user_info.dart';
 import 'package:medkube/Widgets/shop_card.dart';
 import 'package:medkube/extras.dart';
 
@@ -27,7 +28,6 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  List<Product> _productList = List<Product>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   CollectionReference products =
       FirebaseFirestore.instance.collection("products");
@@ -43,35 +43,9 @@ class _ProductScreenState extends State<ProductScreen> {
         if (widget.categoryCondition == null) {
           productList[element.id] = element.data();
           _productKeys.add(element.id);
-          _productList.add(Product(
-            packType: element["packType"],
-            packSize: element["packSize"],
-            category: element["category"],
-            company: element["company"],
-            description: element["description"],
-            formula: element["formula"],
-            imagePath: element["imagePath"],
-            inStock: element["inStock"],
-            otc: element["otc"],
-            price: element["price"],
-            productName: element["productName"],
-            type: element["type"],
-          ));
         } else if (element["category"] == widget.categoryCondition) {
-          _productList.add(Product(
-            packType: element["packType"],
-            packSize: element["packSize"],
-            category: element["category"],
-            company: element["company"],
-            description: element["description"],
-            formula: element["formula"],
-            imagePath: element["imagePath"],
-            inStock: element["inStock"],
-            otc: element["otc"],
-            price: element["price"],
-            productName: element["productName"],
-            type: element["type"],
-          ));
+          productList[element.id] = element.data();
+          _productKeys.add(element.id);
         }
       });
     });
@@ -248,18 +222,16 @@ class _ProductScreenState extends State<ProductScreen> {
                 ),
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                    var itemDetail = _productList[index];
                     var element = productList[_productKeys[index]];
                     return GestureDetector(
                       onTap: () {
-                        openDetailScreen(context, itemDetail);
+                        //      openDetailScreen(context, itemDetail);
                       },
                       child: ShopCard(
                         imagePath: element["imagePath"],
                         price: element["price"].toString(),
                         productName: element["productName"],
                         onPressed: () {
-                          print(productList);
                           if (cartListItems
                               .containsKey(element["productName"])) {
                             _scaffoldKey.currentState.showSnackBar(
@@ -282,6 +254,7 @@ class _ProductScreenState extends State<ProductScreen> {
                             setState(
                               () {
                                 cartListItems[element["productName"]] = {
+                                  "productName": element["productName"],
                                   "quantity": 1,
                                   "price": element["price"],
                                   "total": element["price"] * 1,
@@ -293,7 +266,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       ),
                     );
                   },
-                  childCount: _productList.length,
+                  childCount: productList.keys.toList().length,
                 ),
               )
             ],

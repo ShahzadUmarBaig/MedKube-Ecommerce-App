@@ -8,24 +8,6 @@ Map<String, dynamic> cartListItems = {
   // },
 };
 
-Map<String, dynamic> userInfo = {
-  // "VNasMCxrx8eDTxEkH0hAxPWkSl73": {
-  //   "Address": "A 214",
-  //   "Email": "mirza@gmail.com",
-  //   "Phone": "03162821544",
-  // "UID": "VNasMCxrx8eDTxEkH0hAxPWkSl73",
-  // "Username": "Regular Customer",
-  // },
-};
-
-Map<String, dynamic> promoAvailable = {
-  "Independence": {
-    "promoTitle": "5% OFF",
-    "discount": 0.05,
-    "isActive": true,
-  },
-};
-
 // class Cart {
 //   final String title;
 //   final double price;

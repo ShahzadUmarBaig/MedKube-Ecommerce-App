@@ -7,9 +7,9 @@ import 'package:medkube/Screens/Firebase/login_screen.dart';
 import 'package:medkube/Screens/hospital_screen.dart';
 import 'package:medkube/Screens/medical_screen.dart';
 import 'package:medkube/Screens/prescription_screen.dart';
-import 'package:medkube/Services/Cart.dart';
-import 'package:medkube/Widgets/custom_card.dart';
+import 'package:medkube/Services/user_info.dart';
 import 'package:medkube/Widgets/custom_drawer.dart';
+import 'package:medkube/Widgets/home_screen_card.dart';
 
 class HomeScreen extends StatefulWidget {
   static String id = "HomeScreen";
@@ -158,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CustomCard(
+                HomeScreenCard(
                   myImage: AssetImage("images/grocery2.png"),
                   title: "General",
                   fontSize: 22,
@@ -172,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   },
                 ),
-                CustomCard(
+                HomeScreenCard(
                   myImage: AssetImage("images/camera2.png"),
                   title: "    Upload \nPrescription",
                   fontSize: 20,
@@ -185,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CustomCard(
+                HomeScreenCard(
                   title: "   Medical \nEquipment",
                   fontSize: 20,
                   myImage: AssetImage("images/syring.png"),
@@ -197,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                CustomCard(
+                HomeScreenCard(
                   myImage: AssetImage("images/hospital.png"),
                   title: "Hospitals",
                   fontSize: 20,

@@ -1,9 +1,9 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:medkube/Screens/checkout_screen.dart';
 import 'package:medkube/Services/Cart.dart';
+import 'package:medkube/Widgets/cart_card.dart';
 import 'package:medkube/Widgets/custom_button.dart';
 import 'package:medkube/extras.dart';
 
@@ -96,150 +96,33 @@ class _CartScreenState extends State<CartScreen> {
                 height: MediaQuery.of(context).size.height / 1.75,
                 child: ListView.builder(
                   padding: EdgeInsets.all(0),
-                  itemCount: cartItemNames.length,
+                  itemCount: cartListItems.length,
                   itemBuilder: (context, index) {
-                    return Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      elevation: 4,
-                      child: Container(
-                        height: 60,
-                        child: Stack(
-                          children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Container(
-                                width: 50,
-                                height: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(8.0),
-                                      bottomLeft: Radius.circular(8.0)),
-                                ),
-                                child: RawMaterialButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      cartListItems
-                                          .remove(cartItemNames[index]);
-                                      getTotal();
-                                    });
-                                  },
-                                  child: Icon(
-                                    Icons.delete,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              left: 50,
-                              child: Container(
-                                padding: EdgeInsets.only(
-                                    left: 8.0, top: 3.0, right: 3.0),
-                                width: 170,
-                                height: 60,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Text(
-                                      cartItemNames[index],
-                                      style: GoogleFonts.montserrat(
-                                          fontSize: 18.0),
-                                    ),
-                                    SizedBox(height: 4.0),
-                                    Text(
-                                      "Price Rs.${cartListItems[cartItemNames[index]]["price"]}",
-                                      style: GoogleFonts.montserrat(
-                                          color: Colors.black54,
-                                          fontSize: 16.0),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              right: 70,
-                              top: 15,
-                              child: Container(
-                                padding: EdgeInsets.only(left: 8.0, right: 4.0),
-                                width: 50,
-                                height: 30,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    style: BorderStyle.solid,
-                                    color: Colors.grey,
-                                  ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8.0)),
-                                ),
-                                child: DropdownButton(
-                                  isExpanded: true,
-                                  dropdownColor: Colors.grey[200],
-                                  elevation: 2,
-                                  underline: Container(),
-                                  value: cartListItems[cartItemNames[index]]
-                                          ["quantity"] -
-                                      1,
-                                  items: List.generate(
-                                    6,
-                                    (index) => DropdownMenuItem(
-                                      child: Text((index + 1).toString()),
-                                      value: index,
-                                    ),
-                                  ),
-                                  onChanged: (value) {
-                                    setState(
-                                      () {
-                                        cartListItems[cartItemNames[index]]
-                                            ["quantity"] = value + 1;
+                    var item = cartItemNames[index];
+                    return CartCard(
+                      deleteFunction: () {
+                        setState(() {
+                          cartListItems.remove(item);
+                          getTotal();
+                        });
+                      },
+                      price: (cartListItems[item]["price"]).toString(),
+                      productName: item,
+                      indexValue: cartListItems[item]["quantity"] - 1,
+                      onChanged: (value) {
+                        setState(
+                          () {
+                            cartListItems[item]["quantity"] = value + 1;
 
-                                        cartListItems[cartItemNames[index]]
-                                            ["total"] = cartListItems[
-                                                    cartItemNames[index]]
-                                                ["quantity"] *
-                                            cartListItems[cartItemNames[index]]
-                                                ["price"];
-                                        getTotal();
-                                      },
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Container(
-                                height: 50,
-                                width: 65,
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    left: BorderSide(
-                                        style: BorderStyle.solid,
-                                        color: Colors.grey[200]),
-                                  ),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      cartListItems[cartItemNames[index]]
-                                              ["total"]
-                                          .toString(),
-                                      style: GoogleFonts.montserrat(
-                                          fontSize: 18.0),
-                                    ),
-                                    Text("PKR"),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                            cartListItems[item]["total"] = cartListItems[item]
+                                    ["quantity"] *
+                                cartListItems[item]["price"];
+                            getTotal();
+                          },
+                        );
+                      },
+                      subTotal: cartListItems[cartItemNames[index]]["total"]
+                          .toString(),
                     );
                   },
                 ),

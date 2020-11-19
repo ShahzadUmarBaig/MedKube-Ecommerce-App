@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:medkube/Screens/cart_screen.dart';
 import 'package:medkube/Services/Cart.dart';
+import 'package:medkube/Services/Order_Code.dart';
+import 'package:medkube/Services/Promos.dart';
+import 'package:medkube/Services/user_info.dart';
 import 'package:medkube/Widgets/add_button.dart';
 import 'package:medkube/Widgets/checkout_textfield.dart';
 import 'package:medkube/Widgets/custom_button.dart';
@@ -33,6 +37,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   TextEditingController _countryController = TextEditingController();
   TextEditingController _cityController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
+  CollectionReference cartOrders =
+      FirebaseFirestore.instance.collection('CartOrders');
 
   @override
   void initState() {
@@ -113,8 +119,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         textStyle: kCheckOutTextStyle),
                     CheckOutText(
                         label: "Total",
-                        value:
-                            (getTotal() + delivery - discountValue).toString(),
+                        value: (getTotal() + delivery - discountValue)
+                            .toStringAsFixed(2),
                         textStyle: kCheckOutTextStyle.copyWith(fontSize: 24.0)),
                     DiscountRow(
                         onTap: () {
@@ -245,8 +251,24 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                       buttonTextColor: Colors.white,
                       marginHorizontal: 16.0,
                       marginVertical: 4.0,
-                      onTap: () {
-                        if (_formKey.currentState.validate()) {}
+                      onTap: () async {
+                        if (_formKey.currentState.validate()) {
+                          String orderNumber =
+                              OrderNumberGenerator().getRandomString(10);
+                          try {
+                            if (userInfo.isEmpty) {
+                              await cartOrders.doc(orderNumber).set({
+                                // 'Note': _duration.text,
+                                // 'Phone': _phoneNumber.text,
+                                // 'Address': _address.text,
+                                // 'Status': "In Progress",
+                                // 'PicPath': imagePath,
+                              }).then((value) => null);
+                            } else {}
+                          } catch (e) {
+                            print(e);
+                          }
+                        }
                       },
                     ),
                     Container(

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CustomCard extends StatelessWidget {
+class HomeScreenCard extends StatelessWidget {
   final IconData cardIcon;
   final String title;
   final double fontSize;
   final AssetImage myImage;
   final Function onTap;
-  const CustomCard(
+  const HomeScreenCard(
       {Key key,
       this.onTap,
       this.myImage,

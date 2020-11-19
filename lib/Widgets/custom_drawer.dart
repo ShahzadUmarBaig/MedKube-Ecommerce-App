@@ -6,6 +6,7 @@ import 'package:medkube/Screens/cart_screen.dart';
 import 'package:medkube/Screens/order_screen.dart';
 import 'package:medkube/Screens/profile_screen.dart';
 import 'package:medkube/Services/Cart.dart';
+import 'package:medkube/Services/user_info.dart';
 import 'package:medkube/Widgets/custom_listTiles.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
