@@ -6,7 +6,7 @@ import 'package:medkube/Screens/cart_screen.dart';
 import 'package:medkube/Screens/order_screen.dart';
 import 'package:medkube/Screens/profile_screen.dart';
 import 'package:medkube/Services/Cart.dart';
-import 'package:medkube/Services/user_info.dart';
+import 'package:medkube/Services/Product.dart';
 import 'package:medkube/Widgets/custom_listTiles.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
@@ -22,7 +22,7 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(userInfo);
+    print(generalProductList);
     return Drawer(
       semanticLabel: "Drawer",
       elevation: 16.0,

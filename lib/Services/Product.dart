@@ -27,4 +27,10 @@ class Product {
       this.price});
 }
 
-Map<String, dynamic> productList = {};
+Map<String, dynamic> generalProductList = {};
+
+List<String> generalProductKeys = List<String>();
+
+Map<String, dynamic> nonGeneralProductList = {};
+
+List<String> nonGeneralProductKeys = List<String>();

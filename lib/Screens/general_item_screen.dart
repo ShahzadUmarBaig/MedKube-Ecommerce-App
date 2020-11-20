@@ -17,17 +17,17 @@ import 'package:medkube/extras.dart';
 
 import '../Widgets/widgets.dart';
 
-class MedicalItemScreen extends StatefulWidget {
-  static const id = "MedicalScreen";
+class GeneralItemScreen extends StatefulWidget {
+  static const id = "GeneralScreen";
   final categoryCondition;
 
-  const MedicalItemScreen({Key key, this.categoryCondition}) : super(key: key);
+  const GeneralItemScreen({Key key, this.categoryCondition}) : super(key: key);
 
   @override
-  _MedicalItemScreenState createState() => _MedicalItemScreenState();
+  _GeneralItemScreenState createState() => _GeneralItemScreenState();
 }
 
-class _MedicalItemScreenState extends State<MedicalItemScreen> {
+class _GeneralItemScreenState extends State<GeneralItemScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   CollectionReference products =
       FirebaseFirestore.instance.collection("products");
@@ -40,9 +40,10 @@ class _MedicalItemScreenState extends State<MedicalItemScreen> {
     await products.get().then((value) {
       value.docs.forEach((element) {
         setState(() {
-          if (element["category"] != "general") {
-            nonGeneralProductList[element.id] = element.data();
-            nonGeneralProductKeys.add(element.id);
+          if (element["category"] == "general") {
+            generalProductList[element.id] = element.data();
+            print(element.id);
+            generalProductKeys.add(element.id);
           }
         });
       });
@@ -219,8 +220,7 @@ class _MedicalItemScreenState extends State<MedicalItemScreen> {
                 ),
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                    var element =
-                        nonGeneralProductList[nonGeneralProductKeys[index]];
+                    var element = generalProductList[generalProductKeys[index]];
 
                     return GestureDetector(
                       onTap: () {
@@ -265,7 +265,7 @@ class _MedicalItemScreenState extends State<MedicalItemScreen> {
                       ),
                     );
                   },
-                  childCount: nonGeneralProductList.keys.toList().length,
+                  childCount: generalProductList.keys.toList().length,
                 ),
               )
             ],

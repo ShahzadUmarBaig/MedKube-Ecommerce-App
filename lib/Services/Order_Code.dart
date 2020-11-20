@@ -8,3 +8,7 @@ class OrderNumberGenerator {
   String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
       length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 }
+
+Map<String, dynamic> cartOrders = {};
+
+Map<String, dynamic> prescriptionOrders = {};

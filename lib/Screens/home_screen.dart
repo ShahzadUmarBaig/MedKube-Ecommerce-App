@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medkube/Screens/Firebase/login_screen.dart';
+import 'package:medkube/Screens/general_item_screen.dart';
 import 'package:medkube/Screens/hospital_screen.dart';
 import 'package:medkube/Screens/medical_screen.dart';
 import 'package:medkube/Screens/prescription_screen.dart';
@@ -162,15 +163,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   myImage: AssetImage("images/grocery2.png"),
                   title: "General",
                   fontSize: 22,
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => ProductScreen(
-                          categoryCondition: "general",
-                        ),
-                      ),
-                    );
-                  },
+                  onTap: () =>
+                      Navigator.pushNamed(context, GeneralItemScreen.id),
                 ),
                 HomeScreenCard(
                   myImage: AssetImage("images/camera2.png"),
@@ -189,13 +183,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   title: "   Medical \nEquipment",
                   fontSize: 20,
                   myImage: AssetImage("images/syring.png"),
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => ProductScreen(
-                        categoryCondition: null,
-                      ),
-                    ),
-                  ),
+                  onTap: () =>
+                      Navigator.pushNamed(context, MedicalItemScreen.id),
                 ),
                 HomeScreenCard(
                   myImage: AssetImage("images/hospital.png"),
