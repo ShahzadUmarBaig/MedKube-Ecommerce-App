@@ -180,6 +180,10 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                             FocusScope.of(context).unfocus();
                             try {
                               if (userInfo.isEmpty) {
+                                setState(() {
+                                  isLoading = true;
+                                });
+
                                 Reference ref = FirebaseStorage.instance
                                     .ref()
                                     .child('PrescriptionOrders/')
@@ -197,7 +201,111 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                                   'Status': "In Progress",
                                   'PicPath': imagePath,
                                   "OrderNo": orderNumber,
-                                }).then((value) => null);
+                                }).then(
+                                  (value) {
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    showGeneralDialog(
+                                      context: context,
+                                      barrierDismissible: true,
+                                      barrierLabel:
+                                          MaterialLocalizations.of(context)
+                                              .modalBarrierDismissLabel,
+                                      transitionDuration:
+                                          const Duration(milliseconds: 200),
+                                      pageBuilder: (BuildContext buildContext,
+                                          Animation animation,
+                                          Animation secondaryAnimation) {
+                                        return Dialog(
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                1.2,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                3,
+                                            color: Colors.white,
+                                            child: Stack(
+                                              children: [
+                                                Positioned(
+                                                    child: Container(
+                                                        height: 10,
+                                                        color: Colors.blue)),
+                                                Positioned(
+                                                  top: MediaQuery.of(context)
+                                                          .size
+                                                          .height /
+                                                      9,
+                                                  left: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      4.5,
+                                                  child: Text(
+                                                    "Your Order No",
+                                                    style:
+                                                        GoogleFonts.montserrat(
+                                                            fontSize: 20.0,
+                                                            color:
+                                                                Colors.black54),
+                                                  ),
+                                                ),
+                                                Align(
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    orderNumber,
+                                                    style:
+                                                        GoogleFonts.montserrat(
+                                                            fontSize: 28.0,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color:
+                                                                Colors.black54),
+                                                  ),
+                                                ),
+                                                Positioned(
+                                                  bottom: MediaQuery.of(context)
+                                                          .size
+                                                          .height /
+                                                      9,
+                                                  left: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      12,
+                                                  child: Text(
+                                                    "You'll Need This To Track Your Order",
+                                                    style:
+                                                        GoogleFonts.montserrat(
+                                                            fontSize: 16.0,
+                                                            color:
+                                                                Colors.black54),
+                                                  ),
+                                                ),
+                                                Align(
+                                                    alignment:
+                                                        Alignment.bottomCenter,
+                                                    child: Container(
+                                                        height: 10,
+                                                        color: Colors.blue)),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ).then(
+                                      (value) {
+                                        setState(() {
+                                          _duration.clear();
+                                          _image = null;
+                                          _address.clear();
+                                          _phoneNumber.clear();
+                                        });
+                                      },
+                                    );
+                                  },
+                                );
                               } else {
                                 setState(() {
                                   isLoading = true;
@@ -220,19 +328,116 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                                   'Status': "In Progress",
                                   'PicPath': imagePath,
                                   "OrderBy": userInfo['UID'],
-                                }).then((value) {});
+                                }).then(
+                                  (value) {
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    showGeneralDialog(
+                                      context: context,
+                                      barrierDismissible: true,
+                                      barrierLabel:
+                                          MaterialLocalizations.of(context)
+                                              .modalBarrierDismissLabel,
+                                      transitionDuration:
+                                          const Duration(milliseconds: 200),
+                                      pageBuilder: (BuildContext buildContext,
+                                          Animation animation,
+                                          Animation secondaryAnimation) {
+                                        return Dialog(
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                1.2,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                3,
+                                            color: Colors.white,
+                                            child: Stack(
+                                              children: [
+                                                Positioned(
+                                                    child: Container(
+                                                        height: 10,
+                                                        color: Colors.blue)),
+                                                Positioned(
+                                                  top: MediaQuery.of(context)
+                                                          .size
+                                                          .height /
+                                                      9,
+                                                  left: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      4.5,
+                                                  child: Text(
+                                                    "Your Order No",
+                                                    style:
+                                                        GoogleFonts.montserrat(
+                                                            fontSize: 20.0,
+                                                            color:
+                                                                Colors.black54),
+                                                  ),
+                                                ),
+                                                Align(
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    orderNumber,
+                                                    style:
+                                                        GoogleFonts.montserrat(
+                                                            fontSize: 28.0,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color:
+                                                                Colors.black54),
+                                                  ),
+                                                ),
+                                                Positioned(
+                                                  bottom: MediaQuery.of(context)
+                                                          .size
+                                                          .height /
+                                                      9,
+                                                  left: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      12,
+                                                  child: Text(
+                                                    "You'll Need This To Track Your Order",
+                                                    style:
+                                                        GoogleFonts.montserrat(
+                                                            fontSize: 16.0,
+                                                            color:
+                                                                Colors.black54),
+                                                  ),
+                                                ),
+                                                Align(
+                                                    alignment:
+                                                        Alignment.bottomCenter,
+                                                    child: Container(
+                                                        height: 10,
+                                                        color: Colors.blue)),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ).then(
+                                      (value) {
+                                        setState(() {
+                                          _duration.clear();
+                                          _image = null;
+                                          _address.clear();
+                                          _phoneNumber.clear();
+                                        });
+                                      },
+                                    );
+                                  },
+                                );
                               }
                             } catch (e) {
                               print(e);
                             }
 
-                            setState(() {
-                              isLoading = false;
-                              _duration.clear();
-                              _image = null;
-                              _address.clear();
-                              _phoneNumber.clear();
-                            });
                             // String baseName = basename(_image.path);
                             // print(baseName);
                           }

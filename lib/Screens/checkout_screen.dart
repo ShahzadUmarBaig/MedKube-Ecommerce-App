@@ -241,7 +241,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                       ),
                     ),
                     CheckoutTextField(
-                        controller: _phoneController, text: "Phone"),
+                        controller: _phoneController,
+                        text: "Phone",
+                        textInputType: TextInputType.number),
                     CheckoutTextField(
                         controller: _countryController, text: "Country"),
                     CheckoutTextField(
@@ -277,47 +279,99 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                   "delivery": delivery,
                                 },
                               ).then(
-                                (value) => showGeneralDialog(
-                                  context: context,
-                                  barrierDismissible: true,
-                                  barrierLabel:
-                                      MaterialLocalizations.of(context)
-                                          .modalBarrierDismissLabel,
-                                  barrierColor: Colors.black45,
-                                  transitionDuration:
-                                      const Duration(milliseconds: 200),
-                                  pageBuilder: (BuildContext buildContext,
-                                      Animation animation,
-                                      Animation secondaryAnimation) {
-                                    return Center(
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width -
-                                                10,
-                                        height:
-                                            MediaQuery.of(context).size.height -
-                                                80,
-                                        padding: EdgeInsets.all(20),
-                                        color: Colors.white,
-                                        child: Column(
-                                          children: [
-                                            RaisedButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: Text(
-                                                "Save",
-                                                style: TextStyle(
-                                                    color: Colors.white),
+                                (value) {
+                                  showGeneralDialog(
+                                    context: context,
+                                    barrierDismissible: true,
+                                    barrierLabel:
+                                        MaterialLocalizations.of(context)
+                                            .modalBarrierDismissLabel,
+                                    transitionDuration:
+                                        const Duration(milliseconds: 200),
+                                    pageBuilder: (BuildContext buildContext,
+                                        Animation animation,
+                                        Animation secondaryAnimation) {
+                                      return Dialog(
+                                        child: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              1.2,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              3,
+                                          color: Colors.white,
+                                          child: Stack(
+                                            children: [
+                                              Positioned(
+                                                  child: Container(
+                                                      height: 10,
+                                                      color: Colors.blue)),
+                                              Positioned(
+                                                top: MediaQuery.of(context)
+                                                        .size
+                                                        .height /
+                                                    9,
+                                                left: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    4.5,
+                                                child: Text(
+                                                  "Your Order No",
+                                                  style: GoogleFonts.montserrat(
+                                                      fontSize: 20.0,
+                                                      color: Colors.black54),
+                                                ),
                                               ),
-                                              color: const Color(0xFF1BC0C5),
-                                            )
-                                          ],
+                                              Align(
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  orderNumber,
+                                                  style: GoogleFonts.montserrat(
+                                                      fontSize: 28.0,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Colors.black54),
+                                                ),
+                                              ),
+                                              Positioned(
+                                                bottom: MediaQuery.of(context)
+                                                        .size
+                                                        .height /
+                                                    9,
+                                                left: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    12,
+                                                child: Text(
+                                                  "You'll Need This To Track Your Order",
+                                                  style: GoogleFonts.montserrat(
+                                                      fontSize: 16.0,
+                                                      color: Colors.black54),
+                                                ),
+                                              ),
+                                              Align(
+                                                  alignment:
+                                                      Alignment.bottomCenter,
+                                                  child: Container(
+                                                      height: 10,
+                                                      color: Colors.blue)),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  },
-                                ),
+                                      );
+                                    },
+                                  ).then(
+                                    (value) {
+                                      cartListItems.clear();
+                                      cartItemKeys.clear();
+
+                                      Navigator.pushReplacementNamed(
+                                          context, HomeScreen.id);
+                                    },
+                                  );
+                                },
                               );
                             } else {
                               await cartOrders.doc(orderNumber).set({

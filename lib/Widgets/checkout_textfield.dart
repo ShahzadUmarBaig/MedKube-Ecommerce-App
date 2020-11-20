@@ -5,8 +5,13 @@ import '../constants.dart';
 class CheckoutTextField extends StatelessWidget {
   final TextEditingController controller;
   final String text;
+  final TextInputType textInputType;
 
-  const CheckoutTextField({Key key, this.controller, this.text})
+  const CheckoutTextField(
+      {Key key,
+      this.controller,
+      this.text,
+      this.textInputType = TextInputType.text})
       : super(key: key);
 
   @override
@@ -18,6 +23,7 @@ class CheckoutTextField extends StatelessWidget {
           Expanded(
             flex: 9,
             child: TextFormField(
+              keyboardType: textInputType,
               validator: (value) {
                 if (value.isEmpty) {
                   return "Please Enter $text";
