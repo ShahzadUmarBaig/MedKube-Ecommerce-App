@@ -9,6 +9,6 @@ class OrderNumberGenerator {
       length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 }
 
-Map<String, dynamic> cartOrders = {};
+Map<String, dynamic> orders = {};
 
-Map<String, dynamic> prescriptionOrders = {};
+List<String> orderKeys = List<String>();

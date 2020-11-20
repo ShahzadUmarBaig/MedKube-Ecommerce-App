@@ -26,8 +26,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
   TextEditingController _address;
   TextEditingController _phoneNumber;
   TextEditingController _duration;
-  CollectionReference prescriptionOrders =
-      FirebaseFirestore.instance.collection('PrescriptionOrders');
+  CollectionReference _orders = FirebaseFirestore.instance.collection('Orders');
   bool isLoading;
 
   getImage() async {
@@ -183,7 +182,6 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                                 setState(() {
                                   isLoading = true;
                                 });
-
                                 Reference ref = FirebaseStorage.instance
                                     .ref()
                                     .child('PrescriptionOrders/')
@@ -194,7 +192,8 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                                 String imagePath = await ref.getDownloadURL();
                                 //  print(imagePath);
 
-                                await prescriptionOrders.doc(orderNumber).set({
+                                await _orders.doc(orderNumber).set({
+                                  'OrderType': "prescription",
                                   'Note': _duration.text,
                                   'Phone': _phoneNumber.text,
                                   'Address': _address.text,
@@ -310,7 +309,6 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                                 setState(() {
                                   isLoading = true;
                                 });
-                                print("This is all escaped");
                                 Reference ref = FirebaseStorage.instance
                                     .ref()
                                     .child('PrescriptionOrders/')
@@ -321,13 +319,14 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                                 String imagePath = await ref.getDownloadURL();
                                 //  print(imagePath);
 
-                                await prescriptionOrders.doc(orderNumber).set({
+                                await _orders.doc(orderNumber).set({
+                                  'OrderType': "prescription",
                                   'Note': _duration.text,
                                   'Phone': _phoneNumber.text,
                                   'Address': _address.text,
                                   'Status': "In Progress",
                                   'PicPath': imagePath,
-                                  "OrderBy": userInfo['UID'],
+                                  "OrderNo": userInfo['UID'],
                                 }).then(
                                   (value) {
                                     setState(() {

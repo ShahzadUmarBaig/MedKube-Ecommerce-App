@@ -40,8 +40,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   TextEditingController _countryController = TextEditingController();
   TextEditingController _cityController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
-  CollectionReference cartOrders =
-      FirebaseFirestore.instance.collection('CartOrders');
+  CollectionReference _orders = FirebaseFirestore.instance.collection('Orders');
 
   @override
   void initState() {
@@ -262,8 +261,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                               OrderNumberGenerator().getRandomString(10);
                           try {
                             if (userInfo.isEmpty) {
-                              await cartOrders.doc(orderNumber).set(
+                              await _orders.doc(orderNumber).set(
                                 {
+                                  "OrderType": "cart",
                                   "OrderNo": orderNumber,
                                   "Address": _addressController.text,
                                   "Apartment": _apartmentController.text,
@@ -374,7 +374,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                 },
                               );
                             } else {
-                              await cartOrders.doc(orderNumber).set({
+                              await _orders.doc(orderNumber).set({
+                                "OrderType": "cart",
+                                "OrderNo": orderNumber,
                                 "UID": userInfo['UID'],
                                 "Address": _addressController.text,
                                 "Apartment": _apartmentController.text,
