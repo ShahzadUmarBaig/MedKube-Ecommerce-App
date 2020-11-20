@@ -200,6 +200,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                                   'Status': "In Progress",
                                   'PicPath': imagePath,
                                   "OrderNo": orderNumber,
+                                  "Price": null,
                                 }).then(
                                   (value) {
                                     setState(() {
@@ -326,7 +327,9 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                                   'Address': _address.text,
                                   'Status': "In Progress",
                                   'PicPath': imagePath,
-                                  "OrderNo": userInfo['UID'],
+                                  "OrderNo": orderNumber,
+                                  "UID": userInfo['UID'],
+                                  "Price": null,
                                 }).then(
                                   (value) {
                                     setState(() {

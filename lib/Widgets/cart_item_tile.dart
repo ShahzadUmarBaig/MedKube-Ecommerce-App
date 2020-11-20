@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class OrderItemTile extends StatelessWidget {
+class CartItemTile extends StatelessWidget {
   final Map<String, dynamic> orderDetails;
-
-  const OrderItemTile({Key key, this.orderDetails}) : super(key: key);
+  CartItemTile({Key key, this.orderDetails}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final String orderStatus = orderDetails["Status"];
+    int price = orderDetails["price"];
     return Container(
       height: 80,
       child: Card(

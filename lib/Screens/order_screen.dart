@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medkube/Services/Order_Code.dart';
 import 'package:medkube/Services/user_info.dart';
+import 'package:medkube/Widgets/cart_item_tile.dart';
 import 'package:medkube/Widgets/custom_button.dart';
-import 'package:medkube/Widgets/order_item_tile.dart';
+import 'package:medkube/Widgets/prescription_item_tile.dart';
 import 'package:medkube/Widgets/profile_textfield.dart';
 import 'package:medkube/constants.dart';
 import 'package:medkube/extras.dart';
@@ -235,9 +236,15 @@ class _OrderScreenState extends State<OrderScreen> {
                 child: ListView.builder(
                   padding: EdgeInsets.symmetric(vertical: 4.0),
                   itemBuilder: (context, index) {
-                    return OrderItemTile(
-                      orderDetails: orders[orderKeys[index]],
-                    );
+                    if (orders[orderKeys[index]]["OrderType"] == "cart") {
+                      return CartItemTile(
+                        orderDetails: orders[orderKeys[index]],
+                      );
+                    } else {
+                      return PrescriptionItemTile(
+                        orderDetails: orders[orderKeys[index]],
+                      );
+                    }
                   },
                   itemCount: itemCount,
                 ),

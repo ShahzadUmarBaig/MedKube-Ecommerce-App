@@ -273,7 +273,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                   "firstName": _firstNameController.text,
                                   "lastName": _lastNameController.text,
                                   "items": cartListItems,
-                                  "total": total,
+                                  "total":
+                                      (getTotal() + delivery - discountValue)
+                                          .toStringAsFixed(2),
                                   "discount": discountValue,
                                   "promoApplied": promoApplied,
                                   "delivery": delivery,
@@ -386,7 +388,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                 "firstName": _firstNameController.text,
                                 "lastName": _lastNameController.text,
                                 "items": cartListItems,
-                                "total": total,
+                                "total": (getTotal() + delivery - discountValue)
+                                    .toStringAsFixed(2),
                                 "discount": discountValue,
                                 "promoApplied": promoApplied,
                                 "delivery": delivery,
