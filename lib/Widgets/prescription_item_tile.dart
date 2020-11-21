@@ -15,10 +15,27 @@ class PrescriptionItemTile extends StatelessWidget {
     }
   }
 
+  getPrice(price) {
+    if (price == null) {
+      return "Calculating";
+    } else {
+      return price;
+    }
+  }
+
+  getPriceColor(price) {
+    if (price == null) {
+      return Colors.green;
+    } else {
+      return Colors.black54;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(orderDetails);
     final String orderStatus = orderDetails["Status"];
-    int price = orderDetails["price"];
+    String price = orderDetails["price"];
     return Container(
       height: 80,
       child: Card(
@@ -27,7 +44,7 @@ class PrescriptionItemTile extends StatelessWidget {
           children: [
             Container(
               height: 50,
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -68,7 +85,7 @@ class PrescriptionItemTile extends StatelessWidget {
                               orderDetails["OrderType"].toString().substring(1),
                           style: GoogleFonts.montserrat(
                               fontSize: 14.0, color: Colors.black54)),
-                      Text(orderDetails["Status"],
+                      Text(orderDetails["OrderNo"],
                           style: GoogleFonts.montserrat(
                               fontSize: 14.0, color: Colors.black54)),
                       Text("Click For Details",
@@ -90,10 +107,10 @@ class PrescriptionItemTile extends StatelessWidget {
                       style: GoogleFonts.montserrat(
                           fontSize: 14.0, color: Colors.black54)),
                   SizedBox(height: 2.0),
-                  Text(price == 0 ? "Not Decided" : price.toString(),
+                  Text(getPrice(price),
                       style: GoogleFonts.montserrat(
                           fontSize: 16.0,
-                          color: Colors.black54,
+                          color: getPriceColor(price),
                           fontWeight: FontWeight.w500)),
                   Text("PKR",
                       style: GoogleFonts.montserrat(

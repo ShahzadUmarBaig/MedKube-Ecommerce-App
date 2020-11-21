@@ -279,6 +279,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                   "discount": discountValue,
                                   "promoApplied": promoApplied,
                                   "delivery": delivery,
+                                  "Status" : "In Progress",
                                 },
                               ).then(
                                 (value) {
@@ -393,6 +394,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                 "discount": discountValue,
                                 "promoApplied": promoApplied,
                                 "delivery": delivery,
+
+                                "Status" : "In Progress",
                               }).then(
                                 (value) {
                                   showGeneralDialog(

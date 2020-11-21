@@ -3,29 +3,32 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medkube/Services/Cart.dart';
-import 'package:medkube/Services/Product.dart';
 
 class DetailScreen extends StatefulWidget {
   static String id = "DetailScreen";
-  final Product item;
-
+  final Map<String, dynamic> item;
   DetailScreen({this.item});
 
   @override
-  _DetailScreenState createState() => _DetailScreenState(item);
+  _DetailScreenState createState() => _DetailScreenState();
 }
 
 class _DetailScreenState extends State<DetailScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  _DetailScreenState(this.item);
-
-  Product item;
+  Map<String, dynamic> item;
   bool favorite = false;
   bool stock = false;
   int quantity = 01;
 
   @override
+  void initState() {
+    super.initState();
+    item = widget.item;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print(item);
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.blue[100],
@@ -84,7 +87,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       child: Row(
                         children: [
                           Text(
-                            item.productName,
+                            item['productName'],
                             style: TextStyle(
                                 fontSize: 30, fontWeight: FontWeight.w500),
                           ),
@@ -94,7 +97,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                 fontSize: 30, fontWeight: FontWeight.w500),
                           ),
                           Text(
-                            "Ibuprofen",
+                            item['formula'],
                             style: TextStyle(
                               fontSize: 25,
                             ),
@@ -201,7 +204,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             child: Align(
                               alignment: Alignment.centerRight,
                               child: Text(
-                                "PKR." + (item.price * quantity).toString(),
+                                "PKR." + item['price'].toString(),
                                 style: TextStyle(
                                   fontSize: 25,
                                   fontWeight: FontWeight.w500,
@@ -304,7 +307,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                         fillColor: Colors.blueAccent,
                         onPressed: () {
-                          if (cartListItems.containsKey(item.productName)) {
+                          if (cartListItems.containsKey('item.productName')) {
                             _scaffoldKey.currentState.showSnackBar(
                               SnackBar(
                                 behavior: SnackBarBehavior.floating,
@@ -338,11 +341,11 @@ class _DetailScreenState extends State<DetailScreen> {
                             );
                             setState(
                               () {
-                                cartListItems[item.productName] = {
-                                  "quantity": 1,
-                                  "price": item.price,
-                                  "total": item.price * 1,
-                                };
+                                // cartListItems[item.productName] = {
+                                //   "quantity": 1,
+                                //   "price": item.price,
+                                //   "total": item.price * 1,
+                                // };
                               },
                             );
                           }

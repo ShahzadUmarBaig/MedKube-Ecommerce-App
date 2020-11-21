@@ -224,7 +224,7 @@ class _MedicalItemScreenState extends State<MedicalItemScreen> {
 
                     return GestureDetector(
                       onTap: () {
-                        //      openDetailScreen(context, itemDetail);
+                        openDetailScreen(context, element);
                       },
                       child: ShopCard(
                         imagePath: element["imagePath"],

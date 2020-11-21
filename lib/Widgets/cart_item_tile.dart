@@ -5,10 +5,21 @@ class CartItemTile extends StatelessWidget {
   final Map<String, dynamic> orderDetails;
   CartItemTile({Key key, this.orderDetails}) : super(key: key);
 
+  getColor(orderStatus) {
+    if (orderStatus == "Completed") {
+      return Colors.green;
+    } else if (orderStatus == "In Progress") {
+      return Colors.orange;
+    } else {
+      return Colors.red;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(orderDetails);
     final String orderStatus = orderDetails["Status"];
-    int price = orderDetails["price"];
+    String price = orderDetails["total"];
     return Container(
       height: 80,
       child: Card(
@@ -17,7 +28,7 @@ class CartItemTile extends StatelessWidget {
           children: [
             Container(
               height: 50,
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -25,10 +36,10 @@ class CartItemTile extends StatelessWidget {
                       style: GoogleFonts.montserrat(
                           fontSize: 14.0, color: Colors.black54)),
                   SizedBox(height: 4.0),
-                  Text("Completed",
+                  Text(orderStatus,
                       style: GoogleFonts.montserrat(
                         fontSize: 18.0,
-                        color: Colors.green,
+                        color: getColor(orderStatus),
                         fontWeight: FontWeight.w500,
                       )),
                 ],
@@ -58,7 +69,7 @@ class CartItemTile extends StatelessWidget {
                               orderDetails["OrderType"].toString().substring(1),
                           style: GoogleFonts.montserrat(
                               fontSize: 14.0, color: Colors.black54)),
-                      Text(orderDetails["Status"],
+                      Text(orderDetails["OrderNo"],
                           style: GoogleFonts.montserrat(
                               fontSize: 14.0, color: Colors.black54)),
                       Text("Click For Details",
@@ -80,7 +91,7 @@ class CartItemTile extends StatelessWidget {
                       style: GoogleFonts.montserrat(
                           fontSize: 14.0, color: Colors.black54)),
                   SizedBox(height: 2.0),
-                  Text("100.00",
+                  Text(price.toString(),
                       style: GoogleFonts.montserrat(
                           fontSize: 16.0,
                           color: Colors.black54,

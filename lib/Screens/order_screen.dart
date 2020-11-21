@@ -27,12 +27,12 @@ class _OrderScreenState extends State<OrderScreen> {
 
   getItemCount() async {
     itemCount = 0;
-
     await _orders.get().then((value) {
       value.docs.forEach((element) {
-        if (element["OrderNo"] == userUID) {
+        if (element["UID"] == userUID) {
           setState(() {
             orders[element.id] = element.data();
+
             orderKeys.add(element.id);
           });
         } else {}
@@ -43,12 +43,10 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   double getHeight(BuildContext context) {
-    if (orders.keys.toList().length < 2 && orderTracked == true) {
-      return MediaQuery.of(context).size.height * 0.25;
-    } else if (orders.keys.toList().length < 3 && orderTracked == true) {
-      return MediaQuery.of(context).size.height * 0.40;
+    if (orderTracked) {
+      return MediaQuery.of(context).size.height * 0.45;
     } else {
-      return MediaQuery.of(context).size.height * 0.55;
+      return MediaQuery.of(context).size.height * 0.60;
     }
   }
 
@@ -67,6 +65,7 @@ class _OrderScreenState extends State<OrderScreen> {
     return WillPopScope(
       onWillPop: () async {
         orders.clear();
+        orderKeys.clear();
         return true;
       },
       child: Scaffold(
@@ -230,11 +229,10 @@ class _OrderScreenState extends State<OrderScreen> {
             Divider(endIndent: 16.0, indent: 16.0),
             Container(
               height: getHeight(context),
-              margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
               child: ScrollConfiguration(
                 behavior: MyBehavior(),
                 child: ListView.builder(
-                  padding: EdgeInsets.symmetric(vertical: 4.0),
+                  padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
                   itemBuilder: (context, index) {
                     if (orders[orderKeys[index]]["OrderType"] == "cart") {
                       return CartItemTile(
