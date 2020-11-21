@@ -19,11 +19,36 @@ class _DetailScreenState extends State<DetailScreen> {
   bool favorite = false;
   bool stock = false;
   int quantity = 01;
+  double totalPrice;
 
   @override
   void initState() {
     super.initState();
     item = widget.item;
+    totalPrice = item['price'];
+  }
+
+  increaseQuantity() {
+    if (quantity < 6) {
+      setState(() {
+        quantity++;
+        getPrice();
+      });
+    }
+  }
+
+  decreaseQuantity() {
+    if (quantity > 1) {
+      setState(() {
+        quantity--;
+        getPrice();
+      });
+    }
+  }
+
+  double getPrice() {
+    totalPrice = item['price'] * quantity;
+    return totalPrice.toDouble();
   }
 
   @override
@@ -31,7 +56,6 @@ class _DetailScreenState extends State<DetailScreen> {
     print(item);
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.blue[100],
       body: SafeArea(
         child: Column(
           children: [
@@ -46,7 +70,6 @@ class _DetailScreenState extends State<DetailScreen> {
                       child: IconButton(
                         icon: Icon(Icons.arrow_back),
                         onPressed: () {
-                          print("Hi");
                           Navigator.pop(context);
                         },
                       ),
@@ -54,11 +77,10 @@ class _DetailScreenState extends State<DetailScreen> {
                     Align(
                       alignment: Alignment.center,
                       child: Container(
-                        margin: EdgeInsets.all(48),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: null,
+                        child: Image.network(item['imagePath']),
                       ),
                     ),
                   ],
@@ -83,57 +105,34 @@ class _DetailScreenState extends State<DetailScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-                      child: Row(
-                        children: [
-                          Text(
-                            item['productName'],
-                            style: TextStyle(
-                                fontSize: 30, fontWeight: FontWeight.w500),
-                          ),
-                          Text(
-                            " - ",
-                            style: TextStyle(
-                                fontSize: 30, fontWeight: FontWeight.w500),
-                          ),
-                          Text(
-                            item['formula'],
-                            style: TextStyle(
-                              fontSize: 25,
-                            ),
-                          ),
-                        ],
+                      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                      child: Text(
+                        item['productName'],
+                        style: GoogleFonts.montserrat(
+                            fontSize: 24, fontWeight: FontWeight.w500),
                       ),
                     ),
                     Container(
                       margin: EdgeInsets.symmetric(
                         horizontal: 8,
                       ),
-                      child: Row(
-                        children: [
-                          Text(
-                            "50 Tablets",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.blueAccent,
-                            ),
-                          ),
-                          Text(
-                            " (3mg)",
-                            style: TextStyle(
-                              color: Colors.blueAccent,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ],
+                      child: Text(
+                        item['formula'],
+                        style: GoogleFonts.montserrat(
+                          fontSize: 20,
+                          color: Colors.blueAccent,
+                        ),
                       ),
                     ),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                      child: Text(
-                        "Ibuprofen is a medication in the nonsteroidal anti-inflammatory drug class that is used for treating pain, fever, and inflammation.",
-                        style: TextStyle(
-                          fontSize: 18,
+                    Expanded(
+                      child: Container(
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                        child: Text(
+                          item['description'],
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
                         ),
                       ),
                     ),
@@ -145,11 +144,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           Expanded(
                             flex: 1,
                             child: MaterialButton(
-                              onPressed: () {
-                                setState(() {
-                                  quantity++;
-                                });
-                              },
+                              onPressed: increaseQuantity,
                               shape: CircleBorder(
                                 side: BorderSide(
                                   color: Colors.black,
@@ -177,14 +172,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           Expanded(
                             flex: 1,
                             child: MaterialButton(
-                              onPressed: () {
-                                if (quantity == 1) {
-                                } else {
-                                  setState(() {
-                                    quantity--;
-                                  });
-                                }
-                              },
+                              onPressed: decreaseQuantity,
                               shape: CircleBorder(
                                 side: BorderSide(
                                   color: Colors.black,
@@ -204,7 +192,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             child: Align(
                               alignment: Alignment.centerRight,
                               child: Text(
-                                "PKR." + item['price'].toString(),
+                                "PKR." + totalPrice.toString(),
                                 style: TextStyle(
                                   fontSize: 25,
                                   fontWeight: FontWeight.w500,
@@ -307,7 +295,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                         fillColor: Colors.blueAccent,
                         onPressed: () {
-                          if (cartListItems.containsKey('item.productName')) {
+                          if (cartListItems.containsKey(item['productName'])) {
                             _scaffoldKey.currentState.showSnackBar(
                               SnackBar(
                                 behavior: SnackBarBehavior.floating,
@@ -341,15 +329,15 @@ class _DetailScreenState extends State<DetailScreen> {
                             );
                             setState(
                               () {
-                                // cartListItems[item.productName] = {
-                                //   "quantity": 1,
-                                //   "price": item.price,
-                                //   "total": item.price * 1,
-                                // };
+                                cartListItems[item['productName']] = {
+                                  "quantity": quantity,
+                                  "price": item['price'],
+                                  "total": totalPrice,
+                                };
+                                print(cartListItems);
                               },
                             );
                           }
-                          ;
                         },
                       ),
                     ),

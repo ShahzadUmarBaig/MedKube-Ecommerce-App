@@ -224,7 +224,7 @@ class _GeneralItemScreenState extends State<GeneralItemScreen> {
 
                     return GestureDetector(
                       onTap: () {
-                        //      openDetailScreen(context, itemDetail);
+                        openDetailScreen(context, element);
                       },
                       child: ShopCard(
                         imagePath: element["imagePath"],
