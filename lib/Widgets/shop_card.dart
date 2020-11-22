@@ -41,6 +41,7 @@ class ShopCard extends StatelessWidget {
               padding: EdgeInsets.only(
                 bottom: 15,
                 left: 15,
+                right: 30
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,

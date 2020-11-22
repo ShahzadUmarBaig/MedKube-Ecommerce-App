@@ -77,12 +77,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               margin: EdgeInsets.symmetric(vertical: 16),
               child: RichText(
                 text: TextSpan(
-                  style: kDefaultStyle,
+                  style: GoogleFonts.montserrat(color: Colors.black54, fontSize: MediaQuery.of(context).devicePixelRatio > 2.0 ? 19 : 16),
                   children: [
                     TextSpan(text: 'Please '),
                     TextSpan(
                         text: 'login ',
-                        style: kLinkStyle,
+                        style: GoogleFonts.montserrat(color: Colors.blue, fontSize: MediaQuery.of(context).devicePixelRatio > 2.0 ? 19 : 16),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             Navigator.pushReplacementNamed(

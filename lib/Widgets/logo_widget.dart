@@ -18,7 +18,7 @@ class LogoWidget extends StatelessWidget {
             ),
           ),
           Positioned(
-            bottom: 22,
+            bottom: 24,
             left: MediaQuery.of(context).size.width/2.5,
 
             child: RichText(
@@ -38,11 +38,11 @@ class LogoWidget extends StatelessWidget {
             ),
           ),
           Positioned(
-            bottom: 16,
+            bottom: 15,
             left: MediaQuery.of(context).size.width/2.5,
             child:  Text(
               "WHERE HEALTH COMES FIRST",
-              style: TextStyle(fontSize: MediaQuery.of(context).devicePixelRatio > 2.0 ? 11 : 11.5, color: Colors.white),
+              style: GoogleFonts.montserrat(fontSize: MediaQuery.of(context).devicePixelRatio > 2.0 ? 10 : 10.5, color: Colors.white),
             ),
           ),
         ],

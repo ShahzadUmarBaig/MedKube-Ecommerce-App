@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:medkube/Screens/Firebase/register_screen.dart';
 import 'package:medkube/Screens/home_screen.dart';
 import 'package:medkube/Widgets/custom_button.dart';
@@ -125,12 +126,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Center(
                     child: RichText(
                       text: TextSpan(
-                        style: kDefaultStyle,
+                        style: GoogleFonts.montserrat(color: Colors.black54, fontSize: MediaQuery.of(context).devicePixelRatio > 2.0 ? 19 : 16),
                         children: [
                           TextSpan(text: 'Not a regular customer? '),
                           TextSpan(
                             text: 'Become one!',
-                            style: kLinkStyle,
+                            style: GoogleFonts.montserrat(color: Colors.blue, fontSize: MediaQuery.of(context).devicePixelRatio > 2.0 ? 19 : 16),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                 Navigator.pushNamed(
