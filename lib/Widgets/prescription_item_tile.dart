@@ -98,7 +98,6 @@ class PrescriptionItemTile extends StatelessWidget {
               ),
             ),
             Container(
-              height: 50,
               width: 85,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

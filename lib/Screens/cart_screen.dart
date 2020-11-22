@@ -41,10 +41,21 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   double getFontSize(){
-    if(screenHeight < 1280 && screenWidth < 720){
+    if(screenHeight < 720 && screenWidth < 360){
       return 18;
     } else {
       return 16;
+    }
+  }
+
+  double getItemScrollHeight(){
+    if(MediaQuery.of(context).size.height < 720){
+      return 1.75;
+    } else if (MediaQuery.of(context).size.height < 1440) {
+      return 1.5;
+
+    } else {
+      return 1.4;
     }
   }
 
@@ -106,7 +117,7 @@ class _CartScreenState extends State<CartScreen> {
                     BoxDecoration(borderRadius: BorderRadius.circular(8)),
                 margin: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height / 1.75,
+                height: MediaQuery.of(context).size.height / getItemScrollHeight(),
                 child: ListView.builder(
                   padding: EdgeInsets.all(0),
                   itemCount: cartListItems.length,
@@ -121,7 +132,7 @@ class _CartScreenState extends State<CartScreen> {
                       },
                       price: (cartListItems[item]["price"]).toString(),
                       productName: item,
-                      fontSize: getFontSize(),
+                      fontSize: 16,
                       indexValue: cartListItems[item]["quantity"] - 1,
                       onChanged: (value) {
                         setState(

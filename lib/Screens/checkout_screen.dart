@@ -524,7 +524,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                           ),
                           SizedBox(width: 8.0),
                           Text(
-                            "For Online Payment Contact On Whatsapp",
+                            "Whatsapp For Online Payment",
                             style: kAlertBoxText.copyWith(
                                 color: Colors.black.withOpacity(0.4),
                                 fontSize: getFontSize()),
