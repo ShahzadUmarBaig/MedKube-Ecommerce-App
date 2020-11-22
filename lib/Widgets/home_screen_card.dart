@@ -36,8 +36,8 @@ class HomeScreenCard extends StatelessWidget {
                       ? Center(
                           child: Image(
                             image: myImage,
-                            height: 64,
-                            width: 64,
+                            height: MediaQuery.of(context).devicePixelRatio > 2.0 ? 80 : 64,
+                            width: MediaQuery.of(context).devicePixelRatio > 2.0 ? 80 : 64,
                           ),
                         )
                       : Center(

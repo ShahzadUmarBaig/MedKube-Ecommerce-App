@@ -109,22 +109,83 @@ class CustomDrawer extends StatelessWidget {
   }
 
   Future<dynamic> showDialogMenu(BuildContext context) {
-    return showDialog(
+    return showGeneralDialog(
       context: context,
-      builder: (BuildContext buildContext) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
+      barrierDismissible: true,
+      barrierLabel: MaterialLocalizations.of(context)
+          .modalBarrierDismissLabel,
+      barrierColor: Colors.black45,
+      transitionDuration: const Duration(milliseconds: 200),
+      pageBuilder: (BuildContext buildContext,
+          Animation animation,
+          Animation secondaryAnimation){
+        return Center(
+          child: Dialog(
+            child: Container(
+              height: MediaQuery.of(context).size.height/6,
+              width: MediaQuery.of(context).size.width / 1.5,
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: MaterialButton(
+                        splashColor: Colors.transparent,
+                        onPressed: () async {
+                          var whatsappUrl = "whatsapp://send?phone=+923125423390";
+                          await UrlLauncher.canLaunch(whatsappUrl)
+                              ? UrlLauncher.launch(whatsappUrl)
+                              : print("Do Something");
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(FontAwesomeIcons.whatsapp, size: 36.0),
+                            SizedBox(height: 8.0),
+                            Text("Whatsapp", style: GoogleFonts.montserrat(fontSize: MediaQuery.of(context).devicePixelRatio > 2.0 ? 19.0 : 24.0, color: Colors.black54))
+                          ],
+                        ),
+                      ),
+                    ),
+                    VerticalDivider(indent: 16,endIndent: 16,color: Colors.black54,),
+                    Expanded(
+                      child: MaterialButton(
+                        splashColor: Colors.transparent,
+                        onPressed: () {
+                          UrlLauncher.launch("tel://+923162821544");
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.call, size: 36.0),
+                            SizedBox(height: 8.0),
+
+                            Text("Phone", style: GoogleFonts.montserrat(fontSize: MediaQuery.of(context).devicePixelRatio > 2.0 ? 20.0 : 24.0, color: Colors.black54))
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
-          child: Container(
-            height: 130,
-            width: 500,
-            child: Column(
+        );
+      },
+    );
+  }
+}
+
+/*
+Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 MaterialButton(
                   splashColor: Colors.transparent,
+
+                  color: Colors.red,
                   onPressed: () async {
                     var whatsappUrl = "whatsapp://send?phone=+923125423390";
                     await UrlLauncher.canLaunch(whatsappUrl)
@@ -159,10 +220,5 @@ class CustomDrawer extends StatelessWidget {
                   ),
                 )
               ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
+            )
+ */

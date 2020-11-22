@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LogoWidget extends StatelessWidget {
   @override
@@ -17,14 +18,14 @@ class LogoWidget extends StatelessWidget {
             ),
           ),
           Positioned(
-            bottom: 25,
+            bottom: 22,
             left: MediaQuery.of(context).size.width/2.5,
 
             child: RichText(
               text: TextSpan(
-                style: TextStyle(
+                style: GoogleFonts.montserrat(
                     color: Colors.white,
-                    fontSize: 30,
+                    fontSize: MediaQuery.of(context).devicePixelRatio > 2.0 ? 30 : 26,
                     fontWeight: FontWeight.w500),
                 children: [
                   TextSpan(text: 'Med'),
@@ -37,11 +38,11 @@ class LogoWidget extends StatelessWidget {
             ),
           ),
           Positioned(
-            bottom: 20,
+            bottom: 16,
             left: MediaQuery.of(context).size.width/2.5,
             child:  Text(
               "WHERE HEALTH COMES FIRST",
-              style: TextStyle(fontSize: 11.5, color: Colors.white),
+              style: TextStyle(fontSize: MediaQuery.of(context).devicePixelRatio > 2.0 ? 11 : 11.5, color: Colors.white),
             ),
           ),
         ],
