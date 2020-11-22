@@ -22,6 +22,8 @@ class _CartScreenState extends State<CartScreen> {
   List cartItemNames;
   double discount;
   double total;
+  double screenHeight;
+  double screenWidth;
 
   @override
   void initState() {
@@ -38,12 +40,23 @@ class _CartScreenState extends State<CartScreen> {
     return total;
   }
 
+  double getFontSize(){
+    if(screenHeight < 1280 && screenWidth < 720){
+      return 18;
+    } else {
+      return 16;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     cartItemNames = cartListItems.keys.toList();
     cartListItems.keys.toList().length == 0
         ? isDisabled = true
         : isDisabled = false;
+
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.blue[600],
       body: ScrollConfiguration(
@@ -108,6 +121,7 @@ class _CartScreenState extends State<CartScreen> {
                       },
                       price: (cartListItems[item]["price"]).toString(),
                       productName: item,
+                      fontSize: getFontSize(),
                       indexValue: cartListItems[item]["quantity"] - 1,
                       onChanged: (value) {
                         setState(
@@ -160,7 +174,7 @@ class _CartScreenState extends State<CartScreen> {
                   Text(
                     "delivery will be calculated on next screen",
                     style: kAlertBoxText.copyWith(
-                        color: Colors.black.withOpacity(0.4), fontSize: 16.0),
+                        color: Colors.black.withOpacity(0.4), fontSize: getFontSize()),
                   )
                 ],
               ),

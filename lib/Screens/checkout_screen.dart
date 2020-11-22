@@ -41,6 +41,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   TextEditingController _cityController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
   CollectionReference _orders = FirebaseFirestore.instance.collection('Orders');
+  double screenHeight;
+  double screenWidth;
 
   @override
   void initState() {
@@ -85,8 +87,20 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     return total;
   }
 
+  double getFontSize(){
+    if(screenHeight < 1280 && screenWidth < 720){
+      return 18;
+    } else {
+      return 16;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+
+
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
     return WillPopScope(
       onWillPop: () async {
         Navigator.pushReplacementNamed(context, CartScreen.id);
@@ -513,7 +527,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             "For Online Payment Contact On Whatsapp",
                             style: kAlertBoxText.copyWith(
                                 color: Colors.black.withOpacity(0.4),
-                                fontSize: 17.0),
+                                fontSize: getFontSize()),
                           )
                         ],
                       ),

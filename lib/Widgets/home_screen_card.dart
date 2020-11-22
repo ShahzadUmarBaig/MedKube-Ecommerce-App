@@ -21,8 +21,8 @@ class HomeScreenCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         margin: EdgeInsets.all(4.0),
-        height: 160,
-        width: 130,
+        height: MediaQuery.of(context).size.height/4,
+        width: MediaQuery.of(context).size.width/2.5,
         child: Card(
           elevation: 5,
           child: Column(
@@ -53,10 +53,11 @@ class HomeScreenCard extends StatelessWidget {
                 child: Center(
                   child: Container(
                     child: Text(
+
                       title,
                       style: GoogleFonts.montserrat(
                           color: Colors.black54, fontSize: fontSize),
-                    ),
+                    textAlign: TextAlign.center,),
                   ),
                 ),
               )

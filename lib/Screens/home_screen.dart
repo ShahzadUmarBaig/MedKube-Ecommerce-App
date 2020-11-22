@@ -11,6 +11,7 @@ import 'package:medkube/Screens/prescription_screen.dart';
 import 'package:medkube/Services/user_info.dart';
 import 'package:medkube/Widgets/custom_drawer.dart';
 import 'package:medkube/Widgets/home_screen_card.dart';
+import 'package:medkube/Widgets/logo_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   static String id = "HomeScreen";
@@ -26,6 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
   CollectionReference allUsers = FirebaseFirestore.instance.collection('users');
   User currentUser;
   bool isLoaded;
+  double screenHeight;
+  double screenWidth;
 
   @override
   void initState() {
@@ -37,6 +40,9 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       signInMethod();
     }
+
+
+
   }
 
   void signInMethod() async {
@@ -97,9 +103,19 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  double getFontSize(){
+    if(screenHeight < 1280 && screenWidth < 720){
+      return 20;
+    } else {
+      return 18;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     getLabel();
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       key: _scaffoldKey,
       drawer: CustomDrawer(
@@ -115,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              height: 100,
+              height: MediaQuery.of(context).size.height * 0.15,
               padding: EdgeInsets.symmetric(horizontal: 12.0),
               child: Row(
                 children: [
@@ -162,14 +178,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 HomeScreenCard(
                   myImage: AssetImage("images/grocery2.png"),
                   title: "General",
-                  fontSize: 22,
+                  fontSize: getFontSize(),
                   onTap: () =>
                       Navigator.pushNamed(context, GeneralItemScreen.id),
                 ),
                 HomeScreenCard(
                   myImage: AssetImage("images/camera2.png"),
-                  title: "    Upload \nPrescription",
-                  fontSize: 20,
+                  title: "Upload \nPrescription",
+                  fontSize: getFontSize(),
                   onTap: () {
                     Navigator.pushNamed(context, PrescriptionScreen.id);
                   },
@@ -180,8 +196,8 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 HomeScreenCard(
-                  title: "   Medical \nEquipment",
-                  fontSize: 20,
+                  title: "Medical \nEquipment",
+                  fontSize: getFontSize(),
                   myImage: AssetImage("images/syring.png"),
                   onTap: () =>
                       Navigator.pushNamed(context, MedicalItemScreen.id),
@@ -189,49 +205,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 HomeScreenCard(
                   myImage: AssetImage("images/hospital.png"),
                   title: "Hospitals",
-                  fontSize: 20,
+                  fontSize: getFontSize(),
                   onTap: () {
                     Navigator.pushNamed(context, HospitalScreen.id);
                   },
                 ),
               ],
             ),
-            SizedBox(height: MediaQuery.of(context).size.height / 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image(
-                  width: 50,
-                  height: 50,
-                  image: AssetImage("images/logo.png"),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Column(
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 30,
-                            fontWeight: FontWeight.w500),
-                        children: [
-                          TextSpan(text: 'Med'),
-                          TextSpan(
-                            text: 'Kube',
-                            style: TextStyle(color: Colors.red[600]),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text(
-                      "WHERE HEALTH COMES FIRST",
-                      style: TextStyle(fontSize: 11.5, color: Colors.white),
-                    ),
-                  ],
-                ),
-              ],
+            Expanded(
+              child: LogoWidget(),
             ),
           ],
         ),

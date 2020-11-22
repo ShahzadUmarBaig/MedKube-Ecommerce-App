@@ -8,6 +8,7 @@ class CartCard extends StatelessWidget {
   final int indexValue;
   final Function onChanged;
   final String subTotal;
+  final double fontSize;
 
   const CartCard(
       {Key key,
@@ -16,11 +17,11 @@ class CartCard extends StatelessWidget {
       this.productName,
       this.indexValue,
       this.onChanged,
-      this.subTotal})
+      this.subTotal, this.fontSize})
       : super(key: key);
-
   @override
   Widget build(BuildContext context) {
+
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
@@ -62,7 +63,7 @@ class CartCard extends StatelessWidget {
                   children: [
                     Text(
                       productName,
-                      style: GoogleFonts.montserrat(fontSize: 18.0),
+                      style: GoogleFonts.montserrat(fontSize: fontSize),
                     ),
                     SizedBox(height: 4.0),
                     Text(
