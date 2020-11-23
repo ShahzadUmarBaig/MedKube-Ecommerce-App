@@ -35,12 +35,14 @@ class _MedicalItemScreenState extends State<MedicalItemScreen> {
 
   int cartCount = 0;
   String userName;
+  List<String> productNames = List<String>();
 
   void populateList() async {
     await products.get().then((value) {
       value.docs.forEach((element) {
         setState(() {
           if (element["category"] != "general") {
+            productNames.add(element.data()['productName']);
             nonGeneralProductList[element.id] = element.data();
             nonGeneralProductKeys.add(element.id);
           }
@@ -165,7 +167,7 @@ class _MedicalItemScreenState extends State<MedicalItemScreen> {
                     onTap: () {
                       showSearch(
                         context: context,
-                        delegate: ProductSearch(),
+                        delegate: ProductSearch(productNames),
                       );
                     },
                     child: Container(
@@ -192,23 +194,6 @@ class _MedicalItemScreenState extends State<MedicalItemScreen> {
                         ],
                       ),
                     ),
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SectionHeading(heading: "Popular"),
-                      IconButton(
-                        iconSize: 30,
-                        icon: Icon(Icons.filter_list),
-                        onPressed: () {},
-                      ),
-                    ],
                   ),
                 ),
               ),
@@ -277,6 +262,10 @@ class _MedicalItemScreenState extends State<MedicalItemScreen> {
 }
 
 class ProductSearch extends SearchDelegate<Product> {
+  final List<String> productNames;
+
+  ProductSearch(this.productNames);
+
   @override
   List<Widget> buildActions(BuildContext context) {
     // TODO: implement buildActions
@@ -303,18 +292,38 @@ class ProductSearch extends SearchDelegate<Product> {
   @override
   Widget buildResults(BuildContext context) {
     // TODO: implement buildResults
+
     return Container();
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
     // TODO: implement buildSuggestions
+    final productResult =
+        productNames.where((element) => element.toLowerCase().contains(query));
+
     return ListView(
-      children: [
-        Text(query),
-        Text(query),
-        Text(query),
-      ],
+      children: productResult.map<Widget>((e) => Text(e)).toList(),
     );
   }
 }
+
+/*
+SliverToBoxAdapter(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SectionHeading(heading: "Popular"),
+                      IconButton(
+                        iconSize: 30,
+                        icon: Icon(Icons.filter_list),
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+ */
