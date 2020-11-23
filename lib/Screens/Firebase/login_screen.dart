@@ -6,9 +6,10 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medkube/Screens/Firebase/register_screen.dart';
 import 'package:medkube/Screens/home_screen.dart';
+import 'package:medkube/Services/Font_Size.dart';
 import 'package:medkube/Widgets/custom_button.dart';
 import 'package:medkube/Widgets/custom_textfield.dart';
-import 'package:medkube/constants.dart';
+import 'package:medkube/Widgets/widgets.dart';
 
 import '../../extras.dart';
 
@@ -22,6 +23,8 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController email;
   TextEditingController password;
   final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  FontSizeObserver fontSizeObserver = FontSizeObserver();
 
   @override
   void initState() {
@@ -32,8 +35,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Container(
+    return Scaffold(
+      key: _scaffoldKey,
+      body: Container(
         height: double.infinity,
         child: ScrollConfiguration(
           behavior: MyBehavior(),
@@ -106,10 +110,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                     context, HomeScreen.id);
                               } on FirebaseAuthException catch (e) {
                                 if (e.code == 'user-not-found') {
-                                  print('No user found for that email.');
+                                  _scaffoldKey.currentState.showSnackBar(
+                                      customSnackBar("User Not Registered"));
                                 } else if (e.code == 'wrong-password') {
-                                  print(
-                                      'Wrong password provided for that user.');
+                                  _scaffoldKey.currentState.showSnackBar(
+                                      customSnackBar("Incorrect Password"));
                                 }
                               }
                             }
@@ -126,12 +131,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Center(
                     child: RichText(
                       text: TextSpan(
-                        style: GoogleFonts.montserrat(color: Colors.black54, fontSize: MediaQuery.of(context).devicePixelRatio > 2.0 ? 19 : 16),
+                        style: GoogleFonts.montserrat(
+                            color: Colors.black54,
+                            fontSize: fontSizeObserver.getFontSize(
+                                context, "Become")),
                         children: [
                           TextSpan(text: 'Not a regular customer? '),
                           TextSpan(
                             text: 'Become one!',
-                            style: GoogleFonts.montserrat(color: Colors.blue, fontSize: MediaQuery.of(context).devicePixelRatio > 2.0 ? 19 : 16),
+                            style: GoogleFonts.montserrat(
+                                color: Colors.blue,
+                                fontSize: fontSizeObserver.getFontSize(
+                                    context, "Become")),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                 Navigator.pushNamed(

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medkube/Services/Font_Size.dart';
 
 class LogoWidget extends StatelessWidget {
+
+  final FontSizeObserver fontSizeObserver = FontSizeObserver();
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,7 +30,7 @@ class LogoWidget extends StatelessWidget {
               text: TextSpan(
                 style: GoogleFonts.montserrat(
                     color: Colors.white,
-                    fontSize: MediaQuery.of(context).devicePixelRatio > 2.0 ? 30 : 26,
+                    fontSize: fontSizeObserver.getFontSize(context, "Logo"),
                     fontWeight: FontWeight.w500),
                 children: [
                   TextSpan(text: 'Med'),
@@ -42,7 +47,7 @@ class LogoWidget extends StatelessWidget {
             left: MediaQuery.of(context).size.width/2.5,
             child:  Text(
               "WHERE HEALTH COMES FIRST",
-              style: GoogleFonts.montserrat(fontSize: MediaQuery.of(context).devicePixelRatio > 2.0 ? 10 : 10.5, color: Colors.white),
+              style: GoogleFonts.montserrat(fontSize: fontSizeObserver.getFontSize(context, "Tagline") , color: Colors.white),
             ),
           ),
         ],

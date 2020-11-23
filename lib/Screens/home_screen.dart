@@ -8,10 +8,12 @@ import 'package:medkube/Screens/general_item_screen.dart';
 import 'package:medkube/Screens/hospital_screen.dart';
 import 'package:medkube/Screens/medical_screen.dart';
 import 'package:medkube/Screens/prescription_screen.dart';
+import 'package:medkube/Services/Font_Size.dart';
 import 'package:medkube/Services/user_info.dart';
 import 'package:medkube/Widgets/custom_drawer.dart';
 import 'package:medkube/Widgets/home_screen_card.dart';
 import 'package:medkube/Widgets/logo_widget.dart';
+import 'package:medkube/Widgets/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
   static String id = "HomeScreen";
@@ -27,8 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   CollectionReference allUsers = FirebaseFirestore.instance.collection('users');
   User currentUser;
   bool isLoaded;
-  double screenHeight;
-  double screenWidth;
+  FontSizeObserver fontSizeObserver = FontSizeObserver();
 
   @override
   void initState() {
@@ -74,16 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
       await FirebaseAuth.instance.signOut();
       userInfo.clear();
       _scaffoldKey.currentState
-          .showSnackBar(SnackBar(
-              behavior: SnackBarBehavior.floating,
-              content: Container(
-                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 4.0),
-                child: Text(
-                  'Logged Out Successfully',
-                  style: GoogleFonts.montserrat(fontSize: 20.0),
-                ),
-              ),
-              duration: Duration(seconds: 1)))
+          .showSnackBar(customSnackBar("Logged Out Successfully"),)
           .closed
           .then(
             (value) => setState(
@@ -103,21 +95,13 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  double getFontSize(){
-    if(screenHeight < 1280 && screenWidth < 720){
-      return 20;
-    } else {
-      return 18;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     getLabel();
-    screenHeight = MediaQuery.of(context).size.height;
-    screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       key: _scaffoldKey,
+      resizeToAvoidBottomInset: false,
       drawer: CustomDrawer(
         userName: userInfo.isEmpty
             ? "New Customer"
@@ -178,14 +162,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 HomeScreenCard(
                   myImage: AssetImage("images/grocery2.png"),
                   title: "General",
-                  fontSize: getFontSize(),
+                  fontSize: fontSizeObserver.getFontSize(context, "HomeCard"),
                   onTap: () =>
                       Navigator.pushNamed(context, GeneralItemScreen.id),
                 ),
                 HomeScreenCard(
                   myImage: AssetImage("images/camera2.png"),
                   title: "Upload \nPrescription",
-                  fontSize: getFontSize(),
+                  fontSize: fontSizeObserver.getFontSize(context, "HomeCard"),
                   onTap: () {
                     Navigator.pushNamed(context, PrescriptionScreen.id);
                   },
@@ -197,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 HomeScreenCard(
                   title: "Medical \nEquipment",
-                  fontSize: getFontSize(),
+                  fontSize: fontSizeObserver.getFontSize(context, "HomeCard"),
                   myImage: AssetImage("images/syring.png"),
                   onTap: () =>
                       Navigator.pushNamed(context, MedicalItemScreen.id),
@@ -205,7 +189,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 HomeScreenCard(
                   myImage: AssetImage("images/hospital.png"),
                   title: "Hospitals",
-                  fontSize: getFontSize(),
+                  fontSize: fontSizeObserver.getFontSize(context, "HomeCard"),
                   onTap: () {
                     Navigator.pushNamed(context, HospitalScreen.id);
                   },

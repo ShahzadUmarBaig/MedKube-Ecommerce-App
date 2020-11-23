@@ -18,7 +18,7 @@ class CartItemTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print(orderDetails);
-    final String orderStatus = orderDetails["Status"];
+    String orderStatus = orderDetails["Status"];
     String price = orderDetails["total"];
     return Container(
       height: 80,
@@ -52,7 +52,7 @@ class CartItemTile extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex:2,
+              flex: 2,
               child: Container(
                 margin: EdgeInsets.symmetric(vertical: 8.0),
                 child: MaterialButton(
@@ -72,7 +72,10 @@ class CartItemTile extends StatelessWidget {
                               fontSize: 14.0, color: Colors.black54)),
                       Text(orderDetails["OrderNo"],
                           style: GoogleFonts.montserrat(
-                              fontSize: 14.0, color: Colors.black54)),
+                            fontSize: 14.0,
+                            color: Colors.black54,
+                            fontWeight: FontWeight.w500,
+                          )),
                       Text("Click For Details",
                           style: GoogleFonts.montserrat(
                               fontSize: 14.0, color: Colors.black54)),
@@ -82,9 +85,14 @@ class CartItemTile extends StatelessWidget {
                 ),
               ),
             ),
-            VerticalDivider(endIndent: 12,indent: 12,color: Colors.black54,thickness: 0,width: 0,),
+            VerticalDivider(
+                endIndent: 12,
+                indent: 12,
+                color: Colors.black54,
+                thickness: 0,
+                width: 0),
             Expanded(
-              flex:1,
+              flex: 1,
               child: Container(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -105,7 +113,6 @@ class CartItemTile extends StatelessWidget {
                         )),
                   ],
                 ),
-
               ),
             ),
           ],
