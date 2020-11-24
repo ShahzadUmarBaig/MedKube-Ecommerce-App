@@ -15,7 +15,6 @@ import 'package:medkube/Services/user_info.dart';
 import 'package:medkube/Widgets/shop_card.dart';
 import 'package:medkube/extras.dart';
 
-
 class GeneralItemScreen extends StatefulWidget {
   static const id = "GeneralScreen";
   final categoryCondition;

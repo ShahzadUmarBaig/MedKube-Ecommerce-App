@@ -391,12 +391,12 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                                                   child: SelectableText(
                                                     orderNumber,
                                                     style:
-                                                    GoogleFonts.montserrat(
-                                                        fontSize: 28.0,
-                                                        fontWeight:
-                                                        FontWeight.w500,
-                                                        color:
-                                                        Colors.black54),
+                                                        GoogleFonts.montserrat(
+                                                            fontSize: 28.0,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color:
+                                                                Colors.black54),
                                                   ),
                                                 ),
                                                 Positioned(
