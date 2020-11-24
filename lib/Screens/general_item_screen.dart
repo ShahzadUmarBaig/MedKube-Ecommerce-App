@@ -166,7 +166,13 @@ class _GeneralItemScreenState extends State<GeneralItemScreen> {
                       showSearch(
                         context: context,
                         delegate: ProductSearch(),
-                      );
+                      ).then((value) {
+                        generalProductList.forEach((key, keyValue) {
+                          if (keyValue['productName'] == value.productName) {
+                            openDetailScreen(context, generalProductList[key]);
+                          }
+                        });
+                      });
                     },
                     child: Container(
                       margin: EdgeInsets.all(16),
@@ -308,7 +314,7 @@ class ProductSearch extends SearchDelegate<Product> {
   @override
   Widget buildSuggestions(BuildContext context) {
     List<Product> products = List<Product>();
-    // TODO: implement buildSuggestions
+
     generalProductList.values.forEach((element) {
       products.add(Product(
         productName: element['productName'],
@@ -316,19 +322,19 @@ class ProductSearch extends SearchDelegate<Product> {
       ));
     });
 
-    // final products = products.where((element) =>
-    //     element.productName.toLowerCase().contains(query.toLowerCase()));
+    final productSearch = products.where((element) =>
+        element.productName.toLowerCase().contains(query.toLowerCase()));
 
     return ListView(
       children: query != ""
-          ? products
+          ? productSearch
               .map<Widget>(
                 (e) => ListTile(
                   title: Text(
                     e.productName,
                     style: GoogleFonts.montserrat(fontSize: 18),
                   ),
-                  trailing: Text(e.price.toString(),
+                  trailing: Text('PKR.' + e.price.toString(),
                       style: GoogleFonts.montserrat(fontSize: 18)),
                   onTap: () {
                     close(context, e);

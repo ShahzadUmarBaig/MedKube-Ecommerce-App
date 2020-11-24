@@ -166,7 +166,14 @@ class _MedicalItemScreenState extends State<MedicalItemScreen> {
                       showSearch(
                         context: context,
                         delegate: ProductSearch(productNames),
-                      );
+                      ).then((value) {
+                        nonGeneralProductList.forEach((key, keyValue) {
+                          if (keyValue['productName'] == value.productName) {
+                            openDetailScreen(
+                                context, nonGeneralProductList[key]);
+                          }
+                        });
+                      });
                     },
                     child: Container(
                       margin: EdgeInsets.all(16),
@@ -296,13 +303,36 @@ class ProductSearch extends SearchDelegate<Product> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    // TODO: implement buildSuggestions
-    final productResult = productNames.where(
-        (element) => element.toLowerCase().contains(query.toLowerCase()));
+    List<Product> products = List<Product>();
+
+    nonGeneralProductList.values.forEach((element) {
+      products.add(Product(
+        productName: element['productName'],
+        price: element['price'],
+      ));
+    });
+
+    final productSearch = products.where((element) =>
+        element.productName.toLowerCase().contains(query.toLowerCase()));
 
     return ListView(
-      children:
-          query != "" ? productResult.map<Widget>((e) => Text(e)).toList() : [],
+      children: query != ""
+          ? productSearch
+              .map<Widget>(
+                (e) => ListTile(
+                  title: Text(
+                    e.productName,
+                    style: GoogleFonts.montserrat(fontSize: 18),
+                  ),
+                  trailing: Text('PKR.' + e.price.toString(),
+                      style: GoogleFonts.montserrat(fontSize: 18)),
+                  onTap: () {
+                    close(context, e);
+                  },
+                ),
+              )
+              .toList()
+          : [],
     );
   }
 }
