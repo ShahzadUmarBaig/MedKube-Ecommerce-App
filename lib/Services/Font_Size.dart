@@ -65,6 +65,12 @@ class FontSizeObserver {
       } else if (bigScreen) {
         return 20;
       }
+    } else if (status == "OrderDetailProduct") {
+      if (smallScreen) {
+        return 17;
+      } else if (bigScreen) {
+        return 15;
+      }
     }
 
     return 0.0;

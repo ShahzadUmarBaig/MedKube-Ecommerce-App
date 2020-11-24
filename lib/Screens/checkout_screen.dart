@@ -156,8 +156,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         validator: (value) {},
                         onTap: () {
                           if (promoAvailable.keys
-                              .toList()
-                              .contains(discountController.text) &&
+                                  .toList()
+                                  .contains(discountController.text) &&
                               !promoApplied.contains(discountController.text)) {
                             promoApplied.add(discountController.text);
                             discountController.clear();
@@ -572,14 +572,17 @@ class CheckOutText extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Text(
-            label,
-            style: textStyle,
+          Expanded(
+            child: Center(
+              child: Text(
+                label,
+                style: textStyle,
+              ),
+            ),
           ),
-          SizedBox(
-            width: 16.0,
-          ),
-          Text(value, style: textStyle)
+          Expanded(
+            child: Center(child: Text(value, style: textStyle)),
+          )
         ],
       ),
     );

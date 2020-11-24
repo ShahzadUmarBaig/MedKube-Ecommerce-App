@@ -8,6 +8,7 @@ import 'package:medkube/Screens/general_item_screen.dart';
 import 'package:medkube/Screens/home_screen.dart';
 import 'package:medkube/Screens/hospital_screen.dart';
 import 'package:medkube/Screens/medical_screen.dart';
+import 'package:medkube/Screens/cart_order_detail_screen.dart';
 import 'package:medkube/Screens/order_screen.dart';
 import 'package:medkube/Screens/prescription_screen.dart';
 import 'package:medkube/Screens/profile_screen.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: WelcomeScreen.id,
       routes: {
+        OrderDetailScreen.id: (context) => OrderDetailScreen(),
         GeneralItemScreen.id: (context) => GeneralItemScreen(),
         HospitalScreen.id: (context) => HospitalScreen(),
         OrderScreen.id: (context) => OrderScreen(),

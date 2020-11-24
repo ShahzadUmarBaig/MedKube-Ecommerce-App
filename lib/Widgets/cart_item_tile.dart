@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medkube/Screens/cart_order_detail_screen.dart';
 
 class CartItemTile extends StatelessWidget {
   final Map<String, dynamic> orderDetails;
@@ -57,7 +58,16 @@ class CartItemTile extends StatelessWidget {
                 margin: EdgeInsets.symmetric(vertical: 8.0),
                 child: MaterialButton(
                   shape: RoundedRectangleBorder(),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => OrderDetailScreen(
+                          orderDetails: orderDetails,
+                        ),
+                      ),
+                    );
+                  },
                   elevation: 0,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
