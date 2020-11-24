@@ -15,8 +15,6 @@ import 'package:medkube/Services/user_info.dart';
 import 'package:medkube/Widgets/shop_card.dart';
 import 'package:medkube/extras.dart';
 
-import '../Widgets/widgets.dart';
-
 class MedicalItemScreen extends StatefulWidget {
   static const id = "MedicalScreen";
   final categoryCondition;
@@ -299,11 +297,12 @@ class ProductSearch extends SearchDelegate<Product> {
   @override
   Widget buildSuggestions(BuildContext context) {
     // TODO: implement buildSuggestions
-    final productResult =
-        productNames.where((element) => element.toLowerCase().contains(query));
+    final productResult = productNames.where(
+        (element) => element.toLowerCase().contains(query.toLowerCase()));
 
     return ListView(
-      children: productResult.map<Widget>((e) => Text(e)).toList(),
+      children:
+          query != "" ? productResult.map<Widget>((e) => Text(e)).toList() : [],
     );
   }
 }

@@ -32,7 +32,6 @@ class _GeneralItemScreenState extends State<GeneralItemScreen> {
   CollectionReference products =
       FirebaseFirestore.instance.collection("products");
   bool isLoaded;
-
   int cartCount = 0;
   String userName;
 
@@ -42,7 +41,7 @@ class _GeneralItemScreenState extends State<GeneralItemScreen> {
         setState(() {
           if (element["category"] == "general") {
             generalProductList[element.id] = element.data();
-            print(element.id);
+
             generalProductKeys.add(element.id);
           }
         });
@@ -308,13 +307,36 @@ class ProductSearch extends SearchDelegate<Product> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    List<Product> products = List<Product>();
     // TODO: implement buildSuggestions
+    generalProductList.values.forEach((element) {
+      products.add(Product(
+        productName: element['productName'],
+        price: element['price'],
+      ));
+    });
+
+    // final products = products.where((element) =>
+    //     element.productName.toLowerCase().contains(query.toLowerCase()));
+
     return ListView(
-      children: [
-        Text(query),
-        Text(query),
-        Text(query),
-      ],
+      children: query != ""
+          ? products
+              .map<Widget>(
+                (e) => ListTile(
+                  title: Text(
+                    e.productName,
+                    style: GoogleFonts.montserrat(fontSize: 18),
+                  ),
+                  trailing: Text(e.price.toString(),
+                      style: GoogleFonts.montserrat(fontSize: 18)),
+                  onTap: () {
+                    close(context, e);
+                  },
+                ),
+              )
+              .toList()
+          : [],
     );
   }
 }
