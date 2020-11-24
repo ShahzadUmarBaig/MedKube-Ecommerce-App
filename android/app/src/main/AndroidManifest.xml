@@ -8,7 +8,7 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:icon="@mipmap/ic_launcher"
-        android:label="medkube">
+        android:label="MedKube">
         android:requestLegacyExternalStorage="true"
         <activity
             android:name=".MainActivity"

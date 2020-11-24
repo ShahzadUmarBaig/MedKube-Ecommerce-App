@@ -71,7 +71,9 @@ class CustomDrawer extends StatelessWidget {
                   color: Colors.grey[200], shape: BoxShape.circle),
               child: Center(
                   child: Text(
-                cartListItems.keys.toList().length.toString(),
+                cartListItems.isNotEmpty
+                    ? cartListItems.keys.toList().length.toString()
+                    : "0",
                 style: GoogleFonts.montserrat(fontSize: 16.0),
               )),
             ),
@@ -112,18 +114,24 @@ class CustomDrawer extends StatelessWidget {
     return showGeneralDialog(
       context: context,
       barrierDismissible: true,
-      barrierLabel: MaterialLocalizations.of(context)
+      barrierLabel: MaterialLocalizations
+          .of(context)
           .modalBarrierDismissLabel,
       barrierColor: Colors.black45,
       transitionDuration: const Duration(milliseconds: 200),
-      pageBuilder: (BuildContext buildContext,
-          Animation animation,
-          Animation secondaryAnimation){
+      pageBuilder: (BuildContext buildContext, Animation animation,
+          Animation secondaryAnimation) {
         return Center(
           child: Dialog(
             child: Container(
-              height: MediaQuery.of(context).size.height/6,
-              width: MediaQuery.of(context).size.width / 1.5,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height / 6,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width / 1.5,
               child: Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -133,7 +141,8 @@ class CustomDrawer extends StatelessWidget {
                       child: MaterialButton(
                         splashColor: Colors.transparent,
                         onPressed: () async {
-                          var whatsappUrl = "whatsapp://send?phone=+923125423390";
+                          var whatsappUrl =
+                              "whatsapp://send?phone=+923125423390";
                           await UrlLauncher.canLaunch(whatsappUrl)
                               ? UrlLauncher.launch(whatsappUrl)
                               : print("Do Something");
@@ -143,12 +152,24 @@ class CustomDrawer extends StatelessWidget {
                           children: [
                             Icon(FontAwesomeIcons.whatsapp, size: 36.0),
                             SizedBox(height: 8.0),
-                            Text("Whatsapp", style: GoogleFonts.montserrat(fontSize: MediaQuery.of(context).devicePixelRatio > 2.0 ? 19.0 : 24.0, color: Colors.black54))
+                            Text("Whatsapp",
+                                style: GoogleFonts.montserrat(
+                                    fontSize: MediaQuery
+                                        .of(context)
+                                        .devicePixelRatio >
+                                        2.0
+                                        ? 19.0
+                                        : 24.0,
+                                    color: Colors.black54))
                           ],
                         ),
                       ),
                     ),
-                    VerticalDivider(indent: 16,endIndent: 16,color: Colors.black54,),
+                    VerticalDivider(
+                      indent: 16,
+                      endIndent: 16,
+                      color: Colors.black54,
+                    ),
                     Expanded(
                       child: MaterialButton(
                         splashColor: Colors.transparent,
@@ -160,8 +181,15 @@ class CustomDrawer extends StatelessWidget {
                           children: [
                             Icon(Icons.call, size: 36.0),
                             SizedBox(height: 8.0),
-
-                            Text("Phone", style: GoogleFonts.montserrat(fontSize: MediaQuery.of(context).devicePixelRatio > 2.0 ? 20.0 : 24.0, color: Colors.black54))
+                            Text("Phone",
+                                style: GoogleFonts.montserrat(
+                                    fontSize: MediaQuery
+                                        .of(context)
+                                        .devicePixelRatio >
+                                        2.0
+                                        ? 20.0
+                                        : 24.0,
+                                    color: Colors.black54))
                           ],
                         ),
                       ),

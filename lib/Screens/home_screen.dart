@@ -41,9 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       signInMethod();
     }
-
-
-
   }
 
   void signInMethod() async {
@@ -52,9 +49,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> getData() async {
     print("Testing Login System");
-    await allUsers.doc(currentUser.uid).get().then((value) {
-      userInfo.addAll(value.data());
-    });
+    try {
+      await allUsers.doc(currentUser.uid).get().then((value) {
+        userInfo.addAll(value.data());
+      });
+    } catch (e) {
+      print(e);
+    }
     setState(() {
       isLoaded = true;
     });
@@ -75,7 +76,9 @@ class _HomeScreenState extends State<HomeScreen> {
       await FirebaseAuth.instance.signOut();
       userInfo.clear();
       _scaffoldKey.currentState
-          .showSnackBar(customSnackBar("Logged Out Successfully"),)
+          .showSnackBar(
+            customSnackBar("Logged Out Successfully"),
+          )
           .closed
           .then(
             (value) => setState(
@@ -94,7 +97,6 @@ class _HomeScreenState extends State<HomeScreen> {
       return Icons.logout;
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
