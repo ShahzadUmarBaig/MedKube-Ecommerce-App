@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:medkube/Screens/checkout_screen.dart';
 import 'package:medkube/Services/Cart.dart';
+import 'package:medkube/Services/Font_Size.dart';
 import 'package:medkube/Widgets/cart_card.dart';
 import 'package:medkube/Widgets/custom_button.dart';
 import 'package:medkube/extras.dart';
@@ -24,6 +25,7 @@ class _CartScreenState extends State<CartScreen> {
   double total;
   double screenHeight;
   double screenWidth;
+  FontSizeObserver fontSizeObserver = FontSizeObserver();
 
   @override
   void initState() {
@@ -40,20 +42,11 @@ class _CartScreenState extends State<CartScreen> {
     return total;
   }
 
-  double getFontSize(){
-    if(screenHeight < 720 && screenWidth < 360){
-      return 18;
-    } else {
-      return 16;
-    }
-  }
-
-  double getItemScrollHeight(){
-    if(MediaQuery.of(context).size.height < 720){
+  double getItemScrollHeight() {
+    if (MediaQuery.of(context).size.height < 720) {
       return 1.75;
     } else if (MediaQuery.of(context).size.height < 1440) {
       return 1.5;
-
     } else {
       return 1.4;
     }
@@ -114,10 +107,14 @@ class _CartScreenState extends State<CartScreen> {
             SliverToBoxAdapter(
               child: Container(
                 decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(8)),
+                BoxDecoration(borderRadius: BorderRadius.circular(8)),
                 margin: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height / getItemScrollHeight(),
+                height:
+                MediaQuery
+                    .of(context)
+                    .size
+                    .height / getItemScrollHeight(),
                 child: ListView.builder(
                   padding: EdgeInsets.all(0),
                   itemCount: cartListItems.length,
@@ -132,15 +129,16 @@ class _CartScreenState extends State<CartScreen> {
                       },
                       price: (cartListItems[item]["price"]).toString(),
                       productName: item,
-                      fontSize: 16,
+                      fontSize: fontSizeObserver.getFontSize(
+                          context, "CartCardProductName"),
                       indexValue: cartListItems[item]["quantity"] - 1,
                       onChanged: (value) {
                         setState(
-                          () {
+                              () {
                             cartListItems[item]["quantity"] = value + 1;
 
                             cartListItems[item]["total"] = cartListItems[item]
-                                    ["quantity"] *
+                            ["quantity"] *
                                 cartListItems[item]["price"];
                             getTotal();
                           },
@@ -185,7 +183,9 @@ class _CartScreenState extends State<CartScreen> {
                   Text(
                     "delivery will be calculated on next screen",
                     style: kAlertBoxText.copyWith(
-                        color: Colors.black.withOpacity(0.4), fontSize: getFontSize()),
+                        color: Colors.black.withOpacity(0.4),
+                        fontSize: fontSizeObserver.getFontSize(
+                            context, "CartDeliveryLabel")),
                   )
                 ],
               ),

@@ -77,12 +77,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
               margin: EdgeInsets.symmetric(vertical: 16),
               child: RichText(
                 text: TextSpan(
-                  style: GoogleFonts.montserrat(color: Colors.black54, fontSize: MediaQuery.of(context).devicePixelRatio > 2.0 ? 19 : 16),
+                  style: GoogleFonts.montserrat(
+                      color: Colors.black54,
+                      fontSize: MediaQuery.of(context).devicePixelRatio > 2.0
+                          ? 19
+                          : 16),
                   children: [
                     TextSpan(text: 'Please '),
                     TextSpan(
                         text: 'login ',
-                        style: GoogleFonts.montserrat(color: Colors.blue, fontSize: MediaQuery.of(context).devicePixelRatio > 2.0 ? 19 : 16),
+                        style: GoogleFonts.montserrat(
+                            color: Colors.blue,
+                            fontSize:
+                                MediaQuery.of(context).devicePixelRatio > 2.0
+                                    ? 19
+                                    : 16),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             Navigator.pushReplacementNamed(
@@ -152,6 +161,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Expanded(
                     child: TextFormField(
+                      enabled: false,
                       validator: (value) {
                         if (value.isEmpty) {
                           return "Enter First Name";
@@ -160,16 +170,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                       controller: _firstNameController,
                       style: TextStyle(
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.normal,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.grey),
+                      decoration: kProfileTextFieldDecoration.copyWith(
+                        hintText: "First Name",
+                        labelText: "First Name",
                       ),
-                      decoration: kCheckOutTextFieldDecoration.copyWith(
-                          hintText: "First Name", labelText: "First Name"),
                     ),
                   ),
                   SizedBox(width: 8.0),
                   Expanded(
                     child: TextFormField(
+                      enabled: false,
                       validator: (value) {
                         if (value.isEmpty) {
                           return "Enter Last Name";
@@ -178,10 +191,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                       controller: _lastNameController,
                       style: TextStyle(
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.normal,
-                      ),
-                      decoration: kCheckOutTextFieldDecoration.copyWith(
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.grey),
+                      decoration: kProfileTextFieldDecoration.copyWith(
                           hintText: "Last Name", labelText: "Last Name"),
                     ),
                   ),
@@ -189,26 +202,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             ProfileTextField(
+              enabled: false,
               controller: _emailController,
               hint: "Email",
             ),
             ProfileTextField(
+              enabled: false,
               controller: _apartmentController,
               hint: "Apartment No (Optional)",
             ),
             ProfileTextField(
+              enabled: false,
               controller: _phoneController,
               hint: "Phone Number",
             ),
             ProfileTextField(
+              enabled: false,
               controller: _countryController,
               hint: "Country",
             ),
             ProfileTextField(
+              enabled: false,
               controller: _cityController,
               hint: "City",
             ),
             ProfileTextField(
+              enabled: false,
               controller: _addressController,
               hint: "Address",
             ),

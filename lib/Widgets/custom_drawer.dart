@@ -9,9 +9,6 @@ import 'package:medkube/Services/Cart.dart';
 import 'package:medkube/Services/Product.dart';
 import 'package:medkube/Widgets/custom_listTiles.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
-
-import '../constants.dart';
-
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({Key key, this.userName, this.userEmail, this.onTap})
       : super(key: key);
@@ -114,9 +111,7 @@ class CustomDrawer extends StatelessWidget {
     return showGeneralDialog(
       context: context,
       barrierDismissible: true,
-      barrierLabel: MaterialLocalizations
-          .of(context)
-          .modalBarrierDismissLabel,
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
       barrierColor: Colors.black45,
       transitionDuration: const Duration(milliseconds: 200),
       pageBuilder: (BuildContext buildContext, Animation animation,
@@ -124,14 +119,8 @@ class CustomDrawer extends StatelessWidget {
         return Center(
           child: Dialog(
             child: Container(
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height / 6,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width / 1.5,
+              height: MediaQuery.of(context).size.height / 6,
+              width: MediaQuery.of(context).size.width / 1.5,
               child: Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

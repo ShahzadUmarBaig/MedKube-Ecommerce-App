@@ -55,7 +55,6 @@ class CartCard extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.only(left: 8.0, top: 3.0, right: 3.0),
                 height: MediaQuery.of(context).size.width / 6,
-                color: Colors.blue,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
