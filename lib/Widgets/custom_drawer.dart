@@ -9,6 +9,7 @@ import 'package:medkube/Services/Cart.dart';
 import 'package:medkube/Services/Product.dart';
 import 'package:medkube/Widgets/custom_listTiles.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
+
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({Key key, this.userName, this.userEmail, this.onTap})
       : super(key: key);
@@ -143,10 +144,9 @@ class CustomDrawer extends StatelessWidget {
                             SizedBox(height: 8.0),
                             Text("Whatsapp",
                                 style: GoogleFonts.montserrat(
-                                    fontSize: MediaQuery
-                                        .of(context)
-                                        .devicePixelRatio >
-                                        2.0
+                                    fontSize: MediaQuery.of(context)
+                                                .devicePixelRatio >
+                                            2.0
                                         ? 19.0
                                         : 24.0,
                                     color: Colors.black54))

@@ -107,14 +107,11 @@ class _CartScreenState extends State<CartScreen> {
             SliverToBoxAdapter(
               child: Container(
                 decoration:
-                BoxDecoration(borderRadius: BorderRadius.circular(8)),
+                    BoxDecoration(borderRadius: BorderRadius.circular(8)),
                 margin: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
                 width: double.infinity,
                 height:
-                MediaQuery
-                    .of(context)
-                    .size
-                    .height / getItemScrollHeight(),
+                    MediaQuery.of(context).size.height / getItemScrollHeight(),
                 child: ListView.builder(
                   padding: EdgeInsets.all(0),
                   itemCount: cartListItems.length,
