@@ -29,6 +29,18 @@ class FontSizeObserver {
       } else if (bigScreen) {
         return 19;
       }
+    } else if (status == "CartDeliveryLabel") {
+      if (smallScreen) {
+        return 18;
+      } else if (bigScreen) {
+        return 16;
+      }
+    } else if (status == "CartCardProductName") {
+      if (smallScreen) {
+        return 16;
+      } else if (bigScreen) {
+        return 14;
+      }
     }
 
     return 0.0;

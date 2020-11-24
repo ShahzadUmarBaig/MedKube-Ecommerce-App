@@ -83,6 +83,11 @@ InputDecoration kProfileTextFieldDecoration = InputDecoration(
   fillColor: Colors.white70,
 );
 
+TextStyle kProfileTextDecoration = TextStyle(
+  fontStyle: FontStyle.normal,
+  fontWeight: FontWeight.normal,
+);
+
 InputDecoration kCheckOutTextFieldDecoration = InputDecoration(
   hintStyle: TextStyle(color: Colors.blue[500]),
   labelStyle: TextStyle(color: Colors.blue[500]),

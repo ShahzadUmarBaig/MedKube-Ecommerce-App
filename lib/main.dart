@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: "MedKube",
       navigatorObservers: [DismissKeyboardNavigationObserver()],
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light().copyWith(

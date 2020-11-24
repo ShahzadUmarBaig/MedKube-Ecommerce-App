@@ -5,9 +5,11 @@ import '../constants.dart';
 class ProfileTextField extends StatelessWidget {
   final String hint;
   final TextEditingController controller;
+  final bool enabled;
 
-  const ProfileTextField({Key key, this.hint, this.controller})
+  const ProfileTextField({Key key, this.hint, this.controller, this.enabled})
       : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -15,12 +17,13 @@ class ProfileTextField extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: TextField(
+            child: TextFormField(
+              enabled: enabled,
               controller: controller,
               style: TextStyle(
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.normal,
-              ),
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.grey),
               decoration: kProfileTextFieldDecoration.copyWith(
                   hintText: hint, labelText: hint),
             ),
