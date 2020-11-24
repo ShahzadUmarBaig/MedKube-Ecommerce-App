@@ -41,6 +41,30 @@ class FontSizeObserver {
       } else if (bigScreen) {
         return 14;
       }
+    } else if (status == "PromoTag") {
+      if (smallScreen) {
+        return 16;
+      } else if (bigScreen) {
+        return 14;
+      }
+    } else if (status == "PrescriptionLabel") {
+      if (smallScreen) {
+        return 18;
+      } else if (bigScreen) {
+        return 16;
+      }
+    } else if (status == "ContactUs") {
+      if (smallScreen) {
+        return 24;
+      } else if (bigScreen) {
+        return 20;
+      }
+    } else if (status == "WaitingScreen") {
+      if (smallScreen) {
+        return 24;
+      } else if (bigScreen) {
+        return 20;
+      }
     }
 
     return 0.0;

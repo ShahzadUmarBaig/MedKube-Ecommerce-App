@@ -20,8 +20,7 @@ class SectionHeading extends StatelessWidget {
   }
 }
 
-
-SnackBar customSnackBar(String snackBarText){
+SnackBar customSnackBar(String snackBarText, int seconds) {
   return SnackBar(
     behavior: SnackBarBehavior.floating,
     content: Container(
@@ -31,8 +30,6 @@ SnackBar customSnackBar(String snackBarText){
         style: GoogleFonts.montserrat(fontSize: 20.0),
       ),
     ),
-    duration: Duration(seconds: 1),
+    duration: Duration(seconds: seconds),
   );
 }
-
-

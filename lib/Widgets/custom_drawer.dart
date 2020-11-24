@@ -6,6 +6,7 @@ import 'package:medkube/Screens/cart_screen.dart';
 import 'package:medkube/Screens/order_screen.dart';
 import 'package:medkube/Screens/profile_screen.dart';
 import 'package:medkube/Services/Cart.dart';
+import 'package:medkube/Services/Font_Size.dart';
 import 'package:medkube/Services/Product.dart';
 import 'package:medkube/Widgets/custom_listTiles.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
@@ -144,11 +145,8 @@ class CustomDrawer extends StatelessWidget {
                             SizedBox(height: 8.0),
                             Text("Whatsapp",
                                 style: GoogleFonts.montserrat(
-                                    fontSize: MediaQuery.of(context)
-                                                .devicePixelRatio >
-                                            2.0
-                                        ? 19.0
-                                        : 24.0,
+                                    fontSize: FontSizeObserver()
+                                        .getFontSize(context, "ContactUs"),
                                     color: Colors.black54))
                           ],
                         ),
@@ -172,11 +170,8 @@ class CustomDrawer extends StatelessWidget {
                             SizedBox(height: 8.0),
                             Text("Phone",
                                 style: GoogleFonts.montserrat(
-                                    fontSize: MediaQuery.of(context)
-                                                .devicePixelRatio >
-                                            2.0
-                                        ? 20.0
-                                        : 24.0,
+                                    fontSize: FontSizeObserver()
+                                        .getFontSize(context, "ContactUs"),
                                     color: Colors.black54))
                           ],
                         ),

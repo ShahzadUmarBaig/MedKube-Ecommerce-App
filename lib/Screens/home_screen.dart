@@ -75,9 +75,10 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       await FirebaseAuth.instance.signOut();
       userInfo.clear();
+      await FirebaseAuth.instance.signInAnonymously();
       _scaffoldKey.currentState
           .showSnackBar(
-            customSnackBar("Logged Out Successfully"),
+            customSnackBar("Logged Out Successfully", 1),
           )
           .closed
           .then(

@@ -19,7 +19,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   TextEditingController address;
   TextEditingController phoneNumber;
   final _formKey = GlobalKey<FormState>();
-
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -235,11 +234,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             .then((value) => Navigator.pushReplacementNamed(
                                 context, HomeScreen.id));
                       } on FirebaseAuthException catch (e) {
-                        if (e.code == 'user-not-found') {
-                          print('No user found for that email.');
-                        } else if (e.code == 'wrong-password') {
-                          print('Wrong password provided for that user.');
-                        }
+                        _scaffoldKey.currentState.showSnackBar(SnackBar(
+                          behavior: SnackBarBehavior.floating,
+                          content: Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 4.0),
+                            child: Text(
+                              e.code,
+                              style: GoogleFonts.montserrat(
+                                  fontSize: 20.0, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          duration: Duration(seconds: 3),
+                        ));
                       }
                     }
                   },

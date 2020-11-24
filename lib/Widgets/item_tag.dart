@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medkube/Services/Font_Size.dart';
 
 class ItemTag extends StatelessWidget {
   final String promoTitle;
   final Function onPressed;
+  final FontSizeObserver fontSizeObserver = FontSizeObserver();
 
-  const ItemTag({Key key, this.promoTitle, this.onPressed}) : super(key: key);
+  ItemTag({Key key, this.promoTitle, this.onPressed}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,7 +30,7 @@ class ItemTag extends StatelessWidget {
                 promoTitle,
                 style: GoogleFonts.montserrat(
                   color: Colors.black54,
-                  fontSize: 16,
+                  fontSize: fontSizeObserver.getFontSize(context, "PromoTag"),
                   fontWeight: FontWeight.w500,
                 ),
               ),

@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:medkube/Services/Font_Size.dart';
 import 'package:medkube/Services/Order_Code.dart';
 import 'package:medkube/Services/user_info.dart';
 import 'package:medkube/Widgets/custom_button.dart';
@@ -75,7 +77,9 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                         child: Text(
                           "Your Order Is Being Placed",
                           style: GoogleFonts.montserrat(
-                              fontSize: 24, color: Colors.black54),
+                              fontSize: FontSizeObserver()
+                                  .getFontSize(context, "WaitingScreen"),
+                              color: Colors.black54),
                         ),
                       ),
                     ),
@@ -200,6 +204,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                                   'Status': "In Progress",
                                   'PicPath': imagePath,
                                   "OrderNo": orderNumber,
+                                  "UID": FirebaseAuth.instance.currentUser.uid,
                                   "Price": null,
                                 }).then(
                                   (value) {
@@ -254,7 +259,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                                                 ),
                                                 Align(
                                                   alignment: Alignment.center,
-                                                  child: Text(
+                                                  child: SelectableText(
                                                     orderNumber,
                                                     style:
                                                         GoogleFonts.montserrat(
@@ -383,15 +388,15 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                                                 ),
                                                 Align(
                                                   alignment: Alignment.center,
-                                                  child: Text(
+                                                  child: SelectableText(
                                                     orderNumber,
                                                     style:
-                                                        GoogleFonts.montserrat(
-                                                            fontSize: 28.0,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color:
-                                                                Colors.black54),
+                                                    GoogleFonts.montserrat(
+                                                        fontSize: 28.0,
+                                                        fontWeight:
+                                                        FontWeight.w500,
+                                                        color:
+                                                        Colors.black54),
                                                   ),
                                                 ),
                                                 Positioned(
@@ -463,9 +468,11 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                               ),
                               SizedBox(width: 8.0),
                               Text(
-                                "Delivery Charges Will Be Applied",
+                                "Terms And Conditions Applied",
                                 style: kAlertBoxText.copyWith(
-                                    color: Colors.grey[300], fontSize: 20.0),
+                                    color: Colors.grey[300],
+                                    fontSize: FontSizeObserver().getFontSize(
+                                        context, "PrescriptionLabel")),
                               )
                             ],
                           ))

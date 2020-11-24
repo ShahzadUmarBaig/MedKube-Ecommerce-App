@@ -55,6 +55,7 @@ class _OrderScreenState extends State<OrderScreen> {
     super.initState();
     itemCount = 0;
     orderTracked = false;
+    print("Init Order Statte");
     if (userInfo.isNotEmpty) {
       getItemCount();
     }
@@ -234,6 +235,7 @@ class _OrderScreenState extends State<OrderScreen> {
                 child: ListView.builder(
                   padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
                   itemBuilder: (context, index) {
+                    print("Working Till here");
                     if (orders[orderKeys[index]]["OrderType"] == "cart") {
                       return CartItemTile(
                         orderDetails: orders[orderKeys[index]],

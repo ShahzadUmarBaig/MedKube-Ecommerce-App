@@ -15,7 +15,6 @@ import 'package:medkube/Services/user_info.dart';
 import 'package:medkube/Widgets/shop_card.dart';
 import 'package:medkube/extras.dart';
 
-import '../Widgets/widgets.dart';
 
 class GeneralItemScreen extends StatefulWidget {
   static const id = "GeneralScreen";
@@ -201,23 +200,6 @@ class _GeneralItemScreenState extends State<GeneralItemScreen> {
                   ),
                 ),
               ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SectionHeading(heading: "Popular"),
-                      IconButton(
-                        iconSize: 30,
-                        icon: Icon(Icons.filter_list),
-                        onPressed: () {},
-                      ),
-                    ],
-                  ),
-                ),
-              ),
               SliverGrid(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
@@ -346,3 +328,23 @@ class ProductSearch extends SearchDelegate<Product> {
     );
   }
 }
+
+/*
+SliverToBoxAdapter(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SectionHeading(heading: "Popular"),
+                      IconButton(
+                        iconSize: 30,
+                        icon: Icon(Icons.filter_list),
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+ */

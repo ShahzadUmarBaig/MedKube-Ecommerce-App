@@ -11,6 +11,7 @@ import 'package:medkube/Widgets/add_button.dart';
 import 'package:medkube/Widgets/checkout_textfield.dart';
 import 'package:medkube/Widgets/custom_button.dart';
 import 'package:medkube/Widgets/item_tag.dart';
+import 'package:medkube/Widgets/widgets.dart';
 import 'package:medkube/constants.dart';
 import 'package:medkube/extras.dart';
 
@@ -43,6 +44,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   CollectionReference _orders = FirebaseFirestore.instance.collection('Orders');
   double screenHeight;
   double screenWidth;
+  CollectionReference promos = FirebaseFirestore.instance.collection('Promos');
 
   @override
   void initState() {
@@ -62,6 +64,20 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     _cityController.text = "Karachi";
     getTotal();
     getDiscount();
+    getPromos();
+  }
+
+  Future<void> getPromos() async {
+    await promos.get().then(
+          (value) => value.docs.forEach(
+            (element) {
+              if (element.data()['isActive'] == true) {
+                promoAvailable[element.data()['promoTitle']] = element.data();
+                print(promoAvailable);
+              }
+            },
+          ),
+        );
   }
 
   double getDiscount() {
@@ -87,8 +103,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     return total;
   }
 
-  double getFontSize(){
-    if(screenHeight < 1280 && screenWidth < 720){
+  double getFontSize() {
+    if (screenHeight < 1280 && screenWidth < 720) {
       return 18;
     } else {
       return 16;
@@ -97,10 +113,14 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-
-    screenHeight = MediaQuery.of(context).size.height;
-    screenWidth = MediaQuery.of(context).size.width;
+    screenHeight = MediaQuery
+        .of(context)
+        .size
+        .height;
+    screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
     return WillPopScope(
       onWillPop: () async {
         Navigator.pushReplacementNamed(context, CartScreen.id);
@@ -131,7 +151,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         textStyle: kCheckOutTextStyle),
                     CheckOutText(
                         label: "Discount",
-                        value: getDiscount().toString(),
+                        value: getDiscount().toStringAsFixed(2),
                         textStyle: kCheckOutTextStyle),
                     CheckOutText(
                         label: "Total",
@@ -139,17 +159,20 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             .toStringAsFixed(2),
                         textStyle: kCheckOutTextStyle.copyWith(fontSize: 24.0)),
                     DiscountRow(
+                        validator: (value) {},
                         onTap: () {
-                          promoAvailable.forEach((key, value) {
-                            if (discountController.text == key &&
-                                !promoApplied.contains(key)) {
-                              setState(() {
-                                promoApplied.add(key);
-                                discountController.clear();
-                                FocusScope.of(context).unfocus();
-                              });
-                            }
-                          });
+                          if (promoAvailable.keys
+                              .toList()
+                              .contains(discountController.text) &&
+                              !promoApplied.contains(discountController.text)) {
+                            promoApplied.add(discountController.text);
+                            discountController.clear();
+                            FocusScope.of(context).unfocus();
+                            setState(() {});
+                          } else {
+                            _scaffoldKey.currentState.showSnackBar(
+                                customSnackBar('Promo Not Available', 2));
+                          }
                         },
                         discountController: discountController),
                     Container(
@@ -167,7 +190,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         itemBuilder: (BuildContext context, int index) {
                           return ItemTag(
                             promoTitle: promoAvailable[promoApplied[index]]
-                                ["promoTitle"],
+                            ["promoValue"],
                             onPressed: () {
                               setState(() {
                                 promoApplied.clear();
@@ -288,12 +311,12 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                   "lastName": _lastNameController.text,
                                   "items": cartListItems,
                                   "total":
-                                      (getTotal() + delivery - discountValue)
-                                          .toStringAsFixed(2),
+                                  (getTotal() + delivery - discountValue)
+                                      .toStringAsFixed(2),
                                   "discount": discountValue,
                                   "promoApplied": promoApplied,
                                   "delivery": delivery,
-                                  "Status" : "In Progress",
+                                  "Status": "In Progress",
                                 },
                               ).then(
                                 (value) {
@@ -343,12 +366,12 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                               ),
                                               Align(
                                                 alignment: Alignment.center,
-                                                child: Text(
+                                                child: SelectableText(
                                                   orderNumber,
                                                   style: GoogleFonts.montserrat(
                                                       fontSize: 28.0,
                                                       fontWeight:
-                                                          FontWeight.w500,
+                                                      FontWeight.w500,
                                                       color: Colors.black54),
                                                 ),
                                               ),
@@ -408,8 +431,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                 "discount": discountValue,
                                 "promoApplied": promoApplied,
                                 "delivery": delivery,
-
-                                "Status" : "In Progress",
+                                "Status": "In Progress",
                               }).then(
                                 (value) {
                                   showGeneralDialog(
@@ -458,12 +480,12 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                               ),
                                               Align(
                                                 alignment: Alignment.center,
-                                                child: Text(
+                                                child: SelectableText(
                                                   orderNumber,
                                                   style: GoogleFonts.montserrat(
                                                       fontSize: 28.0,
                                                       fontWeight:
-                                                          FontWeight.w500,
+                                                      FontWeight.w500,
                                                       color: Colors.black54),
                                                 ),
                                               ),
@@ -573,7 +595,10 @@ class CheckOutText extends StatelessWidget {
 class DiscountRow extends StatelessWidget {
   final Function onTap;
   final TextEditingController discountController;
-  const DiscountRow({Key key, this.onTap, this.discountController})
+  final Function validator;
+
+  const DiscountRow(
+      {Key key, this.onTap, this.discountController, this.validator})
       : super(key: key);
 
   @override
@@ -584,7 +609,8 @@ class DiscountRow extends StatelessWidget {
         children: <Widget>[
           Expanded(
             flex: 9,
-            child: TextField(
+            child: TextFormField(
+              validator: validator,
               controller: discountController,
               style: TextStyle(
                 fontStyle: FontStyle.normal,

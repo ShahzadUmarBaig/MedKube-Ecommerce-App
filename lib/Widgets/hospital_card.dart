@@ -22,48 +22,9 @@ class HospitalCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
-              flex: 2,
-              child: Container(
-                height: MediaQuery.of(context).size.height / 10,
-                width: MediaQuery.of(context).size.width / 8,
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(
-                      color: Colors.grey[300],
-                      style: BorderStyle.solid,
-                    ),
-                  ),
-                ),
-                child: RawMaterialButton(
-                  onPressed: null,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 6.0,
-                      ),
-                      Expanded(
-                          child: Icon(Icons.location_on_outlined,
-                              color: Colors.green)),
-                      SizedBox(
-                        height: 12.0,
-                      ),
-                      Expanded(
-                        child: Text(
-                          'Location',
-                          style: GoogleFonts.montserrat(
-                              color: Colors.green, fontSize: 14.0),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
               flex: 7,
               child: Container(
-                margin: EdgeInsets.symmetric(vertical: 2.0, horizontal: 2.0),
+                margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
