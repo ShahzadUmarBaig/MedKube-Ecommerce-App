@@ -131,11 +131,11 @@ class _CartScreenState extends State<CartScreen> {
                       indexValue: cartListItems[item]["quantity"] - 1,
                       onChanged: (value) {
                         setState(
-                              () {
+                          () {
                             cartListItems[item]["quantity"] = value + 1;
 
                             cartListItems[item]["total"] = cartListItems[item]
-                            ["quantity"] *
+                                    ["quantity"] *
                                 cartListItems[item]["price"];
                             getTotal();
                           },

@@ -172,10 +172,9 @@ class CustomDrawer extends StatelessWidget {
                             SizedBox(height: 8.0),
                             Text("Phone",
                                 style: GoogleFonts.montserrat(
-                                    fontSize: MediaQuery
-                                        .of(context)
-                                        .devicePixelRatio >
-                                        2.0
+                                    fontSize: MediaQuery.of(context)
+                                                .devicePixelRatio >
+                                            2.0
                                         ? 20.0
                                         : 24.0,
                                     color: Colors.black54))
