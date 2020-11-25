@@ -120,7 +120,7 @@ class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
                       label: "Delivery",
                       value: getValue(widget.orderDetails['delivery']),
                       textStyle:
-                      kCheckOutTextStyle.copyWith(color: Colors.white),
+                          kCheckOutTextStyle.copyWith(color: Colors.white),
                     ),
                     CheckOutText(
                       label: "Discount",

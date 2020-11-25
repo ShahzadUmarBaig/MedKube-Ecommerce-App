@@ -282,7 +282,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
       "Date": getDate(),
       "Time": getTime(),
     }).then(
-          (value) {
+      (value) {
         setState(() {
           isLoading = false;
         });
@@ -290,22 +290,14 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
           context: context,
           barrierDismissible: true,
           barrierLabel:
-          MaterialLocalizations
-              .of(context)
-              .modalBarrierDismissLabel,
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
           transitionDuration: const Duration(milliseconds: 200),
           pageBuilder: (BuildContext buildContext, Animation animation,
               Animation secondaryAnimation) {
             return Dialog(
               child: Container(
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width / 1.2,
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height / 3,
+                width: MediaQuery.of(context).size.width / 1.2,
+                height: MediaQuery.of(context).size.height / 3,
                 color: Colors.white,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,

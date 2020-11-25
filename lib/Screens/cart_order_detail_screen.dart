@@ -82,15 +82,13 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
             SliverToBoxAdapter(
               child: Container(
                 decoration:
-                BoxDecoration(borderRadius: BorderRadius.circular(8)),
+                    BoxDecoration(borderRadius: BorderRadius.circular(8)),
                 margin: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
                 width: double.infinity,
                 height: getItemContainerHeight(),
                 child: ListView.builder(
                   padding: EdgeInsets.all(0),
-                  itemCount: productsDetails.keys
-                      .toList()
-                      .length,
+                  itemCount: productsDetails.keys.toList().length,
                   itemBuilder: (context, index) {
                     var element = productsDetails[productKeys[index]];
                     return Card(
@@ -203,7 +201,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                       label: "Order Status",
                       value: widget.orderDetails['Status'],
                       textStyle:
-                      kCheckOutTextStyle.copyWith(color: Colors.white),
+                          kCheckOutTextStyle.copyWith(color: Colors.white),
                     ),
                     CheckOutText(
                       label: "Order No",
@@ -353,7 +351,7 @@ class OrderDetailTextField extends StatelessWidget {
                   fontWeight: FontWeight.normal,
                   color: Colors.white),
               decoration:
-              kCartOrderBilling.copyWith(hintText: text, labelText: text),
+                  kCartOrderBilling.copyWith(hintText: text, labelText: text),
             ),
           ),
         ],
