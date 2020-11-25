@@ -210,7 +210,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         itemBuilder: (BuildContext context, int index) {
                           return ItemTag(
                             promoTitle: promoAvailable[promoApplied[index]]
-                            ["promoValue"],
+                                ["promoValue"],
                             onPressed: () {
                               setState(() {
                                 promoApplied.clear();

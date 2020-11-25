@@ -20,12 +20,26 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
   FontSizeObserver fontSizeObserver = FontSizeObserver();
   Map<String, dynamic> productsDetails;
   List<String> productKeys = List<String>();
+  TextEditingController _firstNameController = TextEditingController();
+  TextEditingController _lastNameController = TextEditingController();
+  TextEditingController _apartmentController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+  TextEditingController _countryController = TextEditingController();
+  TextEditingController _cityController = TextEditingController();
+  TextEditingController _addressController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     productsDetails = widget.orderDetails['items'];
     productKeys = productsDetails.keys.toList();
+    _firstNameController.text = widget.orderDetails["firstName"];
+    _lastNameController.text = widget.orderDetails["lastName"];
+    _apartmentController.text = widget.orderDetails["Apartment"];
+    _phoneController.text = widget.orderDetails["Phone"];
+    _countryController.text = widget.orderDetails["Country"];
+    _cityController.text = widget.orderDetails["City"];
+    _addressController.text = widget.orderDetails["Address"];
   }
 
   @override
@@ -171,7 +185,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                       label: "Order Time",
                       value: widget.orderDetails['Time'],
                       textStyle:
-                      kCheckOutTextStyle.copyWith(color: Colors.white),
+                          kCheckOutTextStyle.copyWith(color: Colors.white),
                     ),
                     CheckOutText(
                       label: "Order Status",
@@ -215,29 +229,33 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                 height: MediaQuery
                     .of(context)
                     .size
-                    .height / 2.5,
+                    .height / 2.0,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    CustomNameRow(),
-                    Text(widget.orderDetails['Address'],
-                        style:
-                        kCheckOutTextStyle.copyWith(color: Colors.white)),
-                    Text(
-                        widget.orderDetails['Apartment'] == ""
-                            ? "Apartment"
-                            : widget.orderDetails['Apartment'],
-                        style:
-                        kCheckOutTextStyle.copyWith(color: Colors.white)),
-                    Text(widget.orderDetails['Country'],
-                        style:
-                        kCheckOutTextStyle.copyWith(color: Colors.white)),
-                    Text(widget.orderDetails['City'],
-                        style:
-                        kCheckOutTextStyle.copyWith(color: Colors.white)),
-                    Text(widget.orderDetails['Phone'],
-                        style:
-                        kCheckOutTextStyle.copyWith(color: Colors.white)),
+                    CustomNameRow(
+                        firstName: _firstNameController,
+                        lastName: _lastNameController),
+                    OrderDetailTextField(
+                      controller: _addressController,
+                      text: "Address",
+                    ),
+                    OrderDetailTextField(
+                      controller: _apartmentController,
+                      text: "Apartment",
+                    ),
+                    OrderDetailTextField(
+                      controller: _countryController,
+                      text: "Country",
+                    ),
+                    OrderDetailTextField(
+                      controller: _cityController,
+                      text: "City",
+                    ),
+                    OrderDetailTextField(
+                      controller: _phoneController,
+                      text: "Phone",
+                    ),
                   ],
                 ),
               ),
@@ -260,6 +278,12 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 }
 
 class CustomNameRow extends StatelessWidget {
+  final TextEditingController firstName;
+  final TextEditingController lastName;
+
+  const CustomNameRow({Key key, this.firstName, this.lastName})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -293,5 +317,37 @@ class CustomNameRow extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class OrderDetailTextField extends StatelessWidget {
+  final TextEditingController controller;
+  final String text;
+
+  const OrderDetailTextField({Key key, this.controller, this.text})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        children: [
+          Expanded(
+            flex: 9,
+            child: TextField(
+              enabled: false,
+              controller: controller,
+              style: TextStyle(
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.white),
+              decoration:
+              kCartOrderBilling.copyWith(hintText: text, labelText: text),
+            ),
+          ),
+        ],
+      ),
+    );
+    ;
   }
 }
