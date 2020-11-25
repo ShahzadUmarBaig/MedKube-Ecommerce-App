@@ -206,6 +206,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                                   "OrderNo": orderNumber,
                                   "UID": FirebaseAuth.instance.currentUser.uid,
                                   "Price": null,
+                                  "Date": DateTime.now(),
                                 }).then(
                                   (value) {
                                     setState(() {
@@ -335,6 +336,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                                   "OrderNo": orderNumber,
                                   "UID": userInfo['UID'],
                                   "Price": null,
+                                  "Date": DateTime.now(),
                                 }).then(
                                   (value) {
                                     setState(() {

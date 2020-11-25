@@ -45,6 +45,13 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   double screenHeight;
   double screenWidth;
   CollectionReference promos = FirebaseFirestore.instance.collection('Promos');
+  int day;
+  int month;
+  int year;
+  int hour;
+  int minute;
+
+  //int second;
 
   @override
   void initState() {
@@ -65,6 +72,24 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     getTotal();
     getDiscount();
     getPromos();
+  }
+
+  String getDate() {
+    day = DateTime.now().day;
+    month = DateTime.now().month;
+    year = DateTime.now().year;
+    return '$day/$month/$year';
+  }
+
+  String getTime() {
+    hour = DateTime.now().hour;
+    minute = DateTime.now().minute;
+    if (hour > 12) {
+      hour = hour - 12;
+      return "$hour:$minute PM";
+    } else {
+      return "$hour:$minute Am";
+    }
   }
 
   Future<void> getPromos() async {
@@ -115,6 +140,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
+
     return WillPopScope(
       onWillPop: () async {
         Navigator.pushReplacementNamed(context, CartScreen.id);
@@ -311,6 +337,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                   "promoApplied": promoApplied,
                                   "delivery": delivery,
                                   "Status": "In Progress",
+                                  "Date": getDate(),
+                                  "Time": getTime(),
                                 },
                               ).then(
                                 (value) {
@@ -426,6 +454,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                 "promoApplied": promoApplied,
                                 "delivery": delivery,
                                 "Status": "In Progress",
+                                "Date": getDate(),
+                                "Time": getTime(),
                               }).then(
                                 (value) {
                                   showGeneralDialog(

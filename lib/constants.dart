@@ -6,7 +6,7 @@ const kElevationConstant = 5.00;
 final kBlueColor = 0xff42a5ff;
 
 final TextStyle kCheckOutTextStyle =
-    GoogleFonts.montserrat(fontSize: 20.0, color: Colors.black54);
+    GoogleFonts.montserrat(fontSize: 18.0, color: Colors.black54);
 
 TextStyle kAlertBoxText =
     GoogleFonts.montserrat(fontSize: 24.0, color: Colors.black54);
@@ -78,6 +78,37 @@ InputDecoration kProfileTextFieldDecoration = InputDecoration(
       Radius.circular(8.0),
     ),
     borderSide: BorderSide(color: Color(kBlueColor)),
+  ),
+  contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+  fillColor: Colors.white70,
+);
+
+InputDecoration kCartOrderBilling = InputDecoration(
+  labelStyle: TextStyle(color: Colors.white),
+  hintStyle: TextStyle(color: Colors.white),
+  border: OutlineInputBorder(
+    borderSide: BorderSide(color: Colors.white),
+    borderRadius: const BorderRadius.all(
+      const Radius.circular(8.0),
+    ),
+  ),
+  enabledBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.all(
+      Radius.circular(8.0),
+    ),
+    borderSide: BorderSide(color: Colors.white),
+  ),
+  focusedBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.all(
+      Radius.circular(8.0),
+    ),
+    borderSide: BorderSide(color: Colors.white),
+  ),
+  disabledBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.all(
+      Radius.circular(8.0),
+    ),
+    borderSide: BorderSide(color: Colors.white),
   ),
   contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
   fillColor: Colors.white70,

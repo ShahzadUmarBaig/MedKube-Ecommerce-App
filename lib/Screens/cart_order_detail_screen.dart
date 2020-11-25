@@ -12,7 +12,6 @@ class OrderDetailScreen extends StatefulWidget {
   final orderDetails;
 
   const OrderDetailScreen({Key key, this.orderDetails}) : super(key: key);
-
   @override
   _OrderDetailScreenState createState() => _OrderDetailScreenState();
 }
@@ -74,25 +73,38 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text(
-                              element['productName'],
-                              style: GoogleFonts.montserrat(
-                                fontSize: fontSizeObserver.getFontSize(
-                                    context, "OrderDetailProduct"),
+                            Expanded(
+                              flex: 4,
+                              child: Center(
+                                child: Text(
+                                  element['productName'],
+                                  style: GoogleFonts.montserrat(
+                                    fontSize: fontSizeObserver.getFontSize(
+                                        context, "OrderDetailProduct"),
+                                  ),
+                                ),
                               ),
                             ),
-                            Text(
-                              'x' + element['quantity'].toString(),
-                              style: GoogleFonts.montserrat(
-                                fontSize: fontSizeObserver.getFontSize(
-                                    context, "OrderDetailProduct"),
+                            Expanded(
+                              child: Center(
+                                child: Text(
+                                  'x' + element['quantity'].toString(),
+                                  style: GoogleFonts.montserrat(
+                                    fontSize: fontSizeObserver.getFontSize(
+                                        context, "OrderDetailProduct"),
+                                  ),
+                                ),
                               ),
                             ),
-                            Text(
-                              element['total'].toString(),
-                              style: GoogleFonts.montserrat(
-                                fontSize: fontSizeObserver.getFontSize(
-                                    context, "OrderDetailProduct"),
+                            Expanded(
+                              child: Center(
+                                child: Text(
+                                  element['total'].toString(),
+                                  style: GoogleFonts.montserrat(
+                                    fontSize: fontSizeObserver.getFontSize(
+                                        context, "OrderDetailProduct"),
+                                  ),
+                                ),
                               ),
                             ),
                           ],
@@ -151,15 +163,15 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                     ),
                     CheckOutText(
                       label: "Order Date",
-                      value: "12/12/2020",
+                      value: widget.orderDetails['Date'],
                       textStyle:
                           kCheckOutTextStyle.copyWith(color: Colors.white),
                     ),
                     CheckOutText(
                       label: "Order Time",
-                      value: "9:30 PM",
+                      value: widget.orderDetails['Time'],
                       textStyle:
-                          kCheckOutTextStyle.copyWith(color: Colors.white),
+                      kCheckOutTextStyle.copyWith(color: Colors.white),
                     ),
                     CheckOutText(
                       label: "Order Status",
@@ -199,32 +211,86 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
             SliverToBoxAdapter(
               child: Container(
                 margin: EdgeInsets.symmetric(vertical: 10, horizontal: 12.0),
-                padding: EdgeInsets.symmetric(vertical: 10),
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height / 2.5,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height / 2.5,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    CheckOutText(
-                      label: widget.orderDetails['firstName'],
-                      value: widget.orderDetails['lastName'],
-                      textStyle:
-                          kCheckOutTextStyle.copyWith(color: Colors.white),
-                    ),
-                    Text(widget.orderDetails['Address']),
+                    CustomNameRow(),
+                    Text(widget.orderDetails['Address'],
+                        style:
+                        kCheckOutTextStyle.copyWith(color: Colors.white)),
                     Text(
-                      widget.orderDetails['Apartment'] == ""
-                          ? "Apartment"
-                          : widget.orderDetails['Apartment'],
-                    ),
-                    Text(widget.orderDetails['Country']),
-                    Text(widget.orderDetails['City']),
+                        widget.orderDetails['Apartment'] == ""
+                            ? "Apartment"
+                            : widget.orderDetails['Apartment'],
+                        style:
+                        kCheckOutTextStyle.copyWith(color: Colors.white)),
+                    Text(widget.orderDetails['Country'],
+                        style:
+                        kCheckOutTextStyle.copyWith(color: Colors.white)),
+                    Text(widget.orderDetails['City'],
+                        style:
+                        kCheckOutTextStyle.copyWith(color: Colors.white)),
+                    Text(widget.orderDetails['Phone'],
+                        style:
+                        kCheckOutTextStyle.copyWith(color: Colors.white)),
                   ],
                 ),
               ),
-            ), // The Bottom Part with Button
+            ),
+            SliverToBoxAdapter(
+              child: CustomButton(
+                onTap: () {},
+                buttonColor: Colors.yellow,
+                buttonText: "Go Back",
+                buttonTextColor: Colors.black,
+                marginHorizontal: 16.0,
+                marginVertical: 8.0,
+              ),
+            ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class CustomNameRow extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              enabled: false,
+              style: TextStyle(
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.white),
+              decoration: kCartOrderBilling.copyWith(
+                hintText: "First Name",
+                labelText: "First Name",
+              ),
+            ),
+          ),
+          SizedBox(width: 8.0),
+          Expanded(
+            child: TextField(
+              enabled: false,
+              style: TextStyle(
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.white),
+              decoration: kCartOrderBilling.copyWith(
+                  hintText: "Last Name", labelText: "Last Name"),
+            ),
+          ),
+        ],
       ),
     );
   }
