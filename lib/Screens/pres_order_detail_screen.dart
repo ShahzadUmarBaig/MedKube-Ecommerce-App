@@ -4,11 +4,12 @@ import 'package:medkube/Screens/checkout_screen.dart';
 import 'package:medkube/Services/Font_Size.dart';
 import 'package:medkube/Widgets/custom_button.dart';
 import 'package:medkube/extras.dart';
+import 'package:photo_view/photo_view.dart';
 
 import '../constants.dart';
 
 class PrescriptionDetailScreen extends StatefulWidget {
-  static String id = "OrderDetailScreen";
+  static String id = "PrescriptionDetailScreen";
   final orderDetails;
 
   const PrescriptionDetailScreen({Key key, this.orderDetails})
@@ -22,7 +23,6 @@ class PrescriptionDetailScreen extends StatefulWidget {
 class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
   FontSizeObserver fontSizeObserver = FontSizeObserver();
   Map<String, dynamic> productsDetails;
-  List<String> productKeys = List<String>();
   TextEditingController _durationController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
@@ -30,15 +30,22 @@ class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
   @override
   void initState() {
     super.initState();
-    productsDetails = widget.orderDetails['items'];
-    productKeys = productsDetails.keys.toList();
     _durationController.text = widget.orderDetails["Note"];
     _phoneController.text = widget.orderDetails["Phone"];
     _addressController.text = widget.orderDetails["Address"];
   }
 
+  getValue(value) {
+    if (value == null) {
+      return "Not Decided";
+    } else {
+      return value.toString();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(widget.orderDetails['total']);
     return Scaffold(
       backgroundColor: Colors.blue[600],
       body: ScrollConfiguration(
@@ -50,7 +57,7 @@ class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
                 margin: EdgeInsets.only(top: 36.0),
                 child: Center(
                   child: Text(
-                    "Order Items",
+                    "Prescription",
                     style: GoogleFonts.montserrat(
                         color: Colors.white, fontSize: 24),
                   ),
@@ -66,61 +73,18 @@ class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
             ),
             SliverToBoxAdapter(
               child: Container(
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(8)),
-                margin: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height / 2.5,
-                child: ListView.builder(
-                  padding: EdgeInsets.all(0),
-                  itemCount: productsDetails.keys.toList().length,
-                  itemBuilder: (context, index) {
-                    var element = productsDetails[productKeys[index]];
-                    return Card(
-                      child: Container(
-                        height: 60,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Expanded(
-                              flex: 4,
-                              child: Center(
-                                child: Text(
-                                  element['productName'],
-                                  style: GoogleFonts.montserrat(
-                                    fontSize: fontSizeObserver.getFontSize(
-                                        context, "OrderDetailProduct"),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Center(
-                                child: Text(
-                                  'x' + element['quantity'].toString(),
-                                  style: GoogleFonts.montserrat(
-                                    fontSize: fontSizeObserver.getFontSize(
-                                        context, "OrderDetailProduct"),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Center(
-                                child: Text(
-                                  element['total'].toString(),
-                                  style: GoogleFonts.montserrat(
-                                    fontSize: fontSizeObserver.getFontSize(
-                                        context, "OrderDetailProduct"),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
+                height: MediaQuery.of(context).size.height * 0.40,
+                width: MediaQuery.of(context).size.width * 0.80,
+                margin: EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
+                child: Center(
+                  child:
+                      imageContainer(context, widget.orderDetails['PicPath']),
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.grey[400],
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(8.0),
+                  ),
                 ),
               ),
             ), // The Li
@@ -129,7 +93,7 @@ class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
                 child: Text(
                   "Order Details",
                   style:
-                      GoogleFonts.montserrat(color: Colors.white, fontSize: 24),
+                  GoogleFonts.montserrat(color: Colors.white, fontSize: 24),
                 ),
               ),
             ),
@@ -154,45 +118,45 @@ class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
                   children: [
                     CheckOutText(
                       label: "Delivery",
-                      value: widget.orderDetails['delivery'].toString(),
+                      value: getValue(widget.orderDetails['delivery']),
                       textStyle:
-                          kCheckOutTextStyle.copyWith(color: Colors.white),
+                      kCheckOutTextStyle.copyWith(color: Colors.white),
                     ),
                     CheckOutText(
                       label: "Discount",
-                      value: widget.orderDetails['discount'].toString(),
+                      value: getValue(widget.orderDetails['discount']),
                       textStyle:
-                          kCheckOutTextStyle.copyWith(color: Colors.white),
+                      kCheckOutTextStyle.copyWith(color: Colors.white),
                     ),
                     CheckOutText(
                       label: "Total",
-                      value: widget.orderDetails['total'].toString(),
+                      value: getValue(widget.orderDetails['total']),
                       textStyle:
-                          kCheckOutTextStyle.copyWith(color: Colors.white),
+                      kCheckOutTextStyle.copyWith(color: Colors.white),
                     ),
                     CheckOutText(
                       label: "Order Date",
                       value: widget.orderDetails['Date'],
                       textStyle:
-                          kCheckOutTextStyle.copyWith(color: Colors.white),
+                      kCheckOutTextStyle.copyWith(color: Colors.white),
                     ),
                     CheckOutText(
                       label: "Order Time",
                       value: widget.orderDetails['Time'],
                       textStyle:
-                          kCheckOutTextStyle.copyWith(color: Colors.white),
+                      kCheckOutTextStyle.copyWith(color: Colors.white),
                     ),
                     CheckOutText(
                       label: "Order Status",
-                      value: "In Progress",
+                      value: widget.orderDetails['Status'],
                       textStyle:
-                          kCheckOutTextStyle.copyWith(color: Colors.white),
+                      kCheckOutTextStyle.copyWith(color: Colors.white),
                     ),
                     CheckOutText(
                       label: "Order No",
                       value: widget.orderDetails['OrderNo'],
                       textStyle:
-                          kCheckOutTextStyle.copyWith(color: Colors.white),
+                      kCheckOutTextStyle.copyWith(color: Colors.white),
                     ),
                   ],
                 ),
@@ -216,12 +180,15 @@ class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
                 indent: 16,
                 endIndent: 16,
               ),
-            ), ////
+            ),
             SliverToBoxAdapter(
               child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 16.0),
+                margin: EdgeInsets.symmetric(horizontal: 16.0),
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height / 1.8,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height / 3.8,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -243,7 +210,9 @@ class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
             ),
             SliverToBoxAdapter(
               child: CustomButton(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pop(context);
+                },
                 buttonColor: Colors.yellow,
                 buttonText: "Go Back",
                 buttonTextColor: Colors.black,
@@ -252,6 +221,50 @@ class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget imageContainer(BuildContext context, imageURL) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (_) {
+          return ImageScreen(
+            url: imageURL,
+          );
+        }));
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(8.0),
+          ),
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: NetworkImage(imageURL),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ImageScreen extends StatelessWidget {
+  final String url;
+
+  const ImageScreen({Key key, this.url}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GestureDetector(
+        child: Center(
+          child: PhotoView(
+            imageProvider: NetworkImage(url),
+            minScale: PhotoViewComputedScale.contained,
+            maxScale: PhotoViewComputedScale.covered,
+          ),
         ),
       ),
     );
@@ -286,6 +299,5 @@ class OrderDetailTextField extends StatelessWidget {
         ],
       ),
     );
-    ;
   }
 }

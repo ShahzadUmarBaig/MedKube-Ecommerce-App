@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medkube/Screens/pres_order_detail_screen.dart';
 
 class PrescriptionItemTile extends StatelessWidget {
   final Map<String, dynamic> orderDetails;
@@ -19,7 +20,7 @@ class PrescriptionItemTile extends StatelessWidget {
     if (price == null) {
       return "N/A";
     } else {
-      return price;
+      return price.toString();
     }
   }
 
@@ -35,7 +36,6 @@ class PrescriptionItemTile extends StatelessWidget {
   Widget build(BuildContext context) {
     print(orderDetails);
     final String orderStatus = orderDetails["Status"];
-    String price = orderDetails["price"];
     return Container(
       height: 80,
       child: Card(
@@ -73,7 +73,16 @@ class PrescriptionItemTile extends StatelessWidget {
                 margin: EdgeInsets.symmetric(vertical: 8.0),
                 child: MaterialButton(
                   shape: RoundedRectangleBorder(),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PrescriptionDetailScreen(
+                          orderDetails: orderDetails,
+                        ),
+                      ),
+                    );
+                  },
                   elevation: 0,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -118,10 +127,10 @@ class PrescriptionItemTile extends StatelessWidget {
                         style: GoogleFonts.montserrat(
                             fontSize: 14.0, color: Colors.black54)),
                     SizedBox(height: 2.0),
-                    Text(getPrice(price),
+                    Text(getPrice(orderDetails['total']),
                         style: GoogleFonts.montserrat(
-                            fontSize: 14.0,
-                            color: getPriceColor(price),
+                            fontSize: 16.0,
+                            color: getPriceColor(orderDetails['total']),
                             fontWeight: FontWeight.w500)),
                     Text("PKR",
                         style: GoogleFonts.montserrat(

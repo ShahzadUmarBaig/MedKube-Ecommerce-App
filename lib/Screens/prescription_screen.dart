@@ -202,7 +202,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                           if (_formKey.currentState.validate() &&
                               _image != null) {
                             String orderNumber =
-                            OrderNumberGenerator().getRandomString(10);
+                                OrderNumberGenerator().getRandomString(10);
                             FocusScope.of(context).unfocus();
                             try {
                               if (userInfo.isEmpty) {

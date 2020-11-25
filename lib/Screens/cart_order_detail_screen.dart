@@ -189,9 +189,9 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                     ),
                     CheckOutText(
                       label: "Order Status",
-                      value: "In Progress",
+                      value: widget.orderDetails['Status'],
                       textStyle:
-                          kCheckOutTextStyle.copyWith(color: Colors.white),
+                      kCheckOutTextStyle.copyWith(color: Colors.white),
                     ),
                     CheckOutText(
                       label: "Order No",
@@ -259,7 +259,9 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
             ),
             SliverToBoxAdapter(
               child: CustomButton(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pop(context);
+                },
                 buttonColor: Colors.yellow,
                 buttonText: "Go Back",
                 buttonTextColor: Colors.black,
