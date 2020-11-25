@@ -226,10 +226,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               child: Container(
                 margin: EdgeInsets.symmetric(vertical: 10, horizontal: 12.0),
                 width: double.infinity,
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height / 2.0,
+                height: MediaQuery.of(context).size.height / 2.0,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
