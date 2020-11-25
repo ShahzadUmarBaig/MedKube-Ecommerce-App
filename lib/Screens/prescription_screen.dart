@@ -30,6 +30,11 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
   TextEditingController _duration;
   CollectionReference _orders = FirebaseFirestore.instance.collection('Orders');
   bool isLoading;
+  int day;
+  int month;
+  int year;
+  int hour;
+  int minute;
 
   getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -45,6 +50,24 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
     _address = TextEditingController();
     _phoneNumber = TextEditingController();
     isLoading = false;
+  }
+
+  String getDate() {
+    day = DateTime.now().day;
+    month = DateTime.now().month;
+    year = DateTime.now().year;
+    return '$day/$month/$year';
+  }
+
+  String getTime() {
+    hour = DateTime.now().hour;
+    minute = DateTime.now().minute;
+    if (hour > 12) {
+      hour = hour - 12;
+      return "$hour:$minute PM";
+    } else {
+      return "$hour:$minute AM";
+    }
   }
 
   @override
@@ -179,269 +202,13 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                           if (_formKey.currentState.validate() &&
                               _image != null) {
                             String orderNumber =
-                                OrderNumberGenerator().getRandomString(10);
+                            OrderNumberGenerator().getRandomString(10);
                             FocusScope.of(context).unfocus();
                             try {
                               if (userInfo.isEmpty) {
-                                setState(() {
-                                  isLoading = true;
-                                });
-                                Reference ref = FirebaseStorage.instance
-                                    .ref()
-                                    .child('PrescriptionOrders/')
-                                    .child('AnonymousOrders/')
-                                    .child(orderNumber);
-                                await ref.putFile(_image);
-
-                                String imagePath = await ref.getDownloadURL();
-                                //  print(imagePath);
-
-                                await _orders.doc(orderNumber).set({
-                                  'OrderType': "prescription",
-                                  'Note': _duration.text,
-                                  'Phone': _phoneNumber.text,
-                                  'Address': _address.text,
-                                  'Status': "In Progress",
-                                  'PicPath': imagePath,
-                                  "OrderNo": orderNumber,
-                                  "UID": FirebaseAuth.instance.currentUser.uid,
-                                  "Price": null,
-                                  "Date": DateTime.now(),
-                                }).then(
-                                  (value) {
-                                    setState(() {
-                                      isLoading = false;
-                                    });
-                                    showGeneralDialog(
-                                      context: context,
-                                      barrierDismissible: true,
-                                      barrierLabel:
-                                          MaterialLocalizations.of(context)
-                                              .modalBarrierDismissLabel,
-                                      transitionDuration:
-                                          const Duration(milliseconds: 200),
-                                      pageBuilder: (BuildContext buildContext,
-                                          Animation animation,
-                                          Animation secondaryAnimation) {
-                                        return Dialog(
-                                          child: Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                1.2,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height /
-                                                3,
-                                            color: Colors.white,
-                                            child: Stack(
-                                              children: [
-                                                Positioned(
-                                                    child: Container(
-                                                        height: 10,
-                                                        color: Colors.blue)),
-                                                Positioned(
-                                                  top: MediaQuery.of(context)
-                                                          .size
-                                                          .height /
-                                                      9,
-                                                  left: MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      4.5,
-                                                  child: Text(
-                                                    "Your Order No",
-                                                    style:
-                                                        GoogleFonts.montserrat(
-                                                            fontSize: 20.0,
-                                                            color:
-                                                                Colors.black54),
-                                                  ),
-                                                ),
-                                                Align(
-                                                  alignment: Alignment.center,
-                                                  child: SelectableText(
-                                                    orderNumber,
-                                                    style:
-                                                        GoogleFonts.montserrat(
-                                                            fontSize: 28.0,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color:
-                                                                Colors.black54),
-                                                  ),
-                                                ),
-                                                Positioned(
-                                                  bottom: MediaQuery.of(context)
-                                                          .size
-                                                          .height /
-                                                      9,
-                                                  left: MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      12,
-                                                  child: Text(
-                                                    "You'll Need This To Track Your Order",
-                                                    style:
-                                                        GoogleFonts.montserrat(
-                                                            fontSize: 16.0,
-                                                            color:
-                                                                Colors.black54),
-                                                  ),
-                                                ),
-                                                Align(
-                                                    alignment:
-                                                        Alignment.bottomCenter,
-                                                    child: Container(
-                                                        height: 10,
-                                                        color: Colors.blue)),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ).then(
-                                      (value) {
-                                        setState(() {
-                                          _duration.clear();
-                                          _image = null;
-                                          _address.clear();
-                                          _phoneNumber.clear();
-                                        });
-                                      },
-                                    );
-                                  },
-                                );
+                                placeOrderIfUserNotExists(orderNumber);
                               } else {
-                                setState(() {
-                                  isLoading = true;
-                                });
-                                Reference ref = FirebaseStorage.instance
-                                    .ref()
-                                    .child('PrescriptionOrders/')
-                                    .child('${userInfo['UID']}/')
-                                    .child(orderNumber);
-                                await ref.putFile(_image);
-
-                                String imagePath = await ref.getDownloadURL();
-                                //  print(imagePath);
-
-                                await _orders.doc(orderNumber).set({
-                                  'OrderType': "prescription",
-                                  'Note': _duration.text,
-                                  'Phone': _phoneNumber.text,
-                                  'Address': _address.text,
-                                  'Status': "In Progress",
-                                  'PicPath': imagePath,
-                                  "OrderNo": orderNumber,
-                                  "UID": userInfo['UID'],
-                                  "Price": null,
-                                  "Date": DateTime.now(),
-                                }).then(
-                                  (value) {
-                                    setState(() {
-                                      isLoading = false;
-                                    });
-                                    showGeneralDialog(
-                                      context: context,
-                                      barrierDismissible: true,
-                                      barrierLabel:
-                                          MaterialLocalizations.of(context)
-                                              .modalBarrierDismissLabel,
-                                      transitionDuration:
-                                          const Duration(milliseconds: 200),
-                                      pageBuilder: (BuildContext buildContext,
-                                          Animation animation,
-                                          Animation secondaryAnimation) {
-                                        return Dialog(
-                                          child: Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                1.2,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height /
-                                                3,
-                                            color: Colors.white,
-                                            child: Stack(
-                                              children: [
-                                                Positioned(
-                                                    child: Container(
-                                                        height: 10,
-                                                        color: Colors.blue)),
-                                                Positioned(
-                                                  top: MediaQuery.of(context)
-                                                          .size
-                                                          .height /
-                                                      9,
-                                                  left: MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      4.5,
-                                                  child: Text(
-                                                    "Your Order No",
-                                                    style:
-                                                        GoogleFonts.montserrat(
-                                                            fontSize: 20.0,
-                                                            color:
-                                                                Colors.black54),
-                                                  ),
-                                                ),
-                                                Align(
-                                                  alignment: Alignment.center,
-                                                  child: SelectableText(
-                                                    orderNumber,
-                                                    style:
-                                                        GoogleFonts.montserrat(
-                                                            fontSize: 28.0,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color:
-                                                                Colors.black54),
-                                                  ),
-                                                ),
-                                                Positioned(
-                                                  bottom: MediaQuery.of(context)
-                                                          .size
-                                                          .height /
-                                                      9,
-                                                  left: MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      12,
-                                                  child: Text(
-                                                    "You'll Need This To Track Your Order",
-                                                    style:
-                                                        GoogleFonts.montserrat(
-                                                            fontSize: 16.0,
-                                                            color:
-                                                                Colors.black54),
-                                                  ),
-                                                ),
-                                                Align(
-                                                    alignment:
-                                                        Alignment.bottomCenter,
-                                                    child: Container(
-                                                        height: 10,
-                                                        color: Colors.blue)),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ).then(
-                                      (value) {
-                                        setState(() {
-                                          _duration.clear();
-                                          _image = null;
-                                          _address.clear();
-                                          _phoneNumber.clear();
-                                        });
-                                      },
-                                    );
-                                  },
-                                );
+                                placeOrderIfUserExists(orderNumber);
                               }
                             } catch (e) {
                               print(e);
@@ -481,8 +248,222 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                     ],
                   ),
                 ),
-              ),
+        ),
       ),
+    );
+  }
+
+  Future<void> placeOrderIfUserNotExists(orderNumber) async {
+    setState(() {
+      isLoading = true;
+    });
+    Reference ref = FirebaseStorage.instance
+        .ref()
+        .child('PrescriptionOrders/')
+        .child('AnonymousOrders/')
+        .child(orderNumber);
+    await ref.putFile(_image);
+
+    String imagePath = await ref.getDownloadURL();
+    //  print(imagePath);
+
+    await _orders.doc(orderNumber).set({
+      'OrderType': "prescription",
+      'Note': _duration.text,
+      'Phone': _phoneNumber.text,
+      'Address': _address.text,
+      'Status': "In Progress",
+      'PicPath': imagePath,
+      "OrderNo": orderNumber,
+      "UID": FirebaseAuth.instance.currentUser.uid,
+      "total": null,
+      "discount": null,
+      "delivery": null,
+      "Date": getDate(),
+      "Time": getTime(),
+    }).then(
+          (value) {
+        setState(() {
+          isLoading = false;
+        });
+        showGeneralDialog(
+          context: context,
+          barrierDismissible: true,
+          barrierLabel:
+          MaterialLocalizations
+              .of(context)
+              .modalBarrierDismissLabel,
+          transitionDuration: const Duration(milliseconds: 200),
+          pageBuilder: (BuildContext buildContext, Animation animation,
+              Animation secondaryAnimation) {
+            return Dialog(
+              child: Container(
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width / 1.2,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height / 3,
+                color: Colors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(height: 10, color: Colors.blue),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Your Order No",
+                            style: GoogleFonts.montserrat(
+                                fontSize: FontSizeObserver()
+                                    .getFontSize(context, "OrderTicket"),
+                                color: Colors.black54),
+                          ),
+                          SelectableText(
+                            orderNumber,
+                            style: GoogleFonts.montserrat(
+                                fontSize: 28.0,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black54),
+                          ),
+                          Text(
+                            "You'll Need This To Track Your Order",
+                            style: GoogleFonts.montserrat(
+                                fontSize: FontSizeObserver()
+                                    .getFontSize(context, "OrderTicketInfo"),
+                                color: Colors.black54),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(height: 10, color: Colors.blue),
+                  ],
+                ),
+              ),
+            );
+          },
+        ).then(
+              (value) {
+            setState(() {
+              _duration.clear();
+              _image = null;
+              _address.clear();
+              _phoneNumber.clear();
+            });
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> placeOrderIfUserExists(orderNumber) async {
+    setState(() {
+      isLoading = true;
+    });
+    Reference ref = FirebaseStorage.instance
+        .ref()
+        .child('PrescriptionOrders/')
+        .child('${userInfo['UID']}/')
+        .child(orderNumber);
+    await ref.putFile(_image);
+
+    String imagePath = await ref.getDownloadURL();
+    //  print(imagePath);
+
+    await _orders.doc(orderNumber).set({
+      'OrderType': "prescription",
+      'Note': _duration.text,
+      'Phone': _phoneNumber.text,
+      'Address': _address.text,
+      'Status': "In Progress",
+      'PicPath': imagePath,
+      "OrderNo": orderNumber,
+      "UID": userInfo['UID'],
+      "total": null,
+      "discount": null,
+      "delivery": null,
+      "Date": getDate(),
+      "Time": getTime(),
+    }).then(
+          (value) {
+        setState(() {
+          isLoading = false;
+        });
+        showGeneralDialog(
+          context: context,
+          barrierDismissible: true,
+          barrierLabel:
+          MaterialLocalizations
+              .of(context)
+              .modalBarrierDismissLabel,
+          transitionDuration: const Duration(milliseconds: 200),
+          pageBuilder: (BuildContext buildContext, Animation animation,
+              Animation secondaryAnimation) {
+            return Dialog(
+              child: Container(
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width / 1.2,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height / 3,
+                color: Colors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(height: 10, color: Colors.blue),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Your Order No",
+                            style: GoogleFonts.montserrat(
+                                fontSize: FontSizeObserver()
+                                    .getFontSize(context, "OrderTicket"),
+                                color: Colors.black54),
+                          ),
+                          SelectableText(
+                            orderNumber,
+                            style: GoogleFonts.montserrat(
+                                fontSize: 28.0,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black54),
+                          ),
+                          Text(
+                            "You'll Need This To Track Your Order",
+                            style: GoogleFonts.montserrat(
+                                fontSize: FontSizeObserver()
+                                    .getFontSize(context, "OrderTicketInfo"),
+                                color: Colors.black54),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(height: 10, color: Colors.blue),
+                  ],
+                ),
+              ),
+            );
+          },
+        ).then(
+              (value) {
+            setState(() {
+              _duration.clear();
+              _image = null;
+              _address.clear();
+              _phoneNumber.clear();
+            });
+          },
+        );
+      },
     );
   }
 

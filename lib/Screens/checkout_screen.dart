@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medkube/Screens/cart_screen.dart';
 import 'package:medkube/Services/Cart.dart';
+import 'package:medkube/Services/Font_Size.dart';
 import 'package:medkube/Services/Order_Code.dart';
 import 'package:medkube/Services/Promos.dart';
 import 'package:medkube/Services/user_info.dart';
@@ -88,7 +89,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
       hour = hour - 12;
       return "$hour:$minute PM";
     } else {
-      return "$hour:$minute Am";
+      return "$hour:$minute AM";
     }
   }
 
@@ -126,14 +127,6 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     });
     total > 1000 ? delivery = 0.0 : delivery = 100.0;
     return total;
-  }
-
-  double getFontSize() {
-    if (screenHeight < 1280 && screenWidth < 720) {
-      return 18;
-    } else {
-      return 16;
-    }
   }
 
   @override
@@ -318,239 +311,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                               OrderNumberGenerator().getRandomString(10);
                           try {
                             if (userInfo.isEmpty) {
-                              await _orders.doc(orderNumber).set(
-                                {
-                                  "OrderType": "cart",
-                                  "OrderNo": orderNumber,
-                                  "Address": _addressController.text,
-                                  "Apartment": _apartmentController.text,
-                                  "City": _cityController.text,
-                                  "Country": _countryController.text,
-                                  "Phone": _phoneController.text,
-                                  "firstName": _firstNameController.text,
-                                  "lastName": _lastNameController.text,
-                                  "items": cartListItems,
-                                  "total":
-                                      (getTotal() + delivery - discountValue)
-                                          .toStringAsFixed(2),
-                                  "discount": discountValue,
-                                  "promoApplied": promoApplied,
-                                  "delivery": delivery,
-                                  "Status": "In Progress",
-                                  "Date": getDate(),
-                                  "Time": getTime(),
-                                },
-                              ).then(
-                                (value) {
-                                  showGeneralDialog(
-                                    context: context,
-                                    barrierDismissible: true,
-                                    barrierLabel:
-                                        MaterialLocalizations.of(context)
-                                            .modalBarrierDismissLabel,
-                                    transitionDuration:
-                                        const Duration(milliseconds: 200),
-                                    pageBuilder: (BuildContext buildContext,
-                                        Animation animation,
-                                        Animation secondaryAnimation) {
-                                      return Dialog(
-                                        child: Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              1.2,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              3,
-                                          color: Colors.white,
-                                          child: Stack(
-                                            children: [
-                                              Positioned(
-                                                  child: Container(
-                                                      height: 10,
-                                                      color: Colors.blue)),
-                                              Positioned(
-                                                top: MediaQuery.of(context)
-                                                        .size
-                                                        .height /
-                                                    9,
-                                                left: MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    4.5,
-                                                child: Text(
-                                                  "Your Order No",
-                                                  style: GoogleFonts.montserrat(
-                                                      fontSize: 20.0,
-                                                      color: Colors.black54),
-                                                ),
-                                              ),
-                                              Align(
-                                                alignment: Alignment.center,
-                                                child: SelectableText(
-                                                  orderNumber,
-                                                  style: GoogleFonts.montserrat(
-                                                      fontSize: 28.0,
-                                                      fontWeight:
-                                                      FontWeight.w500,
-                                                      color: Colors.black54),
-                                                ),
-                                              ),
-                                              Positioned(
-                                                bottom: MediaQuery.of(context)
-                                                        .size
-                                                        .height /
-                                                    9,
-                                                left: MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    12,
-                                                child: Text(
-                                                  "You'll Need This To Track Your Order",
-                                                  style: GoogleFonts.montserrat(
-                                                      fontSize: 16.0,
-                                                      color: Colors.black54),
-                                                ),
-                                              ),
-                                              Align(
-                                                  alignment:
-                                                      Alignment.bottomCenter,
-                                                  child: Container(
-                                                      height: 10,
-                                                      color: Colors.blue)),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ).then(
-                                    (value) {
-                                      cartListItems.clear();
-                                      cartItemKeys.clear();
-
-                                      Navigator.pushReplacementNamed(
-                                          context, HomeScreen.id);
-                                    },
-                                  );
-                                },
-                              );
+                              placeOrderIfUserNotExists(orderNumber);
                             } else {
-                              await _orders.doc(orderNumber).set({
-                                "OrderType": "cart",
-                                "OrderNo": orderNumber,
-                                "UID": userInfo['UID'],
-                                "Address": _addressController.text,
-                                "Apartment": _apartmentController.text,
-                                "City": _cityController.text,
-                                "Country": _countryController.text,
-                                "Phone": _phoneController.text,
-                                "firstName": _firstNameController.text,
-                                "lastName": _lastNameController.text,
-                                "items": cartListItems,
-                                "total": (getTotal() + delivery - discountValue)
-                                    .toStringAsFixed(2),
-                                "discount": discountValue,
-                                "promoApplied": promoApplied,
-                                "delivery": delivery,
-                                "Status": "In Progress",
-                                "Date": getDate(),
-                                "Time": getTime(),
-                              }).then(
-                                (value) {
-                                  showGeneralDialog(
-                                    context: context,
-                                    barrierDismissible: true,
-                                    barrierLabel:
-                                        MaterialLocalizations.of(context)
-                                            .modalBarrierDismissLabel,
-                                    transitionDuration:
-                                        const Duration(milliseconds: 200),
-                                    pageBuilder: (BuildContext buildContext,
-                                        Animation animation,
-                                        Animation secondaryAnimation) {
-                                      return Dialog(
-                                        child: Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              1.2,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              3,
-                                          color: Colors.white,
-                                          child: Stack(
-                                            children: [
-                                              Positioned(
-                                                  child: Container(
-                                                      height: 10,
-                                                      color: Colors.blue)),
-                                              Positioned(
-                                                top: MediaQuery.of(context)
-                                                        .size
-                                                        .height /
-                                                    9,
-                                                left: MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    4.5,
-                                                child: Text(
-                                                  "Your Order No",
-                                                  style: GoogleFonts.montserrat(
-                                                      fontSize: 20.0,
-                                                      color: Colors.black54),
-                                                ),
-                                              ),
-                                              Align(
-                                                alignment: Alignment.center,
-                                                child: SelectableText(
-                                                  orderNumber,
-                                                  style: GoogleFonts.montserrat(
-                                                      fontSize: 28.0,
-                                                      fontWeight:
-                                                      FontWeight.w500,
-                                                      color: Colors.black54),
-                                                ),
-                                              ),
-                                              Positioned(
-                                                bottom: MediaQuery.of(context)
-                                                        .size
-                                                        .height /
-                                                    9,
-                                                left: MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    12,
-                                                child: Text(
-                                                  "You'll Need This To Track Your Order",
-                                                  style: GoogleFonts.montserrat(
-                                                      fontSize: 16.0,
-                                                      color: Colors.black54),
-                                                ),
-                                              ),
-                                              Align(
-                                                  alignment:
-                                                      Alignment.bottomCenter,
-                                                  child: Container(
-                                                      height: 10,
-                                                      color: Colors.blue)),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ).then(
-                                    (value) {
-                                      cartListItems.clear();
-                                      cartItemKeys.clear();
-
-                                      Navigator.pushReplacementNamed(
-                                          context, HomeScreen.id);
-                                    },
-                                  );
-                                },
-                              );
+                              placeOrderIfUserExists(orderNumber);
                             }
                           } catch (e) {
                             print(e);
@@ -573,7 +336,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             "Whatsapp For Online Payment",
                             style: kAlertBoxText.copyWith(
                                 color: Colors.black.withOpacity(0.4),
-                                fontSize: getFontSize()),
+                                fontSize: FontSizeObserver()
+                                    .getFontSize(context, "CartDeliveryLabel")),
                           )
                         ],
                       ),
@@ -583,6 +347,189 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
               )),
         ),
       ),
+    );
+  }
+
+  Future<void> placeOrderIfUserExists(orderNumber) async {
+    await _orders.doc(orderNumber).set({
+      "OrderType": "cart",
+      "OrderNo": orderNumber,
+      "UID": userInfo['UID'],
+      "Address": _addressController.text,
+      "Apartment": _apartmentController.text,
+      "City": _cityController.text,
+      "Country": _countryController.text,
+      "Phone": _phoneController.text,
+      "firstName": _firstNameController.text,
+      "lastName": _lastNameController.text,
+      "items": cartListItems,
+      "total": (getTotal() + delivery - discountValue).toStringAsFixed(2),
+      "discount": discountValue,
+      "promoApplied": promoApplied,
+      "delivery": delivery,
+      "Status": "In Progress",
+      "Date": getDate(),
+      "Time": getTime(),
+    }).then(
+      (value) {
+        showGeneralDialog(
+          context: context,
+          barrierDismissible: true,
+          barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
+          transitionDuration: const Duration(milliseconds: 200),
+          pageBuilder: (BuildContext buildContext, Animation animation,
+              Animation secondaryAnimation) {
+            return Dialog(
+              child: Container(
+                width: MediaQuery.of(context).size.width / 1.2,
+                height: MediaQuery.of(context).size.height / 3,
+                color: Colors.white,
+                child: Stack(
+                  children: [
+                    Positioned(
+                        child: Container(height: 10, color: Colors.blue)),
+                    Positioned(
+                      top: MediaQuery.of(context).size.height / 9,
+                      left: MediaQuery.of(context).size.width / 4.5,
+                      child: Text(
+                        "Your Order No",
+                        style: GoogleFonts.montserrat(
+                            fontSize: FontSizeObserver()
+                                .getFontSize(context, "OrderTicket"),
+                            color: Colors.black54),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: SelectableText(
+                        orderNumber,
+                        style: GoogleFonts.montserrat(
+                            fontSize: 28.0,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black54),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: MediaQuery.of(context).size.height / 9,
+                      left: MediaQuery.of(context).size.width / 12,
+                      child: Text(
+                        "You'll Need This To Track Your Order",
+                        style: GoogleFonts.montserrat(
+                            fontSize: FontSizeObserver()
+                                .getFontSize(context, "OrderTicketInfo"),
+                            color: Colors.black54),
+                      ),
+                    ),
+                    Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(height: 10, color: Colors.blue)),
+                  ],
+                ),
+              ),
+            );
+          },
+        ).then(
+          (value) {
+            cartListItems.clear();
+            cartItemKeys.clear();
+
+            Navigator.pushReplacementNamed(context, HomeScreen.id);
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> placeOrderIfUserNotExists(orderNumber) async {
+    await _orders.doc(orderNumber).set(
+      {
+        "OrderType": "cart",
+        "OrderNo": orderNumber,
+        "Address": _addressController.text,
+        "Apartment": _apartmentController.text,
+        "City": _cityController.text,
+        "Country": _countryController.text,
+        "Phone": _phoneController.text,
+        "firstName": _firstNameController.text,
+        "lastName": _lastNameController.text,
+        "items": cartListItems,
+        "total": (getTotal() + delivery - discountValue).toStringAsFixed(2),
+        "discount": discountValue,
+        "promoApplied": promoApplied,
+        "delivery": delivery,
+        "Status": "In Progress",
+        "Date": getDate(),
+        "Time": getTime(),
+      },
+    ).then(
+      (value) {
+        showGeneralDialog(
+          context: context,
+          barrierDismissible: true,
+          barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
+          transitionDuration: const Duration(milliseconds: 200),
+          pageBuilder: (BuildContext buildContext, Animation animation,
+              Animation secondaryAnimation) {
+            return Dialog(
+              child: Container(
+                width: MediaQuery.of(context).size.width / 1.2,
+                height: MediaQuery.of(context).size.height / 3,
+                color: Colors.white,
+                child: Stack(
+                  children: [
+                    Positioned(
+                        child: Container(height: 10, color: Colors.blue)),
+                    Positioned(
+                      top: MediaQuery.of(context).size.height / 9,
+                      left: MediaQuery.of(context).size.width / 4.5,
+                      child: Text(
+                        "Your Order No",
+                        style: GoogleFonts.montserrat(
+                            fontSize: FontSizeObserver()
+                                .getFontSize(context, "OrderTicketInfo"),
+                            color: Colors.black54),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: SelectableText(
+                        orderNumber,
+                        style: GoogleFonts.montserrat(
+                            fontSize: 28.0,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black54),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: MediaQuery.of(context).size.height / 9,
+                      left: MediaQuery.of(context).size.width / 12,
+                      child: Text(
+                        "You'll Need This To Track Your Order",
+                        style: GoogleFonts.montserrat(
+                            fontSize: FontSizeObserver()
+                                .getFontSize(context, "OrderTicketInfo"),
+                            color: Colors.black54),
+                      ),
+                    ),
+                    Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(height: 10, color: Colors.blue)),
+                  ],
+                ),
+              ),
+            );
+          },
+        ).then(
+          (value) {
+            cartListItems.clear();
+            cartItemKeys.clear();
+
+            Navigator.pushReplacementNamed(context, HomeScreen.id);
+          },
+        );
+      },
     );
   }
 }

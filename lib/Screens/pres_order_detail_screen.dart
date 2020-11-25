@@ -7,25 +7,24 @@ import 'package:medkube/extras.dart';
 
 import '../constants.dart';
 
-class OrderDetailScreen extends StatefulWidget {
+class PrescriptionDetailScreen extends StatefulWidget {
   static String id = "OrderDetailScreen";
   final orderDetails;
 
-  const OrderDetailScreen({Key key, this.orderDetails}) : super(key: key);
+  const PrescriptionDetailScreen({Key key, this.orderDetails})
+      : super(key: key);
+
   @override
-  _OrderDetailScreenState createState() => _OrderDetailScreenState();
+  _PrescriptionDetailScreenState createState() =>
+      _PrescriptionDetailScreenState();
 }
 
-class _OrderDetailScreenState extends State<OrderDetailScreen> {
+class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
   FontSizeObserver fontSizeObserver = FontSizeObserver();
   Map<String, dynamic> productsDetails;
   List<String> productKeys = List<String>();
-  TextEditingController _firstNameController = TextEditingController();
-  TextEditingController _lastNameController = TextEditingController();
-  TextEditingController _apartmentController = TextEditingController();
+  TextEditingController _durationController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
-  TextEditingController _countryController = TextEditingController();
-  TextEditingController _cityController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
 
   @override
@@ -33,12 +32,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
     super.initState();
     productsDetails = widget.orderDetails['items'];
     productKeys = productsDetails.keys.toList();
-    _firstNameController.text = widget.orderDetails["firstName"];
-    _lastNameController.text = widget.orderDetails["lastName"];
-    _apartmentController.text = widget.orderDetails["Apartment"];
+    _durationController.text = widget.orderDetails["Note"];
     _phoneController.text = widget.orderDetails["Phone"];
-    _countryController.text = widget.orderDetails["Country"];
-    _cityController.text = widget.orderDetails["City"];
     _addressController.text = widget.orderDetails["Address"];
   }
 
@@ -230,24 +225,13 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    CustomNameRow(
-                        firstName: _firstNameController,
-                        lastName: _lastNameController),
                     OrderDetailTextField(
                       controller: _addressController,
                       text: "Address",
                     ),
                     OrderDetailTextField(
-                      controller: _apartmentController,
+                      controller: _durationController,
                       text: "Apartment",
-                    ),
-                    OrderDetailTextField(
-                      controller: _countryController,
-                      text: "Country",
-                    ),
-                    OrderDetailTextField(
-                      controller: _cityController,
-                      text: "City",
                     ),
                     OrderDetailTextField(
                       controller: _phoneController,
@@ -269,49 +253,6 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class CustomNameRow extends StatelessWidget {
-  final TextEditingController firstName;
-  final TextEditingController lastName;
-
-  const CustomNameRow({Key key, this.firstName, this.lastName})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              enabled: false,
-              style: TextStyle(
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.normal,
-                  color: Colors.white),
-              decoration: kCartOrderBilling.copyWith(
-                hintText: "First Name",
-                labelText: "First Name",
-              ),
-            ),
-          ),
-          SizedBox(width: 8.0),
-          Expanded(
-            child: TextField(
-              enabled: false,
-              style: TextStyle(
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.normal,
-                  color: Colors.white),
-              decoration: kCartOrderBilling.copyWith(
-                  hintText: "Last Name", labelText: "Last Name"),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -339,7 +280,7 @@ class OrderDetailTextField extends StatelessWidget {
                   fontWeight: FontWeight.normal,
                   color: Colors.white),
               decoration:
-              kCartOrderBilling.copyWith(hintText: text, labelText: text),
+                  kCartOrderBilling.copyWith(hintText: text, labelText: text),
             ),
           ),
         ],

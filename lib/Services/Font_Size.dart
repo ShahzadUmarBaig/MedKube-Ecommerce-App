@@ -71,6 +71,18 @@ class FontSizeObserver {
       } else if (bigScreen) {
         return 15;
       }
+    } else if (status == "OrderTicket") {
+      if (smallScreen) {
+        return 20;
+      } else if (bigScreen) {
+        return 18;
+      }
+    } else if (status == "OrderTicketInfo") {
+      if (smallScreen) {
+        return 16;
+      } else if (bigScreen) {
+        return 14;
+      }
     }
 
     return 0.0;
