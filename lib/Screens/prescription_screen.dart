@@ -248,7 +248,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                     ],
                   ),
                 ),
-        ),
+              ),
       ),
     );
   }

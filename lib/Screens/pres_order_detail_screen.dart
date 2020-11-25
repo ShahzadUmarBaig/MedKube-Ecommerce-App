@@ -93,7 +93,7 @@ class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
                 child: Text(
                   "Order Details",
                   style:
-                  GoogleFonts.montserrat(color: Colors.white, fontSize: 24),
+                      GoogleFonts.montserrat(color: Colors.white, fontSize: 24),
                 ),
               ),
             ),

@@ -2,17 +2,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medkube/Screens/pres_order_detail_screen.dart';
 import 'package:medkube/Services/Order_Code.dart';
 import 'package:medkube/Services/user_info.dart';
 import 'package:medkube/Widgets/cart_item_tile.dart';
 import 'package:medkube/Widgets/custom_button.dart';
 import 'package:medkube/Widgets/prescription_item_tile.dart';
 import 'package:medkube/Widgets/profile_textfield.dart';
+import 'package:medkube/Widgets/widgets.dart';
 import 'package:medkube/constants.dart';
 import 'package:medkube/extras.dart';
 
+import 'cart_order_detail_screen.dart';
+
 class OrderScreen extends StatefulWidget {
   static String id = "order_screen";
+
   @override
   _OrderScreenState createState() => _OrderScreenState();
 }
@@ -24,6 +29,7 @@ class _OrderScreenState extends State<OrderScreen> {
   bool orderTracked;
   String userUID = userInfo["UID"];
   Map<String, dynamic> trackedOrderDetails = {};
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   getItemCount() async {
     itemCount = 0;
@@ -70,192 +76,214 @@ class _OrderScreenState extends State<OrderScreen> {
         return true;
       },
       child: Scaffold(
-        body: orderScreen(),
-      ),
-    );
-  }
-
-  Widget orderScreen() {
-    return Container(
-      child: ScrollConfiguration(
-        behavior: MyBehavior(),
-        child: ListView(
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 16.0),
-              child: Center(
-                child: Text(
-                  "Track Your Order",
-                  style: kAlertBoxText,
+        key: _scaffoldKey,
+        body: Container(
+          child: ScrollConfiguration(
+            behavior: MyBehavior(),
+            child: ListView(
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 16.0),
+                  child: Center(
+                    child: Text(
+                      "Track Your Order",
+                      style: kAlertBoxText,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            ProfileTextField(
-                controller: _orderNumberController, hint: "Track Order"),
-            CustomButton(
-              buttonColor: Colors.blue,
-              marginVertical: 4.0,
-              marginHorizontal: 24.0,
-              buttonTextColor: Colors.white,
-              buttonText: "Track Your Order",
-              onTap: () {
-                String trackOrderNo = _orderNumberController.text;
-                _orders.doc(trackOrderNo).get().then((value) {
-                  if (value.exists) {
-                    setState(() {
-                      trackedOrderDetails.addAll(value.data());
-                      orderTracked = true;
-                      FocusScope.of(context).unfocus();
+                ProfileTextField(
+                    controller: _orderNumberController, hint: "Track Order"),
+                CustomButton(
+                  buttonColor: Colors.blue,
+                  marginVertical: 4.0,
+                  marginHorizontal: 24.0,
+                  buttonTextColor: Colors.white,
+                  buttonText: "Track Your Order",
+                  onTap: () {
+                    String trackOrderNo = _orderNumberController.text;
+                    _orders.doc(trackOrderNo).get().then((value) {
+                      if (value.exists) {
+                        setState(() {
+                          trackedOrderDetails.addAll(value.data());
+                          orderTracked = true;
+                          FocusScope.of(context).unfocus();
+                        });
+                      } else {
+                        FocusScope.of(context).unfocus();
+                        _scaffoldKey.currentState
+                            .showSnackBar(customSnackBar("Order Not Found", 2));
+                      }
                     });
-                  } else {
-                    print("Not Found");
-                  }
-                });
-              },
-            ),
-            orderTracked
-                ? Container(
-                    height: 80,
-                    margin:
-                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
-                    child: Card(
-                      elevation: 4.0,
-                      child: Row(
-                        children: [
-                          Container(
-                            height: 50,
-                            padding: EdgeInsets.symmetric(horizontal: 16.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("Order No",
-                                    style: GoogleFonts.montserrat(
-                                        fontSize: 14.0, color: Colors.black54)),
-                                SizedBox(height: 4.0),
-                                Text(_orderNumberController.text,
-                                    style: GoogleFonts.montserrat(
-                                        fontSize: 18.0,
-                                        color: Colors.black54,
-                                        fontWeight: FontWeight.w500)),
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                right: BorderSide(
-                                    color: Colors.grey[300],
-                                    style: BorderStyle.solid),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              margin: EdgeInsets.symmetric(vertical: 8.0),
-                              child: MaterialButton(
-                                shape: RoundedRectangleBorder(),
-                                onPressed: () {},
-                                elevation: 0,
+                  },
+                ),
+                orderTracked
+                    ? Container(
+                        height: 80,
+                        margin: EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 20.0),
+                        child: Card(
+                          elevation: 4.0,
+                          child: Row(
+                            children: [
+                              Container(
+                                height: 50,
+                                padding: EdgeInsets.symmetric(horizontal: 16.0),
                                 child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(
-                                        trackedOrderDetails["OrderType"]
-                                                .toString()
-                                                .substring(0, 1)
-                                                .toUpperCase() +
-                                            trackedOrderDetails["OrderType"]
-                                                .toString()
-                                                .substring(1),
+                                    Text("Order No",
                                         style: GoogleFonts.montserrat(
                                             fontSize: 14.0,
                                             color: Colors.black54)),
-                                    Text(trackedOrderDetails["Status"],
+                                    SizedBox(height: 4.0),
+                                    Text(_orderNumberController.text,
                                         style: GoogleFonts.montserrat(
-                                            fontSize: 14.0,
-                                            color: Colors.black54)),
-                                    Text("Click For Details",
-                                        style: GoogleFonts.montserrat(
-                                            fontSize: 14.0,
-                                            color: Colors.black54)),
+                                            fontSize: 18.0,
+                                            color: Colors.black54,
+                                            fontWeight: FontWeight.w500)),
                                   ],
                                 ),
-                                padding: EdgeInsets.zero,
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    right: BorderSide(
+                                        color: Colors.grey[300],
+                                        style: BorderStyle.solid),
+                                  ),
+                                ),
                               ),
-                            ),
+                              Expanded(
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(vertical: 8.0),
+                                  child: MaterialButton(
+                                    shape: RoundedRectangleBorder(),
+                                    onPressed: () {
+                                      if (trackedOrderDetails["OrderType"] ==
+                                          "cart") {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                OrderDetailScreen(
+                                              orderDetails: orders[
+                                                  _orderNumberController.text],
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                PrescriptionDetailScreen(
+                                              orderDetails: orders[
+                                                  _orderNumberController.text],
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    elevation: 0,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Text(
+                                            trackedOrderDetails["OrderType"]
+                                                    .toString()
+                                                    .substring(0, 1)
+                                                    .toUpperCase() +
+                                                trackedOrderDetails["OrderType"]
+                                                    .toString()
+                                                    .substring(1),
+                                            style: GoogleFonts.montserrat(
+                                                fontSize: 14.0,
+                                                color: Colors.black54)),
+                                        Text(trackedOrderDetails["Status"],
+                                            style: GoogleFonts.montserrat(
+                                                fontSize: 14.0,
+                                                color: Colors.black54)),
+                                        Text("Click For Details",
+                                            style: GoogleFonts.montserrat(
+                                                fontSize: 14.0,
+                                                color: Colors.black54)),
+                                      ],
+                                    ),
+                                    padding: EdgeInsets.zero,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: 50,
+                                width: 70,
+                                child: MaterialButton(
+                                  minWidth: 10,
+                                  padding: EdgeInsets.zero,
+                                  onPressed: () {
+                                    trackedOrderDetails.clear();
+                                    _orderNumberController.clear();
+                                    FocusScope.of(context).unfocus();
+                                    setState(() {
+                                      orderTracked = false;
+                                    });
+                                  },
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.close),
+                                      Text("Hide"),
+                                    ],
+                                  ),
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    left: BorderSide(
+                                        color: Colors.grey[300],
+                                        style: BorderStyle.solid),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          Container(
-                            height: 50,
-                            width: 70,
-                            child: MaterialButton(
-                              minWidth: 10,
-                              padding: EdgeInsets.zero,
-                              onPressed: () {
-                                trackedOrderDetails.clear();
-                                _orderNumberController.clear();
-                                FocusScope.of(context).unfocus();
-                                setState(() {
-                                  orderTracked = false;
-                                });
-                              },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.close),
-                                  Text("Hide"),
-                                ],
-                              ),
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                left: BorderSide(
-                                    color: Colors.grey[300],
-                                    style: BorderStyle.solid),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      )
+                    : SizedBox.shrink(),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 8.0),
+                  child: Center(
+                    child: Text(
+                      "Past Orders",
+                      style: kAlertBoxText,
                     ),
-                  )
-                : SizedBox.shrink(),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 8.0),
-              child: Center(
-                child: Text(
-                  "Past Orders",
-                  style: kAlertBoxText,
+                  ),
                 ),
-              ),
-            ),
-            Divider(endIndent: 16.0, indent: 16.0),
-            Container(
-              height: getHeight(context),
-              child: ScrollConfiguration(
-                behavior: MyBehavior(),
-                child: ListView.builder(
-                  padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-                  itemBuilder: (context, index) {
-                    if (orders[orderKeys[index]]["OrderType"] == "cart") {
-                      return CartItemTile(
-                        orderDetails: orders[orderKeys[index]],
-                      );
-                    } else {
-                      return PrescriptionItemTile(
-                        orderDetails: orders[orderKeys[index]],
-                      );
-                    }
-                  },
-                  itemCount: itemCount,
+                Divider(endIndent: 16.0, indent: 16.0),
+                Container(
+                  height: getHeight(context),
+                  child: ScrollConfiguration(
+                    behavior: MyBehavior(),
+                    child: ListView.builder(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                      itemBuilder: (context, index) {
+                        if (orders[orderKeys[index]]["OrderType"] == "cart") {
+                          return CartItemTile(
+                            orderDetails: orders[orderKeys[index]],
+                          );
+                        } else {
+                          return PrescriptionItemTile(
+                            orderDetails: orders[orderKeys[index]],
+                          );
+                        }
+                      },
+                      itemCount: itemCount,
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
-  }
-
-  Widget normalUserOrders() {
-    return Container();
   }
 }

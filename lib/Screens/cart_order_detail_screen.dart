@@ -42,6 +42,16 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
     _addressController.text = widget.orderDetails["Address"];
   }
 
+  double getItemContainerHeight() {
+    if (productsDetails.keys.toList().length == 1) {
+      return 100;
+    } else if (productsDetails.keys.toList().length == 2) {
+      return 160;
+    } else {
+      return MediaQuery.of(context).size.height / 2.5;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,13 +82,15 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
             SliverToBoxAdapter(
               child: Container(
                 decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(8)),
+                BoxDecoration(borderRadius: BorderRadius.circular(8)),
                 margin: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height / 2.5,
+                height: getItemContainerHeight(),
                 child: ListView.builder(
                   padding: EdgeInsets.all(0),
-                  itemCount: productsDetails.keys.toList().length,
+                  itemCount: productsDetails.keys
+                      .toList()
+                      .length,
                   itemBuilder: (context, index) {
                     var element = productsDetails[productKeys[index]];
                     return Card(

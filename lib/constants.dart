@@ -67,7 +67,6 @@ const kTextFieldDecoration = InputDecoration(
 );
 
 InputDecoration kProfileTextFieldDecoration = InputDecoration(
-  hintStyle: TextStyle(color: Colors.grey[500]),
   border: OutlineInputBorder(
     borderRadius: const BorderRadius.all(
       const Radius.circular(8.0),
